@@ -2,7 +2,6 @@ package seeders
 
 import (
 	"backend/internal/modules/peserta/model"
-	"backend/internal/utils"
 	"fmt"
 	"time"
 
@@ -27,10 +26,7 @@ func SeedPeserta(db *gorm.DB) error {
 		return nil
 	}
 
-	hashedPassword, err := utils.HashPassword("password123")
-	if err != nil {
-		return err
-	}
+	const defaultPassword = "password123"
 
 	var pesertaList []model.Peserta
 
@@ -41,7 +37,7 @@ func SeedPeserta(db *gorm.DB) error {
 				Nama:      fmt.Sprintf("Peserta %d - %s", i, k.NamaKelas),
 				IDKelas:   k.ID,
 				Username:  username,
-				Password:  hashedPassword,
+				Password:  defaultPassword,
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
 			})

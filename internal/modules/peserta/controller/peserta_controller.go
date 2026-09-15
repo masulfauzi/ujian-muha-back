@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"errors"
+	"path/filepath"
 	"strconv"
 
 	"backend/internal/helpers"
@@ -164,7 +166,7 @@ func (c *PesertaController) RestorePeserta(ctx *fiber.Ctx) error {
 
 // DownloadKartuUjian godoc
 // @Summary Download kartu peserta ujian satu kelas (PDF, siap cetak & gunting)
-// @Description Menghasilkan PDF berisi kartu untuk setiap peserta di kelas tersebut, ditata grid 2x5 kartu per halaman A4 dengan garis putus-putus sebagai panduan gunting. Kartu ini bersifat global (tidak terikat jadwal/ujian tertentu) — hanya menampilkan nama, username, dan kelas, tanpa password.
+// @Description Menghasilkan PDF berisi kartu untuk setiap peserta di kelas tersebut, ditata grid 2x5 kartu per halaman A4 dengan garis putus-putus sebagai panduan gunting. Kartu ini bersifat global (tidak terikat jadwal/ujian tertentu) — menampilkan nama, username, password, dan kelas.
 // @Tags Peserta
 // @Produce application/pdf
 // @Security BearerAuth
@@ -182,5 +184,73 @@ func (c *PesertaController) DownloadKartuUjian(ctx *fiber.Ctx) error {
 
 	ctx.Set("Content-Type", "application/pdf")
 	ctx.Set("Content-Disposition", `attachment; filename="kartu_ujian.pdf"`)
+	return ctx.Send(fileBytes)
+}
+
+// ImportPesertaFromExcel godoc
+// @Summary Import peserta dari file Excel
+// @Description Upload file .xls/.xlsx (maks 10MB) berisi banyak peserta sekaligus. Kolom: nama, username, password, kelas (diisi nama kelas). Jika ada baris dengan nama kelas yang tidak ditemukan di data master Kelas, seluruh import dibatalkan (tidak ada data yang tersimpan).
+// @Tags Peserta
+// @Accept mpfd
+// @Produce json
+// @Security BearerAuth
+// @Param file formData file true "File Excel (.xls/.xlsx)"
+// @Success 200 {object} helpers.Response{data=dto.ImportPesertaResponse} "Import peserta berhasil"
+// @Failure 400 {object} helpers.Response "File tidak valid, kolom kelas tidak ditemukan, atau import gagal"
+// @Router /peserta/import [post]
+func (c *PesertaController) ImportPesertaFromExcel(ctx *fiber.Ctx) error {
+	file, err := ctx.FormFile("file")
+	if err != nil {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "File tidak ditemukan", map[string]string{
+			"error": "Silakan upload file excel",
+		})
+	}
+
+	const maxFileSize = 10 * 1024 * 1024
+	if file.Size > maxFileSize {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "File terlalu besar", map[string]string{
+			"error": "Max file size adalah 10MB",
+		})
+	}
+
+	ext := filepath.Ext(file.Filename)
+	if ext != ".xls" && ext != ".xlsx" {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "Format file tidak valid", map[string]string{
+			"error": "File harus berupa .xls atau .xlsx",
+		})
+	}
+
+	req := &dto.ImportPesertaRequest{File: file}
+
+	resp, err := c.service.ImportPesertaFromExcel(ctx.Context(), req)
+	if err != nil {
+		var kelasErr *dto.KelasNotFoundError
+		if errors.As(err, &kelasErr) {
+			return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "Import dibatalkan: ada kolom kelas yang tidak ditemukan", kelasErr.Details)
+		}
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "Import peserta gagal", map[string]string{
+			"error": err.Error(),
+		})
+	}
+
+	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Import peserta berhasil", resp)
+}
+
+// DownloadTemplate godoc
+// @Summary Download template Excel untuk import peserta
+// @Description Menghasilkan file .xlsx berisi header + 1 baris contoh (nama, username, password) sesuai urutan kolom yang dibaca endpoint import (POST /peserta/import).
+// @Tags Peserta
+// @Produce application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+// @Success 200 {file} file "File template_import_peserta.xlsx"
+// @Failure 500 {object} helpers.Response "Gagal membuat file template"
+// @Router /peserta/template [get]
+func (c *PesertaController) DownloadTemplate(ctx *fiber.Ctx) error {
+	fileBytes, err := c.service.GenerateImportTemplate()
+	if err != nil {
+		return helpers.ErrorResponse(ctx, fiber.StatusInternalServerError, "Gagal membuat file template", nil)
+	}
+
+	ctx.Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	ctx.Set("Content-Disposition", `attachment; filename="template_import_peserta.xlsx"`)
 	return ctx.Send(fileBytes)
 }

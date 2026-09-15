@@ -20,6 +20,8 @@ func SetupPesertaRoutes(app *fiber.App, db *gorm.DB) {
 
 	peserta.Post("/", middleware.JWTAuth(), ctrl.CreatePeserta)
 	peserta.Get("/", ctrl.GetAllPeserta)
+	peserta.Get("/template", middleware.JWTAuth(), ctrl.DownloadTemplate)
+	peserta.Post("/import", middleware.JWTAuth(), ctrl.ImportPesertaFromExcel)
 	peserta.Get("/kartu-ujian/:id_kelas", middleware.JWTAuth(), ctrl.DownloadKartuUjian)
 	peserta.Get("/:id", ctrl.GetPesertaByID)
 	peserta.Put("/:id", middleware.JWTAuth(), ctrl.UpdatePeserta)

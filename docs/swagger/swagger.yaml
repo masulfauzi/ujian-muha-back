@@ -1,15 +1,6 @@
 basePath: /api
 definitions:
-  backend_internal_helpers.Response:
-    properties:
-      data: {}
-      errors: {}
-      message:
-        type: string
-      success:
-        type: boolean
-    type: object
-  backend_internal_modules_auth_dto.AuthResponse:
+  dto.AuthResponse:
     properties:
       email:
         type: string
@@ -22,49 +13,11 @@ definitions:
       token:
         type: string
     type: object
-  backend_internal_modules_auth_dto.CurrentUserResponse:
-    properties:
-      email:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      role:
-        type: string
-    type: object
-  backend_internal_modules_auth_dto.LoginRequest:
-    properties:
-      password:
-        type: string
-      username:
-        type: string
-    required:
-    - password
-    - username
-    type: object
-  backend_internal_modules_auth_dto.RegisterRequest:
-    properties:
-      email:
-        type: string
-      name:
-        type: string
-      password:
-        minLength: 6
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - name
-    - password
-    - username
-    type: object
-  backend_internal_modules_bank_soal_dto.BankSoalListResponse:
+  dto.BankSoalListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse'
+          $ref: '#/definitions/dto.BankSoalResponse'
         type: array
       page:
         type: integer
@@ -75,7 +28,7 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_bank_soal_dto.BankSoalResponse:
+  dto.BankSoalResponse:
     properties:
       created_at:
         type: string
@@ -94,7 +47,7 @@ definitions:
       updated_at:
         type: string
     type: object
-  backend_internal_modules_bank_soal_dto.CreateBankSoalRequest:
+  dto.CreateBankSoalRequest:
     properties:
       deskripsi:
         type: string
@@ -110,23 +63,17 @@ definitions:
     - jml_soal
     - nama_bank_soal
     type: object
-  backend_internal_modules_bank_soal_dto.UpdateBankSoalRequest:
+  dto.CreateJadwalKelasRequest:
     properties:
-      deskripsi:
+      id_jadwal:
         type: string
-      id_mapel:
-        type: string
-      jml_soal:
-        minimum: 0
-        type: integer
-      nama_bank_soal:
+      id_kelas:
         type: string
     required:
-    - id_mapel
-    - jml_soal
-    - nama_bank_soal
+    - id_jadwal
+    - id_kelas
     type: object
-  backend_internal_modules_jadwal_dto.CreateJadwalRequest:
+  dto.CreateJadwalRequest:
     properties:
       acak_opsi:
         type: integer
@@ -160,7 +107,201 @@ definitions:
     - wkt_mulai
     - wkt_selesai
     type: object
-  backend_internal_modules_jadwal_dto.JadwalAktifResponse:
+  dto.CreateJawabanRequest:
+    properties:
+      id_nilai:
+        type: string
+      id_peserta:
+        type: string
+      id_soal:
+        type: string
+      jawaban:
+        enum:
+        - A
+        - B
+        - C
+        - D
+        - E
+        type: string
+      no_urut:
+        type: integer
+    required:
+    - id_nilai
+    - id_peserta
+    - id_soal
+    - jawaban
+    - no_urut
+    type: object
+  dto.CreateJurusanRequest:
+    properties:
+      nama_jurusan:
+        type: string
+    required:
+    - nama_jurusan
+    type: object
+  dto.CreateKelasRequest:
+    properties:
+      id_jurusan:
+        type: string
+      nama_kelas:
+        type: string
+      tingkat:
+        type: string
+    required:
+    - id_jurusan
+    - nama_kelas
+    - tingkat
+    type: object
+  dto.CreateMapelRequest:
+    properties:
+      deskripsi:
+        type: string
+      kode_mapel:
+        maxLength: 20
+        type: string
+      nama_mapel:
+        type: string
+    required:
+    - kode_mapel
+    - nama_mapel
+    type: object
+  dto.CreateNilaiRequest:
+    properties:
+      aktivitas_terakhir:
+        type: string
+      id_jadwal:
+        type: string
+      id_peserta:
+        type: string
+      nilai:
+        maximum: 100
+        minimum: 0
+        type: number
+      wkt_mulai:
+        type: string
+      wkt_selesai:
+        type: string
+    required:
+    - id_jadwal
+    - id_peserta
+    - nilai
+    type: object
+  dto.CreatePesertaRequest:
+    properties:
+      id_kelas:
+        type: string
+      nama:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - id_kelas
+    - nama
+    - password
+    - username
+    type: object
+  dto.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  dto.CurrentTokenResponse:
+    properties:
+      periode_detik:
+        type: integer
+      sisa_detik:
+        type: integer
+      token:
+        type: string
+    type: object
+  dto.CurrentUserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+    type: object
+  dto.DefineSectionRequest:
+    properties:
+      sections:
+        items:
+          $ref: '#/definitions/dto.SectionItem'
+        minItems: 1
+        type: array
+    required:
+    - sections
+    type: object
+  dto.ImportPesertaErrorDetail:
+    properties:
+      error:
+        type: string
+      row:
+        type: integer
+    type: object
+  dto.ImportPesertaResponse:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/dto.ImportPesertaErrorDetail'
+        type: array
+      summary:
+        additionalProperties:
+          type: integer
+        type: object
+      timestamp:
+        type: string
+      total_failed:
+        type: integer
+      total_processed:
+        type: integer
+      total_success:
+        type: integer
+    type: object
+  dto.ImportSoalErrorDetail:
+    properties:
+      error:
+        type: string
+      row:
+        type: integer
+    type: object
+  dto.ImportSoalResponse:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/dto.ImportSoalErrorDetail'
+        type: array
+      import_id:
+        type: string
+      summary:
+        additionalProperties:
+          type: integer
+        type: object
+      timestamp:
+        type: string
+      total_failed:
+        type: integer
+      total_processed:
+        type: integer
+      total_success:
+        type: integer
+    type: object
+  dto.JadwalAktifResponse:
     properties:
       acak_opsi:
         type: integer
@@ -189,11 +330,11 @@ definitions:
       wkt_selesai:
         type: string
     type: object
-  backend_internal_modules_jadwal_dto.JadwalListResponse:
+  dto.JadwalKelasListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse'
+          $ref: '#/definitions/dto.JadwalKelasResponse'
         type: array
       page:
         type: integer
@@ -204,121 +345,7 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_jadwal_dto.JadwalResponse:
-    properties:
-      acak_opsi:
-        type: integer
-      acak_soal:
-        type: integer
-      created_at:
-        type: string
-      durasi:
-        type: integer
-      id:
-        type: string
-      id_bank_soal:
-        type: string
-      id_jurusan:
-        items:
-          $ref: '#/definitions/backend_internal_modules_jadwal_dto.JurusanItem'
-        type: array
-      id_kelas:
-        items:
-          $ref: '#/definitions/backend_internal_modules_jadwal_dto.KelasItem'
-        type: array
-      nama_bank_soal:
-        type: string
-      nama_ujian:
-        type: string
-      tingkat:
-        type: string
-      updated_at:
-        type: string
-      wajib_token:
-        type: integer
-      wkt_mulai:
-        type: string
-      wkt_selesai:
-        type: string
-    type: object
-  backend_internal_modules_jadwal_dto.JurusanItem:
-    properties:
-      id:
-        type: string
-      id_jurusan:
-        type: string
-      nama_jurusan:
-        type: string
-    type: object
-  backend_internal_modules_jadwal_dto.KelasItem:
-    properties:
-      id:
-        type: string
-      id_kelas:
-        type: string
-      nama_kelas:
-        type: string
-    type: object
-  backend_internal_modules_jadwal_dto.UpdateJadwalRequest:
-    properties:
-      acak_opsi:
-        type: integer
-      acak_soal:
-        type: integer
-      durasi:
-        minimum: 1
-        type: integer
-      id_bank_soal:
-        type: string
-      id_kelas:
-        items:
-          type: string
-        type: array
-      nama_ujian:
-        type: string
-      tingkat:
-        type: string
-      wajib_token:
-        type: integer
-      wkt_mulai:
-        type: string
-      wkt_selesai:
-        type: string
-    required:
-    - durasi
-    - id_bank_soal
-    - id_kelas
-    - nama_ujian
-    - tingkat
-    - wkt_mulai
-    - wkt_selesai
-    type: object
-  backend_internal_modules_jadwal_kelas_dto.CreateJadwalKelasRequest:
-    properties:
-      id_jadwal:
-        type: string
-      id_kelas:
-        type: string
-    required:
-    - id_jadwal
-    - id_kelas
-    type: object
-  backend_internal_modules_jadwal_kelas_dto.JadwalKelasListResponse:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse'
-        type: array
-      page:
-        type: integer
-      page_size:
-        type: integer
-      total:
-        type: integer
-      total_page:
-        type: integer
-    type: object
-  backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse:
+  dto.JadwalKelasResponse:
     properties:
       created_at:
         type: string
@@ -339,46 +366,11 @@ definitions:
       wkt_selesai:
         type: string
     type: object
-  backend_internal_modules_jadwal_kelas_dto.UpdateJadwalKelasRequest:
-    properties:
-      id_jadwal:
-        type: string
-      id_kelas:
-        type: string
-    required:
-    - id_jadwal
-    - id_kelas
-    type: object
-  backend_internal_modules_jawaban_dto.CreateJawabanRequest:
-    properties:
-      id_nilai:
-        type: string
-      id_peserta:
-        type: string
-      id_soal:
-        type: string
-      jawaban:
-        enum:
-        - A
-        - B
-        - C
-        - D
-        - E
-        type: string
-      no_urut:
-        type: integer
-    required:
-    - id_nilai
-    - id_peserta
-    - id_soal
-    - jawaban
-    - no_urut
-    type: object
-  backend_internal_modules_jawaban_dto.JawabanListResponse:
+  dto.JadwalListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse'
+          $ref: '#/definitions/dto.JadwalResponse'
         type: array
       page:
         type: integer
@@ -389,7 +381,59 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_jawaban_dto.JawabanResponse:
+  dto.JadwalResponse:
+    properties:
+      acak_opsi:
+        type: integer
+      acak_soal:
+        type: integer
+      created_at:
+        type: string
+      durasi:
+        type: integer
+      id:
+        type: string
+      id_bank_soal:
+        type: string
+      id_jurusan:
+        items:
+          $ref: '#/definitions/dto.JurusanItem'
+        type: array
+      id_kelas:
+        items:
+          $ref: '#/definitions/dto.KelasItem'
+        type: array
+      nama_bank_soal:
+        type: string
+      nama_ujian:
+        type: string
+      tingkat:
+        type: string
+      updated_at:
+        type: string
+      wajib_token:
+        type: integer
+      wkt_mulai:
+        type: string
+      wkt_selesai:
+        type: string
+    type: object
+  dto.JawabanListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.JawabanResponse'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  dto.JawabanResponse:
     properties:
       created_at:
         type: string
@@ -438,31 +482,20 @@ definitions:
       updated_at:
         type: string
     type: object
-  backend_internal_modules_jawaban_dto.UpdateJawabanRequest:
+  dto.JurusanItem:
     properties:
-      jawaban:
-        enum:
-        - A
-        - B
-        - C
-        - D
-        - E
+      id:
         type: string
-    required:
-    - jawaban
-    type: object
-  backend_internal_modules_jurusan_dto.CreateJurusanRequest:
-    properties:
+      id_jurusan:
+        type: string
       nama_jurusan:
         type: string
-    required:
-    - nama_jurusan
     type: object
-  backend_internal_modules_jurusan_dto.JurusanListResponse:
+  dto.JurusanListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse'
+          $ref: '#/definitions/dto.JurusanResponse'
         type: array
       page:
         type: integer
@@ -473,7 +506,7 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_jurusan_dto.JurusanResponse:
+  dto.JurusanResponse:
     properties:
       created_at:
         type: string
@@ -484,31 +517,20 @@ definitions:
       updated_at:
         type: string
     type: object
-  backend_internal_modules_jurusan_dto.UpdateJurusanRequest:
+  dto.KelasItem:
     properties:
-      nama_jurusan:
+      id:
         type: string
-    required:
-    - nama_jurusan
-    type: object
-  backend_internal_modules_kelas_dto.CreateKelasRequest:
-    properties:
-      id_jurusan:
+      id_kelas:
         type: string
       nama_kelas:
         type: string
-      tingkat:
-        type: string
-    required:
-    - id_jurusan
-    - nama_kelas
-    - tingkat
     type: object
-  backend_internal_modules_kelas_dto.KelasListResponse:
+  dto.KelasListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_kelas_dto.KelasResponse'
+          $ref: '#/definitions/dto.KelasResponse'
         type: array
       page:
         type: integer
@@ -519,7 +541,7 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_kelas_dto.KelasResponse:
+  dto.KelasResponse:
     properties:
       created_at:
         type: string
@@ -536,37 +558,21 @@ definitions:
       updated_at:
         type: string
     type: object
-  backend_internal_modules_kelas_dto.UpdateKelasRequest:
+  dto.LoginRequest:
     properties:
-      id_jurusan:
+      password:
         type: string
-      nama_kelas:
-        type: string
-      tingkat:
+      username:
         type: string
     required:
-    - id_jurusan
-    - nama_kelas
-    - tingkat
+    - password
+    - username
     type: object
-  backend_internal_modules_mapel_dto.CreateMapelRequest:
-    properties:
-      deskripsi:
-        type: string
-      kode_mapel:
-        maxLength: 20
-        type: string
-      nama_mapel:
-        type: string
-    required:
-    - kode_mapel
-    - nama_mapel
-    type: object
-  backend_internal_modules_mapel_dto.MapelListResponse:
+  dto.MapelListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_mapel_dto.MapelResponse'
+          $ref: '#/definitions/dto.MapelResponse'
         type: array
       page:
         type: integer
@@ -577,7 +583,7 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_mapel_dto.MapelResponse:
+  dto.MapelResponse:
     properties:
       created_at:
         type: string
@@ -592,50 +598,16 @@ definitions:
       updated_at:
         type: string
     type: object
-  backend_internal_modules_mapel_dto.UpdateMapelRequest:
-    properties:
-      deskripsi:
-        type: string
-      kode_mapel:
-        maxLength: 20
-        type: string
-      nama_mapel:
-        type: string
-    required:
-    - kode_mapel
-    - nama_mapel
-    type: object
-  backend_internal_modules_nilai_dto.CreateNilaiRequest:
-    properties:
-      aktivitas_terakhir:
-        type: string
-      id_jadwal:
-        type: string
-      id_peserta:
-        type: string
-      nilai:
-        maximum: 100
-        minimum: 0
-        type: number
-      wkt_mulai:
-        type: string
-      wkt_selesai:
-        type: string
-    required:
-    - id_jadwal
-    - id_peserta
-    - nilai
-    type: object
-  backend_internal_modules_nilai_dto.MulaiUjianRequest:
+  dto.MulaiUjianRequest:
     properties:
       token:
         type: string
     type: object
-  backend_internal_modules_nilai_dto.NilaiListResponse:
+  dto.NilaiListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiResponse'
+          $ref: '#/definitions/dto.NilaiResponse'
         type: array
       page:
         type: integer
@@ -646,7 +618,7 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_nilai_dto.NilaiResponse:
+  dto.NilaiResponse:
     properties:
       aktivitas_terakhir:
         type: string
@@ -675,7 +647,70 @@ definitions:
       wkt_selesai:
         type: string
     type: object
-  backend_internal_modules_nilai_dto.SectionProgressResponse:
+  dto.PesertaListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.PesertaResponse'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  dto.PesertaResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      id_kelas:
+        type: string
+      nama:
+        type: string
+      nama_kelas:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  dto.SectionItem:
+    properties:
+      durasi_menit_minimal:
+        minimum: 0
+        type: integer
+      jml_soal:
+        minimum: 1
+        type: integer
+      nama_section:
+        type: string
+    required:
+    - jml_soal
+    - nama_section
+    type: object
+  dto.SectionProgressResponse:
     properties:
       boleh_lanjut:
         type: boolean
@@ -696,110 +731,7 @@ definitions:
       urutan:
         type: integer
     type: object
-  backend_internal_modules_nilai_dto.UpdateNilaiRequest:
-    properties:
-      aktivitas_terakhir:
-        type: string
-      id_jadwal:
-        type: string
-      id_peserta:
-        type: string
-      nilai:
-        type: number
-      wkt_mulai:
-        type: string
-      wkt_selesai:
-        type: string
-    type: object
-  backend_internal_modules_peserta_dto.CreatePesertaRequest:
-    properties:
-      id_kelas:
-        type: string
-      nama:
-        type: string
-      password:
-        minLength: 6
-        type: string
-      username:
-        type: string
-    required:
-    - id_kelas
-    - nama
-    - password
-    - username
-    type: object
-  backend_internal_modules_peserta_dto.PesertaListResponse:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/backend_internal_modules_peserta_dto.PesertaResponse'
-        type: array
-      page:
-        type: integer
-      page_size:
-        type: integer
-      total:
-        type: integer
-      total_page:
-        type: integer
-    type: object
-  backend_internal_modules_peserta_dto.PesertaResponse:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: string
-      id_kelas:
-        type: string
-      nama:
-        type: string
-      nama_kelas:
-        type: string
-      updated_at:
-        type: string
-      username:
-        type: string
-    type: object
-  backend_internal_modules_peserta_dto.UpdatePesertaRequest:
-    properties:
-      id_kelas:
-        type: string
-      nama:
-        type: string
-      password:
-        type: string
-      username:
-        type: string
-    required:
-    - id_kelas
-    - nama
-    - username
-    type: object
-  backend_internal_modules_section_dto.DefineSectionRequest:
-    properties:
-      sections:
-        items:
-          $ref: '#/definitions/backend_internal_modules_section_dto.SectionItem'
-        minItems: 1
-        type: array
-    required:
-    - sections
-    type: object
-  backend_internal_modules_section_dto.SectionItem:
-    properties:
-      durasi_menit_minimal:
-        minimum: 0
-        type: integer
-      jml_soal:
-        minimum: 1
-        type: integer
-      nama_section:
-        type: string
-    required:
-    - jml_soal
-    - nama_section
-    type: object
-  backend_internal_modules_section_dto.SectionResponse:
+  dto.SectionResponse:
     properties:
       created_at:
         type: string
@@ -822,39 +754,11 @@ definitions:
       urutan:
         type: integer
     type: object
-  backend_internal_modules_soal_dto.ImportSoalErrorDetail:
-    properties:
-      error:
-        type: string
-      row:
-        type: integer
-    type: object
-  backend_internal_modules_soal_dto.ImportSoalResponse:
-    properties:
-      errors:
-        items:
-          $ref: '#/definitions/backend_internal_modules_soal_dto.ImportSoalErrorDetail'
-        type: array
-      import_id:
-        type: string
-      summary:
-        additionalProperties:
-          type: integer
-        type: object
-      timestamp:
-        type: string
-      total_failed:
-        type: integer
-      total_processed:
-        type: integer
-      total_success:
-        type: integer
-    type: object
-  backend_internal_modules_soal_dto.SoalListResponse:
+  dto.SoalListResponse:
     properties:
       data:
         items:
-          $ref: '#/definitions/backend_internal_modules_soal_dto.SoalResponse'
+          $ref: '#/definitions/dto.SoalResponse'
         type: array
       page:
         type: integer
@@ -865,7 +769,7 @@ definitions:
       total_page:
         type: integer
     type: object
-  backend_internal_modules_soal_dto.SoalResponse:
+  dto.SoalResponse:
     properties:
       created_at:
         type: string
@@ -904,30 +808,143 @@ definitions:
       updated_at:
         type: string
     type: object
-  backend_internal_modules_ujian_token_dto.CurrentTokenResponse:
+  dto.UpdateBankSoalRequest:
     properties:
-      periode_detik:
+      deskripsi:
+        type: string
+      id_mapel:
+        type: string
+      jml_soal:
+        minimum: 0
         type: integer
-      sisa_detik:
-        type: integer
-      token:
-        type: string
-    type: object
-  backend_internal_modules_user_dto.CreateUserRequest:
-    properties:
-      email:
-        type: string
-      name:
-        type: string
-      password:
-        minLength: 6
+      nama_bank_soal:
         type: string
     required:
-    - email
-    - name
-    - password
+    - id_mapel
+    - jml_soal
+    - nama_bank_soal
     type: object
-  backend_internal_modules_user_dto.UpdateUserRequest:
+  dto.UpdateJadwalKelasRequest:
+    properties:
+      id_jadwal:
+        type: string
+      id_kelas:
+        type: string
+    required:
+    - id_jadwal
+    - id_kelas
+    type: object
+  dto.UpdateJadwalRequest:
+    properties:
+      acak_opsi:
+        type: integer
+      acak_soal:
+        type: integer
+      durasi:
+        minimum: 1
+        type: integer
+      id_bank_soal:
+        type: string
+      id_kelas:
+        items:
+          type: string
+        type: array
+      nama_ujian:
+        type: string
+      tingkat:
+        type: string
+      wajib_token:
+        type: integer
+      wkt_mulai:
+        type: string
+      wkt_selesai:
+        type: string
+    required:
+    - durasi
+    - id_bank_soal
+    - id_kelas
+    - nama_ujian
+    - tingkat
+    - wkt_mulai
+    - wkt_selesai
+    type: object
+  dto.UpdateJawabanRequest:
+    properties:
+      jawaban:
+        enum:
+        - A
+        - B
+        - C
+        - D
+        - E
+        type: string
+    required:
+    - jawaban
+    type: object
+  dto.UpdateJurusanRequest:
+    properties:
+      nama_jurusan:
+        type: string
+    required:
+    - nama_jurusan
+    type: object
+  dto.UpdateKelasRequest:
+    properties:
+      id_jurusan:
+        type: string
+      nama_kelas:
+        type: string
+      tingkat:
+        type: string
+    required:
+    - id_jurusan
+    - nama_kelas
+    - tingkat
+    type: object
+  dto.UpdateMapelRequest:
+    properties:
+      deskripsi:
+        type: string
+      kode_mapel:
+        maxLength: 20
+        type: string
+      nama_mapel:
+        type: string
+    required:
+    - kode_mapel
+    - nama_mapel
+    type: object
+  dto.UpdateNilaiRequest:
+    properties:
+      aktivitas_terakhir:
+        type: string
+      id_jadwal:
+        type: string
+      id_peserta:
+        type: string
+      nilai:
+        type: number
+      wkt_mulai:
+        type: string
+      wkt_selesai:
+        type: string
+    type: object
+  dto.UpdatePesertaRequest:
+    properties:
+      id_kelas:
+        type: string
+      nama:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - id_kelas
+    - nama
+    - username
+    type: object
+  dto.UpdateUserRequest:
     properties:
       email:
         type: string
@@ -936,7 +953,7 @@ definitions:
       role:
         type: string
     type: object
-  backend_internal_modules_user_dto.UserResponse:
+  dto.UserResponse:
     properties:
       created_at:
         type: string
@@ -952,6 +969,15 @@ definitions:
         type: string
       updated_at:
         type: string
+    type: object
+  helpers.Response:
+    properties:
+      data: {}
+      errors: {}
+      message:
+        type: string
+      success:
+        type: boolean
     type: object
 host: localhost:3000
 info:
@@ -975,7 +1001,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_auth_dto.LoginRequest'
+          $ref: '#/definitions/dto.LoginRequest'
       produces:
       - application/json
       responses:
@@ -983,15 +1009,15 @@ paths:
           description: Login successfully, berisi JWT token
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_auth_dto.AuthResponse'
+                  $ref: '#/definitions/dto.AuthResponse'
               type: object
         "401":
           description: Username tidak ditemukan atau password salah
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Login
       tags:
       - Auth
@@ -1006,19 +1032,19 @@ paths:
           description: Get current user successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_auth_dto.CurrentUserResponse'
+                  $ref: '#/definitions/dto.CurrentUserResponse'
               type: object
         "401":
           description: Token tidak valid
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "404":
           description: User/peserta tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Info user yang sedang login
@@ -1036,7 +1062,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_auth_dto.RegisterRequest'
+          $ref: '#/definitions/dto.RegisterRequest'
       produces:
       - application/json
       responses:
@@ -1044,15 +1070,15 @@ paths:
           description: Register successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_auth_dto.AuthResponse'
+                  $ref: '#/definitions/dto.AuthResponse'
               type: object
         "400":
           description: Validasi gagal atau email/username sudah terdaftar
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Register user baru
       tags:
       - Auth
@@ -1076,15 +1102,15 @@ paths:
           description: Get all bank soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_bank_soal_dto.BankSoalListResponse'
+                  $ref: '#/definitions/dto.BankSoalListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List bank soal
       tags:
       - BankSoal
@@ -1099,7 +1125,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_bank_soal_dto.CreateBankSoalRequest'
+          $ref: '#/definitions/dto.CreateBankSoalRequest'
       produces:
       - application/json
       responses:
@@ -1107,15 +1133,15 @@ paths:
           description: Create bank soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse'
+                  $ref: '#/definitions/dto.BankSoalResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat bank soal baru
@@ -1135,11 +1161,11 @@ paths:
         "200":
           description: Delete bank soal successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus bank soal (soft delete)
@@ -1159,15 +1185,15 @@ paths:
           description: Get bank soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse'
+                  $ref: '#/definitions/dto.BankSoalResponse'
               type: object
         "404":
           description: Bank soal tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail bank soal
       tags:
       - BankSoal
@@ -1185,7 +1211,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_bank_soal_dto.UpdateBankSoalRequest'
+          $ref: '#/definitions/dto.UpdateBankSoalRequest'
       produces:
       - application/json
       responses:
@@ -1193,15 +1219,15 @@ paths:
           description: Update bank soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse'
+                  $ref: '#/definitions/dto.BankSoalResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update bank soal
@@ -1221,11 +1247,11 @@ paths:
         "200":
           description: Restore bank soal successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore bank soal yang sudah dihapus
@@ -1256,15 +1282,15 @@ paths:
           description: Get bank soal by mapel successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_bank_soal_dto.BankSoalListResponse'
+                  $ref: '#/definitions/dto.BankSoalListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List bank soal berdasarkan mapel
       tags:
       - BankSoal
@@ -1288,15 +1314,15 @@ paths:
           description: Get all jadwal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_dto.JadwalListResponse'
+                  $ref: '#/definitions/dto.JadwalListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List jadwal ujian
       tags:
       - Jadwal
@@ -1314,7 +1340,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jadwal_dto.CreateJadwalRequest'
+          $ref: '#/definitions/dto.CreateJadwalRequest'
       produces:
       - application/json
       responses:
@@ -1322,15 +1348,15 @@ paths:
           description: Create jadwal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse'
+                  $ref: '#/definitions/dto.JadwalResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat jadwal ujian baru
@@ -1364,15 +1390,15 @@ paths:
           description: Get all jadwal kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasListResponse'
+                  $ref: '#/definitions/dto.JadwalKelasListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List assignment jadwal-kelas
       tags:
       - JadwalKelas
@@ -1386,7 +1412,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jadwal_kelas_dto.CreateJadwalKelasRequest'
+          $ref: '#/definitions/dto.CreateJadwalKelasRequest'
       produces:
       - application/json
       responses:
@@ -1394,15 +1420,15 @@ paths:
           description: Create jadwal kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse'
+                  $ref: '#/definitions/dto.JadwalKelasResponse'
               type: object
         "400":
           description: Validasi gagal atau kelas sudah terdaftar di jadwal ini
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Assign kelas ke jadwal ujian
@@ -1422,11 +1448,11 @@ paths:
         "200":
           description: Delete jadwal kelas successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus assignment jadwal-kelas
@@ -1446,15 +1472,15 @@ paths:
           description: Get jadwal kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse'
+                  $ref: '#/definitions/dto.JadwalKelasResponse'
               type: object
         "404":
           description: Data tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail assignment jadwal-kelas
       tags:
       - JadwalKelas
@@ -1472,7 +1498,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jadwal_kelas_dto.UpdateJadwalKelasRequest'
+          $ref: '#/definitions/dto.UpdateJadwalKelasRequest'
       produces:
       - application/json
       responses:
@@ -1480,15 +1506,15 @@ paths:
           description: Update jadwal kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse'
+                  $ref: '#/definitions/dto.JadwalKelasResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update assignment jadwal-kelas
@@ -1508,11 +1534,11 @@ paths:
         "200":
           description: Delete jadwal successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus jadwal (soft delete)
@@ -1532,15 +1558,15 @@ paths:
           description: Get jadwal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse'
+                  $ref: '#/definitions/dto.JadwalResponse'
               type: object
         "404":
           description: Jadwal tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail jadwal
       tags:
       - Jadwal
@@ -1561,7 +1587,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jadwal_dto.UpdateJadwalRequest'
+          $ref: '#/definitions/dto.UpdateJadwalRequest'
       produces:
       - application/json
       responses:
@@ -1569,15 +1595,15 @@ paths:
           description: Update jadwal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse'
+                  $ref: '#/definitions/dto.JadwalResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update jadwal
@@ -1597,11 +1623,11 @@ paths:
         "200":
           description: Restore jadwal successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore jadwal yang sudah dihapus
@@ -1619,17 +1645,17 @@ paths:
           description: Get jadwal aktif hari ini successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/backend_internal_modules_jadwal_dto.JadwalAktifResponse'
+                    $ref: '#/definitions/dto.JadwalAktifResponse'
                   type: array
               type: object
         "401":
           description: Token tidak valid
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Jadwal ujian aktif hari ini untuk peserta yang login
@@ -1660,15 +1686,15 @@ paths:
           description: Get jadwal by bank soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jadwal_dto.JadwalListResponse'
+                  $ref: '#/definitions/dto.JadwalListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List jadwal berdasarkan bank soal
       tags:
       - Jadwal
@@ -1704,15 +1730,15 @@ paths:
           description: Get all jawaban successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanListResponse'
+                  $ref: '#/definitions/dto.JawabanListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List semua jawaban
       tags:
       - Jawaban
@@ -1728,7 +1754,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jawaban_dto.CreateJawabanRequest'
+          $ref: '#/definitions/dto.CreateJawabanRequest'
       produces:
       - application/json
       responses:
@@ -1736,15 +1762,15 @@ paths:
           description: Create jawaban successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse'
+                  $ref: '#/definitions/dto.JawabanResponse'
               type: object
         "400":
           description: Validasi gagal atau data sudah ada
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat baris jawaban secara manual
@@ -1764,11 +1790,11 @@ paths:
         "200":
           description: Delete jawaban successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus jawaban (soft delete)
@@ -1788,15 +1814,15 @@ paths:
           description: Get jawaban successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse'
+                  $ref: '#/definitions/dto.JawabanResponse'
               type: object
         "404":
           description: Jawaban tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail satu jawaban
       tags:
       - Jawaban
@@ -1817,7 +1843,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jawaban_dto.UpdateJawabanRequest'
+          $ref: '#/definitions/dto.UpdateJawabanRequest'
       produces:
       - application/json
       responses:
@@ -1825,15 +1851,15 @@ paths:
           description: Update jawaban successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse'
+                  $ref: '#/definitions/dto.JawabanResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Submit/update jawaban satu soal
@@ -1853,11 +1879,11 @@ paths:
         "200":
           description: Restore jawaban successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore jawaban yang sudah dihapus
@@ -1885,17 +1911,17 @@ paths:
           description: Get jawaban by nilai successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse'
+                    $ref: '#/definitions/dto.JawabanResponse'
                   type: array
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List semua soal & jawaban dalam satu sesi ujian
       tags:
       - Jawaban
@@ -1925,21 +1951,21 @@ paths:
           description: Get jawaban by nilai dan section successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse'
+                    $ref: '#/definitions/dto.JawabanResponse'
                   type: array
               type: object
         "400":
           description: Section/nilai tidak ditemukan, atau tidak cocok dengan jadwalnya
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "403":
           description: Section ini belum terbuka (melebihi frontier sesi ini)
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List soal & jawaban dalam satu section
       tags:
       - Jawaban
@@ -1968,15 +1994,15 @@ paths:
           description: Get jawaban by peserta successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jawaban_dto.JawabanListResponse'
+                  $ref: '#/definitions/dto.JawabanListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List seluruh jawaban satu peserta (lintas sesi)
       tags:
       - Jawaban
@@ -2000,15 +2026,15 @@ paths:
           description: Get all jurusan successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jurusan_dto.JurusanListResponse'
+                  $ref: '#/definitions/dto.JurusanListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List jurusan
       tags:
       - Jurusan
@@ -2021,7 +2047,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jurusan_dto.CreateJurusanRequest'
+          $ref: '#/definitions/dto.CreateJurusanRequest'
       produces:
       - application/json
       responses:
@@ -2029,15 +2055,15 @@ paths:
           description: Create jurusan successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse'
+                  $ref: '#/definitions/dto.JurusanResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat jurusan baru
@@ -2057,11 +2083,11 @@ paths:
         "200":
           description: Delete jurusan successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus jurusan (soft delete)
@@ -2081,15 +2107,15 @@ paths:
           description: Get jurusan successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse'
+                  $ref: '#/definitions/dto.JurusanResponse'
               type: object
         "404":
           description: Jurusan tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail jurusan
       tags:
       - Jurusan
@@ -2107,7 +2133,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_jurusan_dto.UpdateJurusanRequest'
+          $ref: '#/definitions/dto.UpdateJurusanRequest'
       produces:
       - application/json
       responses:
@@ -2115,15 +2141,15 @@ paths:
           description: Update jurusan successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse'
+                  $ref: '#/definitions/dto.JurusanResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update jurusan
@@ -2143,11 +2169,11 @@ paths:
         "200":
           description: Restore jurusan successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore jurusan yang sudah dihapus
@@ -2181,15 +2207,15 @@ paths:
           description: Get all kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_kelas_dto.KelasListResponse'
+                  $ref: '#/definitions/dto.KelasListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List kelas
       tags:
       - Kelas
@@ -2202,7 +2228,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_kelas_dto.CreateKelasRequest'
+          $ref: '#/definitions/dto.CreateKelasRequest'
       produces:
       - application/json
       responses:
@@ -2210,15 +2236,15 @@ paths:
           description: Create kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_kelas_dto.KelasResponse'
+                  $ref: '#/definitions/dto.KelasResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat kelas baru
@@ -2238,11 +2264,11 @@ paths:
         "200":
           description: Delete kelas successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus kelas (soft delete)
@@ -2262,15 +2288,15 @@ paths:
           description: Get kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_kelas_dto.KelasResponse'
+                  $ref: '#/definitions/dto.KelasResponse'
               type: object
         "404":
           description: Kelas tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail kelas
       tags:
       - Kelas
@@ -2288,7 +2314,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_kelas_dto.UpdateKelasRequest'
+          $ref: '#/definitions/dto.UpdateKelasRequest'
       produces:
       - application/json
       responses:
@@ -2296,15 +2322,15 @@ paths:
           description: Update kelas successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_kelas_dto.KelasResponse'
+                  $ref: '#/definitions/dto.KelasResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update kelas
@@ -2324,11 +2350,11 @@ paths:
         "200":
           description: Restore kelas successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore kelas yang sudah dihapus
@@ -2354,15 +2380,15 @@ paths:
           description: Get all mapel successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_mapel_dto.MapelListResponse'
+                  $ref: '#/definitions/dto.MapelListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List mata pelajaran
       tags:
       - Mapel
@@ -2375,7 +2401,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_mapel_dto.CreateMapelRequest'
+          $ref: '#/definitions/dto.CreateMapelRequest'
       produces:
       - application/json
       responses:
@@ -2383,15 +2409,15 @@ paths:
           description: Create mapel successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_mapel_dto.MapelResponse'
+                  $ref: '#/definitions/dto.MapelResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat mata pelajaran baru
@@ -2411,11 +2437,11 @@ paths:
         "200":
           description: Delete mapel successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus mata pelajaran (soft delete)
@@ -2435,15 +2461,15 @@ paths:
           description: Get mapel successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_mapel_dto.MapelResponse'
+                  $ref: '#/definitions/dto.MapelResponse'
               type: object
         "404":
           description: Mapel tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail mata pelajaran
       tags:
       - Mapel
@@ -2461,7 +2487,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_mapel_dto.UpdateMapelRequest'
+          $ref: '#/definitions/dto.UpdateMapelRequest'
       produces:
       - application/json
       responses:
@@ -2469,15 +2495,15 @@ paths:
           description: Update mapel successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_mapel_dto.MapelResponse'
+                  $ref: '#/definitions/dto.MapelResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update mata pelajaran
@@ -2497,11 +2523,11 @@ paths:
         "200":
           description: Restore mapel successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore mata pelajaran yang sudah dihapus
@@ -2535,15 +2561,15 @@ paths:
           description: Get all nilai successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiListResponse'
+                  $ref: '#/definitions/dto.NilaiListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List semua data nilai/sesi ujian
       tags:
       - Nilai
@@ -2558,7 +2584,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_nilai_dto.CreateNilaiRequest'
+          $ref: '#/definitions/dto.CreateNilaiRequest'
       produces:
       - application/json
       responses:
@@ -2566,15 +2592,15 @@ paths:
           description: Create nilai successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiResponse'
+                  $ref: '#/definitions/dto.NilaiResponse'
               type: object
         "400":
           description: Validasi gagal atau data sudah ada
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat data nilai secara manual
@@ -2594,11 +2620,11 @@ paths:
         "200":
           description: Delete nilai successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus data nilai (soft delete)
@@ -2620,15 +2646,15 @@ paths:
           description: Get nilai successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiResponse'
+                  $ref: '#/definitions/dto.NilaiResponse'
               type: object
         "404":
           description: Nilai tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail satu sesi nilai/ujian
       tags:
       - Nilai
@@ -2648,7 +2674,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_nilai_dto.UpdateNilaiRequest'
+          $ref: '#/definitions/dto.UpdateNilaiRequest'
       produces:
       - application/json
       responses:
@@ -2656,15 +2682,15 @@ paths:
           description: Update nilai successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiResponse'
+                  $ref: '#/definitions/dto.NilaiResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update data nilai / selesaikan ujian
@@ -2693,20 +2719,20 @@ paths:
             (lihat boleh_lanjut & sisa_detik)
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.SectionProgressResponse'
+                  $ref: '#/definitions/dto.SectionProgressResponse'
               type: object
         "400":
           description: Ujian tidak memakai section, sudah selesai, atau sudah di section
             terakhir
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "401":
           description: Token tidak valid atau bukan pemilik sesi ini
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Maju ke section berikutnya
@@ -2726,11 +2752,11 @@ paths:
         "200":
           description: Restore nilai successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore data nilai yang sudah dihapus
@@ -2754,19 +2780,19 @@ paths:
           description: Get section status successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.SectionProgressResponse'
+                  $ref: '#/definitions/dto.SectionProgressResponse'
               type: object
         "400":
           description: Ujian tidak memakai section
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "401":
           description: Token tidak valid atau bukan pemilik sesi ini
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Cek status section aktif (read-only, untuk polling countdown)
@@ -2797,7 +2823,7 @@ paths:
           description: Jadwal tidak ditemukan, belum memiliki soal, atau tidak ada
             kelas terdaftar
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Export analisis jawaban per soal ke Excel (per kelas, dalam ZIP)
@@ -2823,7 +2849,7 @@ paths:
         "400":
           description: Jadwal tidak ditemukan atau tidak ada kelas terdaftar
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Export nilai satu jadwal ke Excel (per kelas, dalam ZIP)
@@ -2854,15 +2880,15 @@ paths:
           description: Get nilai by jadwal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiListResponse'
+                  $ref: '#/definitions/dto.NilaiListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List nilai semua peserta untuk satu jadwal
       tags:
       - Nilai
@@ -2887,7 +2913,7 @@ paths:
         in: body
         name: request
         schema:
-          $ref: '#/definitions/backend_internal_modules_nilai_dto.MulaiUjianRequest'
+          $ref: '#/definitions/dto.MulaiUjianRequest'
       produces:
       - application/json
       responses:
@@ -2895,29 +2921,29 @@ paths:
           description: Lanjutkan ujian successfully (resume sesi yang sudah ada)
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiResponse'
+                  $ref: '#/definitions/dto.NilaiResponse'
               type: object
         "201":
           description: Mulai ujian successfully (sesi baru)
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiResponse'
+                  $ref: '#/definitions/dto.NilaiResponse'
               type: object
         "400":
           description: Jadwal tidak ditemukan, ujian sudah pernah selesai dikerjakan,
             atau token ujian tidak valid/kedaluwarsa
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "401":
           description: Token JWT tidak valid
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Mulai (atau lanjutkan) pengerjaan ujian
@@ -2948,15 +2974,15 @@ paths:
           description: Get nilai by peserta successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_nilai_dto.NilaiListResponse'
+                  $ref: '#/definitions/dto.NilaiListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List riwayat nilai satu peserta
       tags:
       - Nilai
@@ -2984,15 +3010,15 @@ paths:
           description: Get all peserta successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_peserta_dto.PesertaListResponse'
+                  $ref: '#/definitions/dto.PesertaListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List peserta
       tags:
       - Peserta
@@ -3005,7 +3031,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_peserta_dto.CreatePesertaRequest'
+          $ref: '#/definitions/dto.CreatePesertaRequest'
       produces:
       - application/json
       responses:
@@ -3013,15 +3039,15 @@ paths:
           description: Create peserta successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_peserta_dto.PesertaResponse'
+                  $ref: '#/definitions/dto.PesertaResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat peserta (siswa) baru
@@ -3041,11 +3067,11 @@ paths:
         "200":
           description: Delete peserta successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus peserta (soft delete)
@@ -3065,15 +3091,15 @@ paths:
           description: Get peserta successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_peserta_dto.PesertaResponse'
+                  $ref: '#/definitions/dto.PesertaResponse'
               type: object
         "404":
           description: Peserta tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail peserta
       tags:
       - Peserta
@@ -3091,7 +3117,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_peserta_dto.UpdatePesertaRequest'
+          $ref: '#/definitions/dto.UpdatePesertaRequest'
       produces:
       - application/json
       responses:
@@ -3099,15 +3125,15 @@ paths:
           description: Update peserta successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_peserta_dto.PesertaResponse'
+                  $ref: '#/definitions/dto.PesertaResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update peserta
@@ -3127,14 +3153,50 @@ paths:
         "200":
           description: Restore peserta successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore peserta yang sudah dihapus
+      tags:
+      - Peserta
+  /peserta/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 'Upload file .xls/.xlsx (maks 10MB) berisi banyak peserta sekaligus.
+        Kolom: nama, username, password, kelas (diisi nama kelas). Jika ada baris
+        dengan nama kelas yang tidak ditemukan di data master Kelas, seluruh import
+        dibatalkan (tidak ada data yang tersimpan).'
+      parameters:
+      - description: File Excel (.xls/.xlsx)
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Import peserta berhasil
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.ImportPesertaResponse'
+              type: object
+        "400":
+          description: File tidak valid, kolom kelas tidak ditemukan, atau import
+            gagal
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Import peserta dari file Excel
       tags:
       - Peserta
   /peserta/kartu-ujian/{id_kelas}:
@@ -3142,7 +3204,7 @@ paths:
       description: Menghasilkan PDF berisi kartu untuk setiap peserta di kelas tersebut,
         ditata grid 2x5 kartu per halaman A4 dengan garis putus-putus sebagai panduan
         gunting. Kartu ini bersifat global (tidak terikat jadwal/ujian tertentu) —
-        hanya menampilkan nama, username, dan kelas, tanpa password.
+        menampilkan nama, username, password, dan kelas.
       parameters:
       - description: ID kelas (uuid)
         in: path
@@ -3159,10 +3221,28 @@ paths:
         "400":
           description: Kelas tidak ditemukan atau belum memiliki peserta
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Download kartu peserta ujian satu kelas (PDF, siap cetak & gunting)
+      tags:
+      - Peserta
+  /peserta/template:
+    get:
+      description: Menghasilkan file .xlsx berisi header + 1 baris contoh (nama, username,
+        password) sesuai urutan kolom yang dibaca endpoint import (POST /peserta/import).
+      produces:
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      responses:
+        "200":
+          description: File template_import_peserta.xlsx
+          schema:
+            type: file
+        "500":
+          description: Gagal membuat file template
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Download template Excel untuk import peserta
       tags:
       - Peserta
   /section/{id}:
@@ -3182,11 +3262,11 @@ paths:
         "200":
           description: Delete section successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus satu section (soft delete)
@@ -3206,15 +3286,15 @@ paths:
           description: Get section successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_section_dto.SectionResponse'
+                  $ref: '#/definitions/dto.SectionResponse'
               type: object
         "404":
           description: Section tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail satu section
       tags:
       - Section
@@ -3232,11 +3312,11 @@ paths:
         "200":
           description: Restore section successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore section yang sudah dihapus
@@ -3260,17 +3340,17 @@ paths:
           description: Get section by jadwal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/backend_internal_modules_section_dto.SectionResponse'
+                    $ref: '#/definitions/dto.SectionResponse'
                   type: array
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List section satu jadwal
       tags:
       - Section
@@ -3297,7 +3377,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_section_dto.DefineSectionRequest'
+          $ref: '#/definitions/dto.DefineSectionRequest'
       produces:
       - application/json
       responses:
@@ -3305,18 +3385,18 @@ paths:
           description: Define section successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/backend_internal_modules_section_dto.SectionResponse'
+                    $ref: '#/definitions/dto.SectionResponse'
                   type: array
               type: object
         "400":
           description: Validasi gagal, jadwal tidak ditemukan, atau total jml_soal
             tidak sama dengan jumlah soal jadwal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Definisikan/ubah pembagian section untuk satu jadwal
@@ -3342,15 +3422,15 @@ paths:
           description: Get all soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_soal_dto.SoalListResponse'
+                  $ref: '#/definitions/dto.SoalListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List semua soal
       tags:
       - Soal
@@ -3429,15 +3509,15 @@ paths:
           description: Create soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_soal_dto.SoalResponse'
+                  $ref: '#/definitions/dto.SoalResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat soal baru
@@ -3457,11 +3537,11 @@ paths:
         "200":
           description: Delete soal successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal menghapus
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus soal (soft delete)
@@ -3484,15 +3564,15 @@ paths:
           description: Get soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_soal_dto.SoalResponse'
+                  $ref: '#/definitions/dto.SoalResponse'
               type: object
         "404":
           description: Soal tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail soal
       tags:
       - Soal
@@ -3571,15 +3651,15 @@ paths:
           description: Update soal successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_soal_dto.SoalResponse'
+                  $ref: '#/definitions/dto.SoalResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update soal
@@ -3599,11 +3679,11 @@ paths:
         "200":
           description: Restore soal successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "400":
           description: Gagal restore
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Restore soal yang sudah dihapus
@@ -3634,15 +3714,15 @@ paths:
           description: Get soal by bank successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_soal_dto.SoalListResponse'
+                  $ref: '#/definitions/dto.SoalListResponse'
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List soal dalam satu bank soal
       tags:
       - Soal
@@ -3670,15 +3750,15 @@ paths:
           description: Import soal berhasil
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_soal_dto.ImportSoalResponse'
+                  $ref: '#/definitions/dto.ImportSoalResponse'
               type: object
         "400":
           description: File tidak valid atau import gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Import soal dari file Excel
@@ -3700,7 +3780,7 @@ paths:
         "500":
           description: Gagal membuat file template
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Download template Excel untuk import soal
       tags:
       - Soal
@@ -3718,10 +3798,10 @@ paths:
           description: Get current token successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_ujian_token_dto.CurrentTokenResponse'
+                  $ref: '#/definitions/dto.CurrentTokenResponse'
               type: object
       security:
       - BearerAuth: []
@@ -3738,17 +3818,17 @@ paths:
           description: Get all users successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/backend_internal_modules_user_dto.UserResponse'
+                    $ref: '#/definitions/dto.UserResponse'
                   type: array
               type: object
         "500":
           description: Gagal mengambil data
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: List semua user
       tags:
       - User
@@ -3762,7 +3842,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_user_dto.CreateUserRequest'
+          $ref: '#/definitions/dto.CreateUserRequest'
       produces:
       - application/json
       responses:
@@ -3770,15 +3850,15 @@ paths:
           description: User created successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_user_dto.UserResponse'
+                  $ref: '#/definitions/dto.UserResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Buat user baru
@@ -3799,15 +3879,15 @@ paths:
         "200":
           description: User deleted successfully
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "404":
           description: User tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "500":
           description: Gagal menghapus user
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Hapus user
@@ -3828,15 +3908,15 @@ paths:
           description: Get user successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_user_dto.UserResponse'
+                  $ref: '#/definitions/dto.UserResponse'
               type: object
         "404":
           description: User tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       summary: Detail user
       tags:
       - User
@@ -3855,7 +3935,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/backend_internal_modules_user_dto.UpdateUserRequest'
+          $ref: '#/definitions/dto.UpdateUserRequest'
       produces:
       - application/json
       responses:
@@ -3863,19 +3943,19 @@ paths:
           description: User updated successfully
           schema:
             allOf:
-            - $ref: '#/definitions/backend_internal_helpers.Response'
+            - $ref: '#/definitions/helpers.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/backend_internal_modules_user_dto.UserResponse'
+                  $ref: '#/definitions/dto.UserResponse'
               type: object
         "400":
           description: Validasi gagal
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
         "404":
           description: User tidak ditemukan
           schema:
-            $ref: '#/definitions/backend_internal_helpers.Response'
+            $ref: '#/definitions/helpers.Response'
       security:
       - BearerAuth: []
       summary: Update user

@@ -1,11 +1,7 @@
 package service
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
-	"io"
-	"net/http"
 	"time"
 
 	"backend/configs"
@@ -102,12 +98,7 @@ func (s *authService) Login(req *dto.LoginRequest) (*dto.AuthResponse, error) {
 		return nil, err
 	}
 
-	isValid, err := s.validateWithExternalAPI(req.Username, req.Password)
-	if err != nil {
-		return nil, err
-	}
-
-	if !isValid {
+	if peserta.Password != req.Password {
 		return nil, errors.New("invalid password")
 	}
 
@@ -131,52 +122,6 @@ func (s *authService) Login(req *dto.LoginRequest) (*dto.AuthResponse, error) {
 		Token: token,
 		Role:  tempUser.Role,
 	}, nil
-}
-
-func (s *authService) validateWithExternalAPI(username, password string) (bool, error) {
-	apiURL := "https://apps.smkn2semarang.sch.id/api/login"
-
-	payload := map[string]string{
-		"username": username,
-		"password": password,
-	}
-
-	jsonPayload, err := json.Marshal(payload)
-	if err != nil {
-		return false, err
-	}
-
-	resp, err := http.Post(apiURL, "application/json", bytes.NewBuffer(jsonPayload))
-	if err != nil {
-		return false, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return false, nil
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return false, err
-	}
-
-	var result map[string]interface{}
-	if err := json.Unmarshal(body, &result); err != nil {
-		return false, err
-	}
-
-	message, ok := result["message"].(string)
-	if !ok || message != "Login successful" {
-		return false, nil
-	}
-
-	user, ok := result["user"].(map[string]interface{})
-	if !ok || user == nil {
-		return false, nil
-	}
-
-	return true, nil
 }
 
 func (s *authService) GenerateToken(user *model.User) (string, error) {

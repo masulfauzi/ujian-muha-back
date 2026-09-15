@@ -37,7 +37,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_auth_dto.LoginRequest"
+                            "$ref": "#/definitions/dto.LoginRequest"
                         }
                     }
                 ],
@@ -47,13 +47,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_auth_dto.AuthResponse"
+                                            "$ref": "#/definitions/dto.AuthResponse"
                                         }
                                     }
                                 }
@@ -63,7 +63,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Username tidak ditemukan atau password salah",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -90,13 +90,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_auth_dto.CurrentUserResponse"
+                                            "$ref": "#/definitions/dto.CurrentUserResponse"
                                         }
                                     }
                                 }
@@ -106,13 +106,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Token tidak valid",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "404": {
                         "description": "User/peserta tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -138,7 +138,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_auth_dto.RegisterRequest"
+                            "$ref": "#/definitions/dto.RegisterRequest"
                         }
                     }
                 ],
@@ -148,13 +148,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_auth_dto.AuthResponse"
+                                            "$ref": "#/definitions/dto.AuthResponse"
                                         }
                                     }
                                 }
@@ -164,7 +164,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal atau email/username sudah terdaftar",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -201,13 +201,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.BankSoalListResponse"
+                                            "$ref": "#/definitions/dto.BankSoalListResponse"
                                         }
                                     }
                                 }
@@ -217,7 +217,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -246,7 +246,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.CreateBankSoalRequest"
+                            "$ref": "#/definitions/dto.CreateBankSoalRequest"
                         }
                     }
                 ],
@@ -256,13 +256,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse"
+                                            "$ref": "#/definitions/dto.BankSoalResponse"
                                         }
                                     }
                                 }
@@ -272,7 +272,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -316,13 +316,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.BankSoalListResponse"
+                                            "$ref": "#/definitions/dto.BankSoalListResponse"
                                         }
                                     }
                                 }
@@ -332,7 +332,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -362,13 +362,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse"
+                                            "$ref": "#/definitions/dto.BankSoalResponse"
                                         }
                                     }
                                 }
@@ -378,7 +378,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Bank soal tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -413,7 +413,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.UpdateBankSoalRequest"
+                            "$ref": "#/definitions/dto.UpdateBankSoalRequest"
                         }
                     }
                 ],
@@ -423,13 +423,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse"
+                                            "$ref": "#/definitions/dto.BankSoalResponse"
                                         }
                                     }
                                 }
@@ -439,7 +439,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -470,13 +470,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete bank soal successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -509,13 +509,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore bank soal successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -552,13 +552,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JadwalListResponse"
+                                            "$ref": "#/definitions/dto.JadwalListResponse"
                                         }
                                     }
                                 }
@@ -568,7 +568,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -597,7 +597,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jadwal_dto.CreateJadwalRequest"
+                            "$ref": "#/definitions/dto.CreateJadwalRequest"
                         }
                     }
                 ],
@@ -607,13 +607,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse"
+                                            "$ref": "#/definitions/dto.JadwalResponse"
                                         }
                                     }
                                 }
@@ -623,7 +623,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -672,13 +672,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasListResponse"
+                                            "$ref": "#/definitions/dto.JadwalKelasListResponse"
                                         }
                                     }
                                 }
@@ -688,7 +688,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -717,7 +717,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jadwal_kelas_dto.CreateJadwalKelasRequest"
+                            "$ref": "#/definitions/dto.CreateJadwalKelasRequest"
                         }
                     }
                 ],
@@ -727,13 +727,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse"
+                                            "$ref": "#/definitions/dto.JadwalKelasResponse"
                                         }
                                     }
                                 }
@@ -743,7 +743,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal atau kelas sudah terdaftar di jadwal ini",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -773,13 +773,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse"
+                                            "$ref": "#/definitions/dto.JadwalKelasResponse"
                                         }
                                     }
                                 }
@@ -789,7 +789,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Data tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -824,7 +824,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jadwal_kelas_dto.UpdateJadwalKelasRequest"
+                            "$ref": "#/definitions/dto.UpdateJadwalKelasRequest"
                         }
                     }
                 ],
@@ -834,13 +834,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse"
+                                            "$ref": "#/definitions/dto.JadwalKelasResponse"
                                         }
                                     }
                                 }
@@ -850,7 +850,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -881,13 +881,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete jadwal kelas successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -914,7 +914,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
@@ -922,7 +922,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JadwalAktifResponse"
+                                                "$ref": "#/definitions/dto.JadwalAktifResponse"
                                             }
                                         }
                                     }
@@ -933,7 +933,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Token tidak valid",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -977,13 +977,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JadwalListResponse"
+                                            "$ref": "#/definitions/dto.JadwalListResponse"
                                         }
                                     }
                                 }
@@ -993,7 +993,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1023,13 +1023,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse"
+                                            "$ref": "#/definitions/dto.JadwalResponse"
                                         }
                                     }
                                 }
@@ -1039,7 +1039,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Jadwal tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1075,7 +1075,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jadwal_dto.UpdateJadwalRequest"
+                            "$ref": "#/definitions/dto.UpdateJadwalRequest"
                         }
                     }
                 ],
@@ -1085,13 +1085,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse"
+                                            "$ref": "#/definitions/dto.JadwalResponse"
                                         }
                                     }
                                 }
@@ -1101,7 +1101,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1132,13 +1132,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete jadwal successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1171,13 +1171,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore jadwal successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1232,13 +1232,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanListResponse"
+                                            "$ref": "#/definitions/dto.JawabanListResponse"
                                         }
                                     }
                                 }
@@ -1248,7 +1248,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1277,7 +1277,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jawaban_dto.CreateJawabanRequest"
+                            "$ref": "#/definitions/dto.CreateJawabanRequest"
                         }
                     }
                 ],
@@ -1287,13 +1287,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse"
+                                            "$ref": "#/definitions/dto.JawabanResponse"
                                         }
                                     }
                                 }
@@ -1303,7 +1303,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal atau data sudah ada",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1334,7 +1334,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
@@ -1342,7 +1342,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse"
+                                                "$ref": "#/definitions/dto.JawabanResponse"
                                             }
                                         }
                                     }
@@ -1353,7 +1353,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1391,7 +1391,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
@@ -1399,7 +1399,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse"
+                                                "$ref": "#/definitions/dto.JawabanResponse"
                                             }
                                         }
                                     }
@@ -1410,13 +1410,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Section/nilai tidak ditemukan, atau tidak cocok dengan jadwalnya",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "403": {
                         "description": "Section ini belum terbuka (melebihi frontier sesi ini)",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1460,13 +1460,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanListResponse"
+                                            "$ref": "#/definitions/dto.JawabanListResponse"
                                         }
                                     }
                                 }
@@ -1476,7 +1476,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1506,13 +1506,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse"
+                                            "$ref": "#/definitions/dto.JawabanResponse"
                                         }
                                     }
                                 }
@@ -1522,7 +1522,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Jawaban tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1558,7 +1558,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jawaban_dto.UpdateJawabanRequest"
+                            "$ref": "#/definitions/dto.UpdateJawabanRequest"
                         }
                     }
                 ],
@@ -1568,13 +1568,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse"
+                                            "$ref": "#/definitions/dto.JawabanResponse"
                                         }
                                     }
                                 }
@@ -1584,7 +1584,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1615,13 +1615,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete jawaban successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1654,13 +1654,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore jawaban successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1697,13 +1697,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jurusan_dto.JurusanListResponse"
+                                            "$ref": "#/definitions/dto.JurusanListResponse"
                                         }
                                     }
                                 }
@@ -1713,7 +1713,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1741,7 +1741,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jurusan_dto.CreateJurusanRequest"
+                            "$ref": "#/definitions/dto.CreateJurusanRequest"
                         }
                     }
                 ],
@@ -1751,13 +1751,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse"
+                                            "$ref": "#/definitions/dto.JurusanResponse"
                                         }
                                     }
                                 }
@@ -1767,7 +1767,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1797,13 +1797,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse"
+                                            "$ref": "#/definitions/dto.JurusanResponse"
                                         }
                                     }
                                 }
@@ -1813,7 +1813,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Jurusan tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1848,7 +1848,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_jurusan_dto.UpdateJurusanRequest"
+                            "$ref": "#/definitions/dto.UpdateJurusanRequest"
                         }
                     }
                 ],
@@ -1858,13 +1858,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse"
+                                            "$ref": "#/definitions/dto.JurusanResponse"
                                         }
                                     }
                                 }
@@ -1874,7 +1874,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1905,13 +1905,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete jurusan successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1944,13 +1944,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore jurusan successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -1999,13 +1999,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_kelas_dto.KelasListResponse"
+                                            "$ref": "#/definitions/dto.KelasListResponse"
                                         }
                                     }
                                 }
@@ -2015,7 +2015,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2043,7 +2043,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_kelas_dto.CreateKelasRequest"
+                            "$ref": "#/definitions/dto.CreateKelasRequest"
                         }
                     }
                 ],
@@ -2053,13 +2053,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_kelas_dto.KelasResponse"
+                                            "$ref": "#/definitions/dto.KelasResponse"
                                         }
                                     }
                                 }
@@ -2069,7 +2069,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2099,13 +2099,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_kelas_dto.KelasResponse"
+                                            "$ref": "#/definitions/dto.KelasResponse"
                                         }
                                     }
                                 }
@@ -2115,7 +2115,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Kelas tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2150,7 +2150,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_kelas_dto.UpdateKelasRequest"
+                            "$ref": "#/definitions/dto.UpdateKelasRequest"
                         }
                     }
                 ],
@@ -2160,13 +2160,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_kelas_dto.KelasResponse"
+                                            "$ref": "#/definitions/dto.KelasResponse"
                                         }
                                     }
                                 }
@@ -2176,7 +2176,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2207,13 +2207,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete kelas successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2246,13 +2246,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore kelas successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2289,13 +2289,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_mapel_dto.MapelListResponse"
+                                            "$ref": "#/definitions/dto.MapelListResponse"
                                         }
                                     }
                                 }
@@ -2305,7 +2305,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2333,7 +2333,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_mapel_dto.CreateMapelRequest"
+                            "$ref": "#/definitions/dto.CreateMapelRequest"
                         }
                     }
                 ],
@@ -2343,13 +2343,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_mapel_dto.MapelResponse"
+                                            "$ref": "#/definitions/dto.MapelResponse"
                                         }
                                     }
                                 }
@@ -2359,7 +2359,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2389,13 +2389,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_mapel_dto.MapelResponse"
+                                            "$ref": "#/definitions/dto.MapelResponse"
                                         }
                                     }
                                 }
@@ -2405,7 +2405,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Mapel tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2440,7 +2440,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_mapel_dto.UpdateMapelRequest"
+                            "$ref": "#/definitions/dto.UpdateMapelRequest"
                         }
                     }
                 ],
@@ -2450,13 +2450,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_mapel_dto.MapelResponse"
+                                            "$ref": "#/definitions/dto.MapelResponse"
                                         }
                                     }
                                 }
@@ -2466,7 +2466,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2497,13 +2497,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete mapel successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2536,13 +2536,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore mapel successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2591,13 +2591,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiListResponse"
+                                            "$ref": "#/definitions/dto.NilaiListResponse"
                                         }
                                     }
                                 }
@@ -2607,7 +2607,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2636,7 +2636,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.CreateNilaiRequest"
+                            "$ref": "#/definitions/dto.CreateNilaiRequest"
                         }
                     }
                 ],
@@ -2646,13 +2646,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiResponse"
+                                            "$ref": "#/definitions/dto.NilaiResponse"
                                         }
                                     }
                                 }
@@ -2662,7 +2662,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal atau data sudah ada",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2702,7 +2702,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Jadwal tidak ditemukan, belum memiliki soal, atau tidak ada kelas terdaftar",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2742,7 +2742,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Jadwal tidak ditemukan atau tidak ada kelas terdaftar",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2786,13 +2786,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiListResponse"
+                                            "$ref": "#/definitions/dto.NilaiListResponse"
                                         }
                                     }
                                 }
@@ -2802,7 +2802,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2839,7 +2839,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.MulaiUjianRequest"
+                            "$ref": "#/definitions/dto.MulaiUjianRequest"
                         }
                     }
                 ],
@@ -2849,13 +2849,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiResponse"
+                                            "$ref": "#/definitions/dto.NilaiResponse"
                                         }
                                     }
                                 }
@@ -2867,13 +2867,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiResponse"
+                                            "$ref": "#/definitions/dto.NilaiResponse"
                                         }
                                     }
                                 }
@@ -2883,13 +2883,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Jadwal tidak ditemukan, ujian sudah pernah selesai dikerjakan, atau token ujian tidak valid/kedaluwarsa",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "401": {
                         "description": "Token JWT tidak valid",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2933,13 +2933,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiListResponse"
+                                            "$ref": "#/definitions/dto.NilaiListResponse"
                                         }
                                     }
                                 }
@@ -2949,7 +2949,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -2980,13 +2980,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiResponse"
+                                            "$ref": "#/definitions/dto.NilaiResponse"
                                         }
                                     }
                                 }
@@ -2996,7 +2996,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Nilai tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3032,7 +3032,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.UpdateNilaiRequest"
+                            "$ref": "#/definitions/dto.UpdateNilaiRequest"
                         }
                     }
                 ],
@@ -3042,13 +3042,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiResponse"
+                                            "$ref": "#/definitions/dto.NilaiResponse"
                                         }
                                     }
                                 }
@@ -3058,7 +3058,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3089,13 +3089,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete nilai successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3131,13 +3131,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.SectionProgressResponse"
+                                            "$ref": "#/definitions/dto.SectionProgressResponse"
                                         }
                                     }
                                 }
@@ -3147,13 +3147,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Ujian tidak memakai section, sudah selesai, atau sudah di section terakhir",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "401": {
                         "description": "Token tidak valid atau bukan pemilik sesi ini",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3186,13 +3186,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore nilai successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3228,13 +3228,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_nilai_dto.SectionProgressResponse"
+                                            "$ref": "#/definitions/dto.SectionProgressResponse"
                                         }
                                     }
                                 }
@@ -3244,13 +3244,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Ujian tidak memakai section",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "401": {
                         "description": "Token tidak valid atau bukan pemilik sesi ini",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3293,13 +3293,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_peserta_dto.PesertaListResponse"
+                                            "$ref": "#/definitions/dto.PesertaListResponse"
                                         }
                                     }
                                 }
@@ -3309,7 +3309,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3337,7 +3337,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_peserta_dto.CreatePesertaRequest"
+                            "$ref": "#/definitions/dto.CreatePesertaRequest"
                         }
                     }
                 ],
@@ -3347,13 +3347,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_peserta_dto.PesertaResponse"
+                                            "$ref": "#/definitions/dto.PesertaResponse"
                                         }
                                     }
                                 }
@@ -3363,7 +3363,62 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/peserta/import": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Upload file .xls/.xlsx (maks 10MB) berisi banyak peserta sekaligus. Kolom: nama, username, password, kelas (diisi nama kelas). Jika ada baris dengan nama kelas yang tidak ditemukan di data master Kelas, seluruh import dibatalkan (tidak ada data yang tersimpan).",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Peserta"
+                ],
+                "summary": "Import peserta dari file Excel",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "File Excel (.xls/.xlsx)",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Import peserta berhasil",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.ImportPesertaResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "File tidak valid, kolom kelas tidak ditemukan, atau import gagal",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3376,7 +3431,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Menghasilkan PDF berisi kartu untuk setiap peserta di kelas tersebut, ditata grid 2x5 kartu per halaman A4 dengan garis putus-putus sebagai panduan gunting. Kartu ini bersifat global (tidak terikat jadwal/ujian tertentu) — hanya menampilkan nama, username, dan kelas, tanpa password.",
+                "description": "Menghasilkan PDF berisi kartu untuk setiap peserta di kelas tersebut, ditata grid 2x5 kartu per halaman A4 dengan garis putus-putus sebagai panduan gunting. Kartu ini bersifat global (tidak terikat jadwal/ujian tertentu) — menampilkan nama, username, password, dan kelas.",
                 "produces": [
                     "application/pdf"
                 ],
@@ -3403,7 +3458,33 @@ const docTemplate = `{
                     "400": {
                         "description": "Kelas tidak ditemukan atau belum memiliki peserta",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/peserta/template": {
+            "get": {
+                "description": "Menghasilkan file .xlsx berisi header + 1 baris contoh (nama, username, password) sesuai urutan kolom yang dibaca endpoint import (POST /peserta/import).",
+                "produces": [
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ],
+                "tags": [
+                    "Peserta"
+                ],
+                "summary": "Download template Excel untuk import peserta",
+                "responses": {
+                    "200": {
+                        "description": "File template_import_peserta.xlsx",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "Gagal membuat file template",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3433,13 +3514,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_peserta_dto.PesertaResponse"
+                                            "$ref": "#/definitions/dto.PesertaResponse"
                                         }
                                     }
                                 }
@@ -3449,7 +3530,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Peserta tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3484,7 +3565,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_peserta_dto.UpdatePesertaRequest"
+                            "$ref": "#/definitions/dto.UpdatePesertaRequest"
                         }
                     }
                 ],
@@ -3494,13 +3575,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_peserta_dto.PesertaResponse"
+                                            "$ref": "#/definitions/dto.PesertaResponse"
                                         }
                                     }
                                 }
@@ -3510,7 +3591,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3541,13 +3622,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete peserta successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3580,13 +3661,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore peserta successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3617,7 +3698,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
@@ -3625,7 +3706,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/backend_internal_modules_section_dto.SectionResponse"
+                                                "$ref": "#/definitions/dto.SectionResponse"
                                             }
                                         }
                                     }
@@ -3636,7 +3717,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3674,7 +3755,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_section_dto.DefineSectionRequest"
+                            "$ref": "#/definitions/dto.DefineSectionRequest"
                         }
                     }
                 ],
@@ -3684,7 +3765,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
@@ -3692,7 +3773,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/backend_internal_modules_section_dto.SectionResponse"
+                                                "$ref": "#/definitions/dto.SectionResponse"
                                             }
                                         }
                                     }
@@ -3703,7 +3784,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal, jadwal tidak ditemukan, atau total jml_soal tidak sama dengan jumlah soal jadwal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3733,13 +3814,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_section_dto.SectionResponse"
+                                            "$ref": "#/definitions/dto.SectionResponse"
                                         }
                                     }
                                 }
@@ -3749,7 +3830,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Section tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3781,13 +3862,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete section successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3820,13 +3901,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore section successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -3863,13 +3944,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_soal_dto.SoalListResponse"
+                                            "$ref": "#/definitions/dto.SoalListResponse"
                                         }
                                     }
                                 }
@@ -3879,7 +3960,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4001,13 +4082,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_soal_dto.SoalResponse"
+                                            "$ref": "#/definitions/dto.SoalResponse"
                                         }
                                     }
                                 }
@@ -4017,7 +4098,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4061,13 +4142,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_soal_dto.SoalListResponse"
+                                            "$ref": "#/definitions/dto.SoalListResponse"
                                         }
                                     }
                                 }
@@ -4077,7 +4158,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4123,13 +4204,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_soal_dto.ImportSoalResponse"
+                                            "$ref": "#/definitions/dto.ImportSoalResponse"
                                         }
                                     }
                                 }
@@ -4139,7 +4220,7 @@ const docTemplate = `{
                     "400": {
                         "description": "File tidak valid atau import gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4165,7 +4246,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal membuat file template",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4196,13 +4277,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_soal_dto.SoalResponse"
+                                            "$ref": "#/definitions/dto.SoalResponse"
                                         }
                                     }
                                 }
@@ -4212,7 +4293,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Soal tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4334,13 +4415,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_soal_dto.SoalResponse"
+                                            "$ref": "#/definitions/dto.SoalResponse"
                                         }
                                     }
                                 }
@@ -4350,7 +4431,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4381,13 +4462,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Delete soal successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal menghapus",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4420,13 +4501,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Restore soal successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "400": {
                         "description": "Gagal restore",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4453,13 +4534,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_ujian_token_dto.CurrentTokenResponse"
+                                            "$ref": "#/definitions/dto.CurrentTokenResponse"
                                         }
                                     }
                                 }
@@ -4485,7 +4566,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
@@ -4493,7 +4574,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/backend_internal_modules_user_dto.UserResponse"
+                                                "$ref": "#/definitions/dto.UserResponse"
                                             }
                                         }
                                     }
@@ -4504,7 +4585,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Gagal mengambil data",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4533,7 +4614,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_user_dto.CreateUserRequest"
+                            "$ref": "#/definitions/dto.CreateUserRequest"
                         }
                     }
                 ],
@@ -4543,13 +4624,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_user_dto.UserResponse"
+                                            "$ref": "#/definitions/dto.UserResponse"
                                         }
                                     }
                                 }
@@ -4559,7 +4640,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4590,13 +4671,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_user_dto.UserResponse"
+                                            "$ref": "#/definitions/dto.UserResponse"
                                         }
                                     }
                                 }
@@ -4606,7 +4687,7 @@ const docTemplate = `{
                     "404": {
                         "description": "User tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4642,7 +4723,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_modules_user_dto.UpdateUserRequest"
+                            "$ref": "#/definitions/dto.UpdateUserRequest"
                         }
                     }
                 ],
@@ -4652,13 +4733,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/backend_internal_helpers.Response"
+                                    "$ref": "#/definitions/helpers.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/backend_internal_modules_user_dto.UserResponse"
+                                            "$ref": "#/definitions/dto.UserResponse"
                                         }
                                     }
                                 }
@@ -4668,13 +4749,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Validasi gagal",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "404": {
                         "description": "User tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4706,19 +4787,19 @@ const docTemplate = `{
                     "200": {
                         "description": "User deleted successfully",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "404": {
                         "description": "User tidak ditemukan",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "500": {
                         "description": "Gagal menghapus user",
                         "schema": {
-                            "$ref": "#/definitions/backend_internal_helpers.Response"
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     }
                 }
@@ -4726,20 +4807,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "backend_internal_helpers.Response": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "errors": {},
-                "message": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "backend_internal_modules_auth_dto.AuthResponse": {
+        "dto.AuthResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -4759,69 +4827,13 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_auth_dto.CurrentUserResponse": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_auth_dto.LoginRequest": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_auth_dto.RegisterRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "name",
-                "password",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 6
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_bank_soal_dto.BankSoalListResponse": {
+        "dto.BankSoalListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_bank_soal_dto.BankSoalResponse"
+                        "$ref": "#/definitions/dto.BankSoalResponse"
                     }
                 },
                 "page": {
@@ -4838,7 +4850,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_bank_soal_dto.BankSoalResponse": {
+        "dto.BankSoalResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -4867,7 +4879,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_bank_soal_dto.CreateBankSoalRequest": {
+        "dto.CreateBankSoalRequest": {
             "type": "object",
             "required": [
                 "id_mapel",
@@ -4890,30 +4902,22 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_bank_soal_dto.UpdateBankSoalRequest": {
+        "dto.CreateJadwalKelasRequest": {
             "type": "object",
             "required": [
-                "id_mapel",
-                "jml_soal",
-                "nama_bank_soal"
+                "id_jadwal",
+                "id_kelas"
             ],
             "properties": {
-                "deskripsi": {
+                "id_jadwal": {
                     "type": "string"
                 },
-                "id_mapel": {
-                    "type": "string"
-                },
-                "jml_soal": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "nama_bank_soal": {
+                "id_kelas": {
                     "type": "string"
                 }
             }
         },
-        "backend_internal_modules_jadwal_dto.CreateJadwalRequest": {
+        "dto.CreateJadwalRequest": {
             "type": "object",
             "required": [
                 "durasi",
@@ -4961,7 +4965,293 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jadwal_dto.JadwalAktifResponse": {
+        "dto.CreateJawabanRequest": {
+            "type": "object",
+            "required": [
+                "id_nilai",
+                "id_peserta",
+                "id_soal",
+                "jawaban",
+                "no_urut"
+            ],
+            "properties": {
+                "id_nilai": {
+                    "type": "string"
+                },
+                "id_peserta": {
+                    "type": "string"
+                },
+                "id_soal": {
+                    "type": "string"
+                },
+                "jawaban": {
+                    "type": "string",
+                    "enum": [
+                        "A",
+                        "B",
+                        "C",
+                        "D",
+                        "E"
+                    ]
+                },
+                "no_urut": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.CreateJurusanRequest": {
+            "type": "object",
+            "required": [
+                "nama_jurusan"
+            ],
+            "properties": {
+                "nama_jurusan": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateKelasRequest": {
+            "type": "object",
+            "required": [
+                "id_jurusan",
+                "nama_kelas",
+                "tingkat"
+            ],
+            "properties": {
+                "id_jurusan": {
+                    "type": "string"
+                },
+                "nama_kelas": {
+                    "type": "string"
+                },
+                "tingkat": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateMapelRequest": {
+            "type": "object",
+            "required": [
+                "kode_mapel",
+                "nama_mapel"
+            ],
+            "properties": {
+                "deskripsi": {
+                    "type": "string"
+                },
+                "kode_mapel": {
+                    "type": "string",
+                    "maxLength": 20
+                },
+                "nama_mapel": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateNilaiRequest": {
+            "type": "object",
+            "required": [
+                "id_jadwal",
+                "id_peserta",
+                "nilai"
+            ],
+            "properties": {
+                "aktivitas_terakhir": {
+                    "type": "string"
+                },
+                "id_jadwal": {
+                    "type": "string"
+                },
+                "id_peserta": {
+                    "type": "string"
+                },
+                "nilai": {
+                    "type": "number",
+                    "maximum": 100,
+                    "minimum": 0
+                },
+                "wkt_mulai": {
+                    "type": "string"
+                },
+                "wkt_selesai": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreatePesertaRequest": {
+            "type": "object",
+            "required": [
+                "id_kelas",
+                "nama",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "id_kelas": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                }
+            }
+        },
+        "dto.CurrentTokenResponse": {
+            "type": "object",
+            "properties": {
+                "periode_detik": {
+                    "type": "integer"
+                },
+                "sisa_detik": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CurrentUserResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.DefineSectionRequest": {
+            "type": "object",
+            "required": [
+                "sections"
+            ],
+            "properties": {
+                "sections": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/dto.SectionItem"
+                    }
+                }
+            }
+        },
+        "dto.ImportPesertaErrorDetail": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "row": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ImportPesertaResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ImportPesertaErrorDetail"
+                    }
+                },
+                "summary": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "timestamp": {
+                    "type": "string"
+                },
+                "total_failed": {
+                    "type": "integer"
+                },
+                "total_processed": {
+                    "type": "integer"
+                },
+                "total_success": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ImportSoalErrorDetail": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "row": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ImportSoalResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ImportSoalErrorDetail"
+                    }
+                },
+                "import_id": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "timestamp": {
+                    "type": "string"
+                },
+                "total_failed": {
+                    "type": "integer"
+                },
+                "total_processed": {
+                    "type": "integer"
+                },
+                "total_success": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.JadwalAktifResponse": {
             "type": "object",
             "properties": {
                 "acak_opsi": {
@@ -5005,13 +5295,13 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jadwal_dto.JadwalListResponse": {
+        "dto.JadwalKelasListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JadwalResponse"
+                        "$ref": "#/definitions/dto.JadwalKelasResponse"
                     }
                 },
                 "page": {
@@ -5028,177 +5318,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jadwal_dto.JadwalResponse": {
-            "type": "object",
-            "properties": {
-                "acak_opsi": {
-                    "type": "integer"
-                },
-                "acak_soal": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "durasi": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "id_bank_soal": {
-                    "type": "string"
-                },
-                "id_jurusan": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/backend_internal_modules_jadwal_dto.JurusanItem"
-                    }
-                },
-                "id_kelas": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/backend_internal_modules_jadwal_dto.KelasItem"
-                    }
-                },
-                "nama_bank_soal": {
-                    "type": "string"
-                },
-                "nama_ujian": {
-                    "type": "string"
-                },
-                "tingkat": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "wajib_token": {
-                    "type": "integer"
-                },
-                "wkt_mulai": {
-                    "type": "string"
-                },
-                "wkt_selesai": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_jadwal_dto.JurusanItem": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "id_jurusan": {
-                    "type": "string"
-                },
-                "nama_jurusan": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_jadwal_dto.KelasItem": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "id_kelas": {
-                    "type": "string"
-                },
-                "nama_kelas": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_jadwal_dto.UpdateJadwalRequest": {
-            "type": "object",
-            "required": [
-                "durasi",
-                "id_bank_soal",
-                "id_kelas",
-                "nama_ujian",
-                "tingkat",
-                "wkt_mulai",
-                "wkt_selesai"
-            ],
-            "properties": {
-                "acak_opsi": {
-                    "type": "integer"
-                },
-                "acak_soal": {
-                    "type": "integer"
-                },
-                "durasi": {
-                    "type": "integer",
-                    "minimum": 1
-                },
-                "id_bank_soal": {
-                    "type": "string"
-                },
-                "id_kelas": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "nama_ujian": {
-                    "type": "string"
-                },
-                "tingkat": {
-                    "type": "string"
-                },
-                "wajib_token": {
-                    "type": "integer"
-                },
-                "wkt_mulai": {
-                    "type": "string"
-                },
-                "wkt_selesai": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_jadwal_kelas_dto.CreateJadwalKelasRequest": {
-            "type": "object",
-            "required": [
-                "id_jadwal",
-                "id_kelas"
-            ],
-            "properties": {
-                "id_jadwal": {
-                    "type": "string"
-                },
-                "id_kelas": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_jadwal_kelas_dto.JadwalKelasListResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse"
-                    }
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "page_size": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "total_page": {
-                    "type": "integer"
-                }
-            }
-        },
-        "backend_internal_modules_jadwal_kelas_dto.JadwalKelasResponse": {
+        "dto.JadwalKelasResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -5230,62 +5350,13 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jadwal_kelas_dto.UpdateJadwalKelasRequest": {
-            "type": "object",
-            "required": [
-                "id_jadwal",
-                "id_kelas"
-            ],
-            "properties": {
-                "id_jadwal": {
-                    "type": "string"
-                },
-                "id_kelas": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_jawaban_dto.CreateJawabanRequest": {
-            "type": "object",
-            "required": [
-                "id_nilai",
-                "id_peserta",
-                "id_soal",
-                "jawaban",
-                "no_urut"
-            ],
-            "properties": {
-                "id_nilai": {
-                    "type": "string"
-                },
-                "id_peserta": {
-                    "type": "string"
-                },
-                "id_soal": {
-                    "type": "string"
-                },
-                "jawaban": {
-                    "type": "string",
-                    "enum": [
-                        "A",
-                        "B",
-                        "C",
-                        "D",
-                        "E"
-                    ]
-                },
-                "no_urut": {
-                    "type": "integer"
-                }
-            }
-        },
-        "backend_internal_modules_jawaban_dto.JawabanListResponse": {
+        "dto.JadwalListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_jawaban_dto.JawabanResponse"
+                        "$ref": "#/definitions/dto.JadwalResponse"
                     }
                 },
                 "page": {
@@ -5302,7 +5373,86 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jawaban_dto.JawabanResponse": {
+        "dto.JadwalResponse": {
+            "type": "object",
+            "properties": {
+                "acak_opsi": {
+                    "type": "integer"
+                },
+                "acak_soal": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "durasi": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "id_bank_soal": {
+                    "type": "string"
+                },
+                "id_jurusan": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.JurusanItem"
+                    }
+                },
+                "id_kelas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.KelasItem"
+                    }
+                },
+                "nama_bank_soal": {
+                    "type": "string"
+                },
+                "nama_ujian": {
+                    "type": "string"
+                },
+                "tingkat": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "wajib_token": {
+                    "type": "integer"
+                },
+                "wkt_mulai": {
+                    "type": "string"
+                },
+                "wkt_selesai": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.JawabanListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.JawabanResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "total_page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.JawabanResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -5376,42 +5526,27 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jawaban_dto.UpdateJawabanRequest": {
+        "dto.JurusanItem": {
             "type": "object",
-            "required": [
-                "jawaban"
-            ],
             "properties": {
-                "jawaban": {
-                    "type": "string",
-                    "enum": [
-                        "A",
-                        "B",
-                        "C",
-                        "D",
-                        "E"
-                    ]
-                }
-            }
-        },
-        "backend_internal_modules_jurusan_dto.CreateJurusanRequest": {
-            "type": "object",
-            "required": [
-                "nama_jurusan"
-            ],
-            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "id_jurusan": {
+                    "type": "string"
+                },
                 "nama_jurusan": {
                     "type": "string"
                 }
             }
         },
-        "backend_internal_modules_jurusan_dto.JurusanListResponse": {
+        "dto.JurusanListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_jurusan_dto.JurusanResponse"
+                        "$ref": "#/definitions/dto.JurusanResponse"
                     }
                 },
                 "page": {
@@ -5428,7 +5563,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jurusan_dto.JurusanResponse": {
+        "dto.JurusanResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -5445,43 +5580,27 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_jurusan_dto.UpdateJurusanRequest": {
+        "dto.KelasItem": {
             "type": "object",
-            "required": [
-                "nama_jurusan"
-            ],
             "properties": {
-                "nama_jurusan": {
+                "id": {
                     "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_kelas_dto.CreateKelasRequest": {
-            "type": "object",
-            "required": [
-                "id_jurusan",
-                "nama_kelas",
-                "tingkat"
-            ],
-            "properties": {
-                "id_jurusan": {
+                },
+                "id_kelas": {
                     "type": "string"
                 },
                 "nama_kelas": {
                     "type": "string"
-                },
-                "tingkat": {
-                    "type": "string"
                 }
             }
         },
-        "backend_internal_modules_kelas_dto.KelasListResponse": {
+        "dto.KelasListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_kelas_dto.KelasResponse"
+                        "$ref": "#/definitions/dto.KelasResponse"
                     }
                 },
                 "page": {
@@ -5498,7 +5617,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_kelas_dto.KelasResponse": {
+        "dto.KelasResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -5524,51 +5643,28 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_kelas_dto.UpdateKelasRequest": {
+        "dto.LoginRequest": {
             "type": "object",
             "required": [
-                "id_jurusan",
-                "nama_kelas",
-                "tingkat"
+                "password",
+                "username"
             ],
             "properties": {
-                "id_jurusan": {
+                "password": {
                     "type": "string"
                 },
-                "nama_kelas": {
-                    "type": "string"
-                },
-                "tingkat": {
+                "username": {
                     "type": "string"
                 }
             }
         },
-        "backend_internal_modules_mapel_dto.CreateMapelRequest": {
-            "type": "object",
-            "required": [
-                "kode_mapel",
-                "nama_mapel"
-            ],
-            "properties": {
-                "deskripsi": {
-                    "type": "string"
-                },
-                "kode_mapel": {
-                    "type": "string",
-                    "maxLength": 20
-                },
-                "nama_mapel": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_mapel_dto.MapelListResponse": {
+        "dto.MapelListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_mapel_dto.MapelResponse"
+                        "$ref": "#/definitions/dto.MapelResponse"
                     }
                 },
                 "page": {
@@ -5585,7 +5681,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_mapel_dto.MapelResponse": {
+        "dto.MapelResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -5608,56 +5704,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_mapel_dto.UpdateMapelRequest": {
-            "type": "object",
-            "required": [
-                "kode_mapel",
-                "nama_mapel"
-            ],
-            "properties": {
-                "deskripsi": {
-                    "type": "string"
-                },
-                "kode_mapel": {
-                    "type": "string",
-                    "maxLength": 20
-                },
-                "nama_mapel": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_nilai_dto.CreateNilaiRequest": {
-            "type": "object",
-            "required": [
-                "id_jadwal",
-                "id_peserta",
-                "nilai"
-            ],
-            "properties": {
-                "aktivitas_terakhir": {
-                    "type": "string"
-                },
-                "id_jadwal": {
-                    "type": "string"
-                },
-                "id_peserta": {
-                    "type": "string"
-                },
-                "nilai": {
-                    "type": "number",
-                    "maximum": 100,
-                    "minimum": 0
-                },
-                "wkt_mulai": {
-                    "type": "string"
-                },
-                "wkt_selesai": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_nilai_dto.MulaiUjianRequest": {
+        "dto.MulaiUjianRequest": {
             "type": "object",
             "properties": {
                 "token": {
@@ -5665,13 +5712,13 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_nilai_dto.NilaiListResponse": {
+        "dto.NilaiListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_nilai_dto.NilaiResponse"
+                        "$ref": "#/definitions/dto.NilaiResponse"
                     }
                 },
                 "page": {
@@ -5688,7 +5735,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_nilai_dto.NilaiResponse": {
+        "dto.NilaiResponse": {
             "type": "object",
             "properties": {
                 "aktivitas_terakhir": {
@@ -5732,7 +5779,100 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_nilai_dto.SectionProgressResponse": {
+        "dto.PesertaListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.PesertaResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "total_page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.PesertaResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "id_kelas": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "nama_kelas": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SectionItem": {
+            "type": "object",
+            "required": [
+                "jml_soal",
+                "nama_section"
+            ],
+            "properties": {
+                "durasi_menit_minimal": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "jml_soal": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "nama_section": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SectionProgressResponse": {
             "type": "object",
             "properties": {
                 "boleh_lanjut": {
@@ -5764,160 +5904,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_nilai_dto.UpdateNilaiRequest": {
-            "type": "object",
-            "properties": {
-                "aktivitas_terakhir": {
-                    "type": "string"
-                },
-                "id_jadwal": {
-                    "type": "string"
-                },
-                "id_peserta": {
-                    "type": "string"
-                },
-                "nilai": {
-                    "type": "number"
-                },
-                "wkt_mulai": {
-                    "type": "string"
-                },
-                "wkt_selesai": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_peserta_dto.CreatePesertaRequest": {
-            "type": "object",
-            "required": [
-                "id_kelas",
-                "nama",
-                "password",
-                "username"
-            ],
-            "properties": {
-                "id_kelas": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 6
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_peserta_dto.PesertaListResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/backend_internal_modules_peserta_dto.PesertaResponse"
-                    }
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "page_size": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "total_page": {
-                    "type": "integer"
-                }
-            }
-        },
-        "backend_internal_modules_peserta_dto.PesertaResponse": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "id_kelas": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "nama_kelas": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_peserta_dto.UpdatePesertaRequest": {
-            "type": "object",
-            "required": [
-                "id_kelas",
-                "nama",
-                "username"
-            ],
-            "properties": {
-                "id_kelas": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_section_dto.DefineSectionRequest": {
-            "type": "object",
-            "required": [
-                "sections"
-            ],
-            "properties": {
-                "sections": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "$ref": "#/definitions/backend_internal_modules_section_dto.SectionItem"
-                    }
-                }
-            }
-        },
-        "backend_internal_modules_section_dto.SectionItem": {
-            "type": "object",
-            "required": [
-                "jml_soal",
-                "nama_section"
-            ],
-            "properties": {
-                "durasi_menit_minimal": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "jml_soal": {
-                    "type": "integer",
-                    "minimum": 1
-                },
-                "nama_section": {
-                    "type": "string"
-                }
-            }
-        },
-        "backend_internal_modules_section_dto.SectionResponse": {
+        "dto.SectionResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -5952,56 +5939,13 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_soal_dto.ImportSoalErrorDetail": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "row": {
-                    "type": "integer"
-                }
-            }
-        },
-        "backend_internal_modules_soal_dto.ImportSoalResponse": {
-            "type": "object",
-            "properties": {
-                "errors": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/backend_internal_modules_soal_dto.ImportSoalErrorDetail"
-                    }
-                },
-                "import_id": {
-                    "type": "string"
-                },
-                "summary": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "integer"
-                    }
-                },
-                "timestamp": {
-                    "type": "string"
-                },
-                "total_failed": {
-                    "type": "integer"
-                },
-                "total_processed": {
-                    "type": "integer"
-                },
-                "total_success": {
-                    "type": "integer"
-                }
-            }
-        },
-        "backend_internal_modules_soal_dto.SoalListResponse": {
+        "dto.SoalListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/backend_internal_modules_soal_dto.SoalResponse"
+                        "$ref": "#/definitions/dto.SoalResponse"
                     }
                 },
                 "page": {
@@ -6018,7 +5962,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_soal_dto.SoalResponse": {
+        "dto.SoalResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -6077,41 +6021,205 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_ujian_token_dto.CurrentTokenResponse": {
+        "dto.UpdateBankSoalRequest": {
             "type": "object",
+            "required": [
+                "id_mapel",
+                "jml_soal",
+                "nama_bank_soal"
+            ],
             "properties": {
-                "periode_detik": {
-                    "type": "integer"
+                "deskripsi": {
+                    "type": "string"
                 },
-                "sisa_detik": {
-                    "type": "integer"
+                "id_mapel": {
+                    "type": "string"
                 },
-                "token": {
+                "jml_soal": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "nama_bank_soal": {
                     "type": "string"
                 }
             }
         },
-        "backend_internal_modules_user_dto.CreateUserRequest": {
+        "dto.UpdateJadwalKelasRequest": {
             "type": "object",
             "required": [
-                "email",
-                "name",
-                "password"
+                "id_jadwal",
+                "id_kelas"
             ],
             "properties": {
-                "email": {
+                "id_jadwal": {
                     "type": "string"
                 },
-                "name": {
+                "id_kelas": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateJadwalRequest": {
+            "type": "object",
+            "required": [
+                "durasi",
+                "id_bank_soal",
+                "id_kelas",
+                "nama_ujian",
+                "tingkat",
+                "wkt_mulai",
+                "wkt_selesai"
+            ],
+            "properties": {
+                "acak_opsi": {
+                    "type": "integer"
+                },
+                "acak_soal": {
+                    "type": "integer"
+                },
+                "durasi": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "id_bank_soal": {
+                    "type": "string"
+                },
+                "id_kelas": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "nama_ujian": {
+                    "type": "string"
+                },
+                "tingkat": {
+                    "type": "string"
+                },
+                "wajib_token": {
+                    "type": "integer"
+                },
+                "wkt_mulai": {
+                    "type": "string"
+                },
+                "wkt_selesai": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateJawabanRequest": {
+            "type": "object",
+            "required": [
+                "jawaban"
+            ],
+            "properties": {
+                "jawaban": {
+                    "type": "string",
+                    "enum": [
+                        "A",
+                        "B",
+                        "C",
+                        "D",
+                        "E"
+                    ]
+                }
+            }
+        },
+        "dto.UpdateJurusanRequest": {
+            "type": "object",
+            "required": [
+                "nama_jurusan"
+            ],
+            "properties": {
+                "nama_jurusan": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateKelasRequest": {
+            "type": "object",
+            "required": [
+                "id_jurusan",
+                "nama_kelas",
+                "tingkat"
+            ],
+            "properties": {
+                "id_jurusan": {
+                    "type": "string"
+                },
+                "nama_kelas": {
+                    "type": "string"
+                },
+                "tingkat": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateMapelRequest": {
+            "type": "object",
+            "required": [
+                "kode_mapel",
+                "nama_mapel"
+            ],
+            "properties": {
+                "deskripsi": {
+                    "type": "string"
+                },
+                "kode_mapel": {
+                    "type": "string",
+                    "maxLength": 20
+                },
+                "nama_mapel": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateNilaiRequest": {
+            "type": "object",
+            "properties": {
+                "aktivitas_terakhir": {
+                    "type": "string"
+                },
+                "id_jadwal": {
+                    "type": "string"
+                },
+                "id_peserta": {
+                    "type": "string"
+                },
+                "nilai": {
+                    "type": "number"
+                },
+                "wkt_mulai": {
+                    "type": "string"
+                },
+                "wkt_selesai": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdatePesertaRequest": {
+            "type": "object",
+            "required": [
+                "id_kelas",
+                "nama",
+                "username"
+            ],
+            "properties": {
+                "id_kelas": {
+                    "type": "string"
+                },
+                "nama": {
                     "type": "string"
                 },
                 "password": {
-                    "type": "string",
-                    "minLength": 6
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
-        "backend_internal_modules_user_dto.UpdateUserRequest": {
+        "dto.UpdateUserRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -6125,7 +6233,7 @@ const docTemplate = `{
                 }
             }
         },
-        "backend_internal_modules_user_dto.UserResponse": {
+        "dto.UserResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -6148,6 +6256,19 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "helpers.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "errors": {},
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         }
