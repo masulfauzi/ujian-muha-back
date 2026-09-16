@@ -702,11 +702,12 @@ func (s *nilaiService) ExportNilaiByJadwal(idJadwal string) (*ExportResult, erro
 // analisisJawabanRow adalah baris flat hasil LEFT JOIN peserta->nilai->jawaban->soal.
 // NoSoal/Jawaban/IsBenar bernilai nil jika peserta belum pernah mulai ujian ini sama sekali.
 type analisisJawabanRow struct {
-	IDPeserta   string  `gorm:"column:id_peserta"`
-	NamaPeserta string  `gorm:"column:nama_peserta"`
-	NoSoal      *int    `gorm:"column:no_soal"`
-	Jawaban     *string `gorm:"column:jawaban"`
-	IsBenar     *int    `gorm:"column:is_benar"`
+	IDPeserta   string   `gorm:"column:id_peserta"`
+	NamaPeserta string   `gorm:"column:nama_peserta"`
+	NoSoal      *int     `gorm:"column:no_soal"`
+	Jawaban     *string  `gorm:"column:jawaban"`
+	IsBenar     *int     `gorm:"column:is_benar"`
+	NilaiAkhir  *float64 `gorm:"column:nilai_akhir"`
 }
 
 // AnalisisSoalByJadwal membuat ZIP berisi satu .xlsx analisis per kelas: baris = peserta,
@@ -778,7 +779,8 @@ func (s *nilaiService) AnalisisSoalByJadwal(idJadwal string) (*ExportResult, err
 				peserta.nama AS nama_peserta,
 				soal.no_soal,
 				jawaban.jawaban,
-				jawaban.is_benar
+				jawaban.is_benar,
+				nilai.nilai AS nilai_akhir
 			`).
 			Joins("LEFT JOIN nilai ON nilai.id_peserta = peserta.id AND nilai.id_jadwal = ? AND nilai.deleted_at IS NULL", idJadwal).
 			Joins("LEFT JOIN jawaban ON jawaban.id_nilai = nilai.id AND jawaban.deleted_at IS NULL").
@@ -828,15 +830,18 @@ type analisisAnswer struct {
 }
 
 type analisisPesertaAgg struct {
-	Nama    string
-	Started bool
-	Answers map[int]analisisAnswer
+	Nama       string
+	Started    bool
+	NilaiAkhir *float64
+	Answers    map[int]analisisAnswer
 }
 
 // buildAnalisisSoalWorkbook memivot baris flat (peserta x soal) menjadi satu sheet:
 // baris = peserta (urut sesuai kemunculan pertama di `rows`, yaitu nama ASC),
-// kolom = soal urut noSoalList, plus ringkasan Benar/Salah/Belum Dijawab per peserta
-// dan baris "Jumlah Benar per Soal" di paling bawah untuk analisis tingkat kesulitan soal.
+// kolom = soal urut noSoalList, plus ringkasan Benar/Salah/Belum Dijawab dan Nilai Akhir
+// (kolom paling kanan, dari tabel nilai — kosong jika peserta belum pernah mulai ujian)
+// per peserta, dan baris "Jumlah Benar per Soal" di paling bawah untuk analisis tingkat
+// kesulitan soal.
 func buildAnalisisSoalWorkbook(rows []analisisJawabanRow, noSoalList []int) (*excelize.File, error) {
 	order := make([]string, 0)
 	agg := make(map[string]*analisisPesertaAgg)
@@ -851,6 +856,9 @@ func buildAnalisisSoalWorkbook(rows []analisisJawabanRow, noSoalList []int) (*ex
 		if r.NoSoal != nil {
 			a.Started = true
 			a.Answers[*r.NoSoal] = analisisAnswer{Jawaban: r.Jawaban, IsBenar: r.IsBenar}
+		}
+		if r.NilaiAkhir != nil {
+			a.NilaiAkhir = r.NilaiAkhir
 		}
 	}
 
@@ -889,7 +897,7 @@ func buildAnalisisSoalWorkbook(rows []analisisJawabanRow, noSoalList []int) (*ex
 	for _, noSoal := range noSoalList {
 		headers = append(headers, fmt.Sprintf("Soal %d", noSoal))
 	}
-	headers = append(headers, "Benar", "Salah", "Belum Dijawab")
+	headers = append(headers, "Benar", "Salah", "Belum Dijawab", "Nilai Akhir")
 	for col, h := range headers {
 		cell, _ := excelize.CoordinatesToCellName(col+1, 1)
 		f.SetCellValue(sheet, cell, h)
@@ -937,9 +945,13 @@ func buildAnalisisSoalWorkbook(rows []analisisJawabanRow, noSoalList []int) (*ex
 		benarCell, _ := excelize.CoordinatesToCellName(summaryColStart, rowNum)
 		salahCell, _ := excelize.CoordinatesToCellName(summaryColStart+1, rowNum)
 		belumCell, _ := excelize.CoordinatesToCellName(summaryColStart+2, rowNum)
+		nilaiCell, _ := excelize.CoordinatesToCellName(summaryColStart+3, rowNum)
 		f.SetCellValue(sheet, benarCell, benar)
 		f.SetCellValue(sheet, salahCell, salah)
 		f.SetCellValue(sheet, belumCell, belum)
+		if a.NilaiAkhir != nil {
+			f.SetCellValue(sheet, nilaiCell, *a.NilaiAkhir)
+		}
 	}
 
 	// Baris total: jumlah peserta yang menjawab benar per soal — untuk lihat soal mana yang paling banyak dijawab salah
