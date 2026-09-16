@@ -210,8 +210,12 @@ definitions:
       user_agent:
         maxLength: 500
         type: string
+      x_requested_with:
+        maxLength: 255
+        type: string
     required:
     - user_agent
+    - x_requested_with
     type: object
   dto.CreateUserRequest:
     properties:
@@ -961,8 +965,12 @@ definitions:
       user_agent:
         maxLength: 500
         type: string
+      x_requested_with:
+        maxLength: 255
+        type: string
     required:
     - user_agent
+    - x_requested_with
     type: object
   dto.UpdateUserRequest:
     properties:
@@ -999,6 +1007,8 @@ definitions:
       updated_at:
         type: string
       user_agent:
+        type: string
+      x_requested_with:
         type: string
     type: object
   dto.UserResponse:
@@ -2951,6 +2961,9 @@ paths:
         perlu dikirim ulang saat resume). Jika sudah wkt_selesai, request ditolak.
         Body token bersifat opsional secara umum — hanya wajib diisi jika jadwal ini
         mengaktifkan wajib_token; ambil kode yang berlaku lewat GET /ujian-token/current.
+        Header User-Agent atau X-Requested-With request ini juga wajib salah satunya
+        terdaftar di whitelist /user-agent, kalau tidak ada yang cocok request ditolak
+        403.
       parameters:
       - description: ID jadwal (uuid)
         in: path
@@ -2990,6 +3003,11 @@ paths:
             $ref: '#/definitions/helpers.Response'
         "401":
           description: Token JWT tidak valid
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "403":
+          description: Kombinasi User-Agent + X-Requested-With tidak terdaftar di
+            whitelist
           schema:
             $ref: '#/definitions/helpers.Response'
       security:
@@ -3919,6 +3937,10 @@ paths:
     post:
       consumes:
       - application/json
+      description: Saat peserta memanggil POST /nilai/mulai-ujian/{id_jadwal}, request
+        diloloskan jika header User-Agent COCOK dengan user_agent di baris manapun,
+        ATAU header X-Requested-With cocok dengan x_requested_with di baris manapun
+        (exact match, tidak harus baris yang sama). Lihat middleware.CheckAllowedUserAgent.
       parameters:
       - description: Data user agent
         in: body

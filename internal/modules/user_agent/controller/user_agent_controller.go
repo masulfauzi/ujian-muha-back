@@ -20,6 +20,7 @@ func NewUserAgentController(service service.UserAgentService) *UserAgentControll
 
 // CreateUserAgent godoc
 // @Summary Daftarkan user agent yang boleh mengerjakan ujian
+// @Description Saat peserta memanggil POST /nilai/mulai-ujian/{id_jadwal}, request diloloskan jika header User-Agent COCOK dengan user_agent di baris manapun, ATAU header X-Requested-With cocok dengan x_requested_with di baris manapun (exact match, tidak harus baris yang sama). Lihat middleware.CheckAllowedUserAgent.
 // @Tags User Agent
 // @Accept json
 // @Produce json

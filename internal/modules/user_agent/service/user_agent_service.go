@@ -19,6 +19,10 @@ type UserAgentService interface {
 	UpdateUserAgent(id string, req *dto.UpdateUserAgentRequest) (*dto.UserAgentResponse, error)
 	DeleteUserAgent(id string) error
 	RestoreUserAgent(id string) error
+	// IsAllowed mengecek apakah header User-Agent ATAU X-Requested-With cocok
+	// dengan salah satu baris whitelist manapun (tidak harus baris yang sama).
+	// Dipakai middleware.CheckAllowedUserAgent.
+	IsAllowed(userAgent, xRequestedWith string) (bool, error)
 }
 
 type userAgentService struct {
@@ -30,17 +34,18 @@ func NewUserAgentService(repo repository.UserAgentRepository) UserAgentService {
 }
 
 func (s *userAgentService) CreateUserAgent(req *dto.CreateUserAgentRequest) (*dto.UserAgentResponse, error) {
-	exists, err := s.repo.ExistsByUserAgent(req.UserAgent)
+	exists, err := s.repo.Exists(req.UserAgent, req.XRequestedWith)
 	if err != nil {
 		return nil, err
 	}
 	if exists {
-		return nil, errors.New("user agent sudah terdaftar")
+		return nil, errors.New("kombinasi user agent & x-requested-with sudah terdaftar")
 	}
 
 	userAgent := &model.UserAgent{
-		UserAgent:  req.UserAgent,
-		Keterangan: req.Keterangan,
+		UserAgent:      req.UserAgent,
+		XRequestedWith: req.XRequestedWith,
+		Keterangan:     req.Keterangan,
 	}
 
 	if err := s.repo.Create(userAgent); err != nil {
@@ -100,17 +105,18 @@ func (s *userAgentService) UpdateUserAgent(id string, req *dto.UpdateUserAgentRe
 		return nil, err
 	}
 
-	if req.UserAgent != userAgent.UserAgent {
-		exists, err := s.repo.ExistsByUserAgent(req.UserAgent)
+	if req.UserAgent != userAgent.UserAgent || req.XRequestedWith != userAgent.XRequestedWith {
+		exists, err := s.repo.Exists(req.UserAgent, req.XRequestedWith)
 		if err != nil {
 			return nil, err
 		}
 		if exists {
-			return nil, errors.New("user agent sudah terdaftar")
+			return nil, errors.New("kombinasi user agent & x-requested-with sudah terdaftar")
 		}
 	}
 
 	userAgent.UserAgent = req.UserAgent
+	userAgent.XRequestedWith = req.XRequestedWith
 	userAgent.Keterangan = req.Keterangan
 
 	if err := s.repo.Update(userAgent); err != nil {
@@ -136,12 +142,17 @@ func (s *userAgentService) RestoreUserAgent(id string) error {
 	return s.repo.Restore(id)
 }
 
+func (s *userAgentService) IsAllowed(userAgent, xRequestedWith string) (bool, error) {
+	return s.repo.IsAllowed(userAgent, xRequestedWith)
+}
+
 func (s *userAgentService) modelToResponse(userAgent *model.UserAgent) *dto.UserAgentResponse {
 	return &dto.UserAgentResponse{
-		ID:         userAgent.ID,
-		UserAgent:  userAgent.UserAgent,
-		Keterangan: userAgent.Keterangan,
-		CreatedAt:  userAgent.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdatedAt:  userAgent.UpdatedAt.Format("2006-01-02 15:04:05"),
+		ID:             userAgent.ID,
+		UserAgent:      userAgent.UserAgent,
+		XRequestedWith: userAgent.XRequestedWith,
+		Keterangan:     userAgent.Keterangan,
+		CreatedAt:      userAgent.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt:      userAgent.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 }

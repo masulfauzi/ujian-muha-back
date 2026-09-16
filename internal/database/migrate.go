@@ -38,6 +38,16 @@ func RunMigrations(db *gorm.DB) error {
 	db.Exec("ALTER TABLE jadwal ALTER COLUMN acak_soal TYPE smallint USING acak_soal::int::smallint")
 	db.Exec("ALTER TABLE jadwal ALTER COLUMN acak_opsi TYPE smallint USING acak_opsi::int::smallint")
 
+	// Tambah kolom x_requested_with ke user_agent (awalnya cuma ada kolom user_agent) dengan
+	// aman untuk baris lama yang sudah ada (backfill '' dulu sebelum di-set NOT NULL), lalu
+	// ganti unique index lama (hanya di kolom user_agent) jadi index gabungan
+	// (user_agent, x_requested_with) yang dibuat AutoMigrate di bawah.
+	db.Exec("ALTER TABLE user_agent ADD COLUMN IF NOT EXISTS x_requested_with varchar(255)")
+	db.Exec("UPDATE user_agent SET x_requested_with = '' WHERE x_requested_with IS NULL")
+	db.Exec("ALTER TABLE user_agent ALTER COLUMN x_requested_with SET NOT NULL")
+	db.Exec("DROP INDEX IF EXISTS idx_user_agent_value")
+	db.Exec("ALTER TABLE user_agent DROP CONSTRAINT IF EXISTS idx_user_agent_user_agent")
+
 	if err := db.AutoMigrate(
 		&usermodel.User{},
 		&mapelmodel.Mapel{},

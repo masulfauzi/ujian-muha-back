@@ -7,6 +7,8 @@ import (
 	"backend/internal/modules/nilai/repository"
 	"backend/internal/modules/nilai/service"
 	sectionrepo "backend/internal/modules/section/repository"
+	useragentrepo "backend/internal/modules/user_agent/repository"
+	useragentservice "backend/internal/modules/user_agent/service"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -19,6 +21,9 @@ func SetupNilaiRoutes(app *fiber.App, db *gorm.DB) {
 	svc               := service.NewNilaiService(repo, jawabanRepository, sectionRepository, db)
 	ctrl              := controller.NewNilaiController(svc)
 
+	userAgentRepository := useragentrepo.NewUserAgentRepository(db)
+	userAgentService    := useragentservice.NewUserAgentService(userAgentRepository)
+
 	api   := app.Group("/api")
 	nilai := api.Group("/nilai")
 
@@ -27,7 +32,7 @@ func SetupNilaiRoutes(app *fiber.App, db *gorm.DB) {
 	nilai.Get("/jadwal/:id_jadwal", ctrl.GetNilaiByJadwal)
 	nilai.Get("/export/:id_jadwal", middleware.JWTAuth(), ctrl.ExportNilai)
 	nilai.Get("/analisis/:id_jadwal", middleware.JWTAuth(), ctrl.AnalisisSoal)
-	nilai.Post("/mulai-ujian/:id_jadwal", middleware.JWTAuth(), ctrl.MulaiUjian)
+	nilai.Post("/mulai-ujian/:id_jadwal", middleware.JWTAuth(), middleware.CheckAllowedUserAgent(userAgentService), ctrl.MulaiUjian)
 
 	nilai.Post("/", middleware.JWTAuth(), ctrl.CreateNilai)
 	nilai.Get("/", ctrl.GetAllNilai)

@@ -238,7 +238,7 @@ func (c *NilaiController) RestoreNilai(ctx *fiber.Ctx) error {
 
 // MulaiUjian godoc
 // @Summary Mulai (atau lanjutkan) pengerjaan ujian
-// @Description Dipanggil peserta saat membuka jadwal ujian. Jika belum pernah mulai, sesi nilai baru dibuat beserta seluruh baris jawaban kosong (soal diacak jika acak_soal aktif) dan status 201 dikembalikan. Jika sesi sudah ada dan belum wkt_selesai, dianggap resume dan status 200 dikembalikan (token tidak perlu dikirim ulang saat resume). Jika sudah wkt_selesai, request ditolak. Body token bersifat opsional secara umum — hanya wajib diisi jika jadwal ini mengaktifkan wajib_token; ambil kode yang berlaku lewat GET /ujian-token/current.
+// @Description Dipanggil peserta saat membuka jadwal ujian. Jika belum pernah mulai, sesi nilai baru dibuat beserta seluruh baris jawaban kosong (soal diacak jika acak_soal aktif) dan status 201 dikembalikan. Jika sesi sudah ada dan belum wkt_selesai, dianggap resume dan status 200 dikembalikan (token tidak perlu dikirim ulang saat resume). Jika sudah wkt_selesai, request ditolak. Body token bersifat opsional secara umum — hanya wajib diisi jika jadwal ini mengaktifkan wajib_token; ambil kode yang berlaku lewat GET /ujian-token/current. Header User-Agent atau X-Requested-With request ini juga wajib salah satunya terdaftar di whitelist /user-agent, kalau tidak ada yang cocok request ditolak 403.
 // @Tags Nilai
 // @Accept json
 // @Produce json
@@ -249,6 +249,7 @@ func (c *NilaiController) RestoreNilai(ctx *fiber.Ctx) error {
 // @Success 200 {object} helpers.Response{data=dto.NilaiResponse} "Lanjutkan ujian successfully (resume sesi yang sudah ada)"
 // @Failure 400 {object} helpers.Response "Jadwal tidak ditemukan, ujian sudah pernah selesai dikerjakan, atau token ujian tidak valid/kedaluwarsa"
 // @Failure 401 {object} helpers.Response "Token JWT tidak valid"
+// @Failure 403 {object} helpers.Response "Kombinasi User-Agent + X-Requested-With tidak terdaftar di whitelist"
 // @Router /nilai/mulai-ujian/{id_jadwal} [post]
 func (c *NilaiController) MulaiUjian(ctx *fiber.Ctx) error {
 	idJadwal := ctx.Params("id_jadwal")

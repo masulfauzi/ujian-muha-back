@@ -13,7 +13,14 @@ type UserAgentRepository interface {
 	Update(userAgent *model.UserAgent) error
 	Delete(id string) error
 	Restore(id string) error
-	ExistsByUserAgent(userAgent string) (bool, error)
+	// Exists mengecek apakah kombinasi user_agent + x_requested_with PERSIS sama
+	// sudah terdaftar (aktif, belum dihapus). Dipakai untuk cegah duplikat baris
+	// saat create/update.
+	Exists(userAgent, xRequestedWith string) (bool, error)
+	// IsAllowed mengecek apakah user_agent ATAU x_requested_with cocok dengan
+	// salah satu baris whitelist manapun (tidak harus baris yang sama). Dipakai
+	// untuk pengecekan akses saat peserta mulai mengerjakan ujian.
+	IsAllowed(userAgent, xRequestedWith string) (bool, error)
 }
 
 type userAgentRepository struct {
@@ -82,11 +89,23 @@ func (r *userAgentRepository) Restore(id string) error {
 	return r.db.Table("user_agent").Where("id = ?", id).Update("deleted_at", nil).Error
 }
 
-func (r *userAgentRepository) ExistsByUserAgent(userAgent string) (bool, error) {
+func (r *userAgentRepository) Exists(userAgent, xRequestedWith string) (bool, error) {
 	var count int64
 	err := r.db.
 		Model(&model.UserAgent{}).
-		Where("user_agent = ? AND deleted_at IS NULL", userAgent).
+		Where("user_agent = ? AND x_requested_with = ? AND deleted_at IS NULL", userAgent, xRequestedWith).
+		Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
+func (r *userAgentRepository) IsAllowed(userAgent, xRequestedWith string) (bool, error) {
+	var count int64
+	err := r.db.
+		Model(&model.UserAgent{}).
+		Where("deleted_at IS NULL AND (user_agent = ? OR x_requested_with = ?)", userAgent, xRequestedWith).
 		Count(&count).Error
 	if err != nil {
 		return false, err

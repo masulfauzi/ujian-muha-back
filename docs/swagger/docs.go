@@ -2815,7 +2815,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Dipanggil peserta saat membuka jadwal ujian. Jika belum pernah mulai, sesi nilai baru dibuat beserta seluruh baris jawaban kosong (soal diacak jika acak_soal aktif) dan status 201 dikembalikan. Jika sesi sudah ada dan belum wkt_selesai, dianggap resume dan status 200 dikembalikan (token tidak perlu dikirim ulang saat resume). Jika sudah wkt_selesai, request ditolak. Body token bersifat opsional secara umum — hanya wajib diisi jika jadwal ini mengaktifkan wajib_token; ambil kode yang berlaku lewat GET /ujian-token/current.",
+                "description": "Dipanggil peserta saat membuka jadwal ujian. Jika belum pernah mulai, sesi nilai baru dibuat beserta seluruh baris jawaban kosong (soal diacak jika acak_soal aktif) dan status 201 dikembalikan. Jika sesi sudah ada dan belum wkt_selesai, dianggap resume dan status 200 dikembalikan (token tidak perlu dikirim ulang saat resume). Jika sudah wkt_selesai, request ditolak. Body token bersifat opsional secara umum — hanya wajib diisi jika jadwal ini mengaktifkan wajib_token; ambil kode yang berlaku lewat GET /ujian-token/current. Header User-Agent atau X-Requested-With request ini juga wajib salah satunya terdaftar di whitelist /user-agent, kalau tidak ada yang cocok request ditolak 403.",
                 "consumes": [
                     "application/json"
                 ],
@@ -2888,6 +2888,12 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Token JWT tidak valid",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Kombinasi User-Agent + X-Requested-With tidak terdaftar di whitelist",
                         "schema": {
                             "$ref": "#/definitions/helpers.Response"
                         }
@@ -4646,6 +4652,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "Saat peserta memanggil POST /nilai/mulai-ujian/{id_jadwal}, request diloloskan jika header User-Agent COCOK dengan user_agent di baris manapun, ATAU header X-Requested-With cocok dengan x_requested_with di baris manapun (exact match, tidak harus baris yang sama). Lihat middleware.CheckAllowedUserAgent.",
                 "consumes": [
                     "application/json"
                 ],
@@ -5433,7 +5440,8 @@ const docTemplate = `{
         "dto.CreateUserAgentRequest": {
             "type": "object",
             "required": [
-                "user_agent"
+                "user_agent",
+                "x_requested_with"
             ],
             "properties": {
                 "keterangan": {
@@ -5442,6 +5450,10 @@ const docTemplate = `{
                 "user_agent": {
                     "type": "string",
                     "maxLength": 500
+                },
+                "x_requested_with": {
+                    "type": "string",
+                    "maxLength": 255
                 }
             }
         },
@@ -6565,7 +6577,8 @@ const docTemplate = `{
         "dto.UpdateUserAgentRequest": {
             "type": "object",
             "required": [
-                "user_agent"
+                "user_agent",
+                "x_requested_with"
             ],
             "properties": {
                 "keterangan": {
@@ -6574,6 +6587,10 @@ const docTemplate = `{
                 "user_agent": {
                     "type": "string",
                     "maxLength": 500
+                },
+                "x_requested_with": {
+                    "type": "string",
+                    "maxLength": 255
                 }
             }
         },
@@ -6630,6 +6647,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_agent": {
+                    "type": "string"
+                },
+                "x_requested_with": {
                     "type": "string"
                 }
             }
