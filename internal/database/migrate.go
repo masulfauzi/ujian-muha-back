@@ -12,6 +12,7 @@ import (
 	pesertamodel     "backend/internal/modules/peserta/model"
 	sectionmodel     "backend/internal/modules/section/model"
 	soalmodel        "backend/internal/modules/soal/model"
+	useragentmodel   "backend/internal/modules/user_agent/model"
 	usermodel        "backend/internal/modules/user/model"
 
 	"gorm.io/gorm"
@@ -50,6 +51,7 @@ func RunMigrations(db *gorm.DB) error {
 		&nilaimodel.Nilai{},
 		&jawabanmodel.Jawaban{},
 		&sectionmodel.Section{},
+		&useragentmodel.UserAgent{},
 	); err != nil {
 		return err
 	}

@@ -203,6 +203,16 @@ definitions:
     - password
     - username
     type: object
+  dto.CreateUserAgentRequest:
+    properties:
+      keterangan:
+        type: string
+      user_agent:
+        maxLength: 500
+        type: string
+    required:
+    - user_agent
+    type: object
   dto.CreateUserRequest:
     properties:
       email:
@@ -944,6 +954,16 @@ definitions:
     - nama
     - username
     type: object
+  dto.UpdateUserAgentRequest:
+    properties:
+      keterangan:
+        type: string
+      user_agent:
+        maxLength: 500
+        type: string
+    required:
+    - user_agent
+    type: object
   dto.UpdateUserRequest:
     properties:
       email:
@@ -951,6 +971,34 @@ definitions:
       name:
         type: string
       role:
+        type: string
+    type: object
+  dto.UserAgentListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.UserAgentResponse'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  dto.UserAgentResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      keterangan:
+        type: string
+      updated_at:
+        type: string
+      user_agent:
         type: string
     type: object
   dto.UserResponse:
@@ -3836,6 +3884,179 @@ paths:
       summary: Ambil token ujian yang sedang berlaku
       tags:
       - UjianToken
+  /user-agent:
+    get:
+      parameters:
+      - default: 1
+        description: Halaman
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Jumlah per halaman
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get all user agent successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserAgentListResponse'
+              type: object
+        "500":
+          description: Gagal mengambil data
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: List user agent yang boleh mengerjakan ujian
+      tags:
+      - User Agent
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Data user agent
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUserAgentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Create user agent successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserAgentResponse'
+              type: object
+        "400":
+          description: Validasi gagal
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Daftarkan user agent yang boleh mengerjakan ujian
+      tags:
+      - User Agent
+  /user-agent/{id}:
+    delete:
+      parameters:
+      - description: ID user agent (uuid)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete user agent successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Gagal menghapus
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Hapus user agent (soft delete)
+      tags:
+      - User Agent
+    get:
+      parameters:
+      - description: ID user agent (uuid)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get user agent successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserAgentResponse'
+              type: object
+        "404":
+          description: User agent tidak ditemukan
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      summary: Detail user agent
+      tags:
+      - User Agent
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID user agent (uuid)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Data user agent
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUserAgentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update user agent successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserAgentResponse'
+              type: object
+        "400":
+          description: Validasi gagal
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Update user agent
+      tags:
+      - User Agent
+  /user-agent/{id}/restore:
+    patch:
+      parameters:
+      - description: ID user agent (uuid)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Restore user agent successfully
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "400":
+          description: Gagal restore
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Restore user agent yang sudah dihapus
+      tags:
+      - User Agent
   /users:
     get:
       description: Mengambil daftar seluruh user (admin/guru).

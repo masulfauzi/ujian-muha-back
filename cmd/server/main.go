@@ -25,6 +25,7 @@ import (
 	sectionroutes "backend/internal/modules/section/routes"
 	soalroutes "backend/internal/modules/soal/routes"
 	ujiantokenroutes "backend/internal/modules/ujian_token/routes"
+	useragentroutes "backend/internal/modules/user_agent/routes"
 	userroutes "backend/internal/modules/user/routes"
 
 	"github.com/gofiber/fiber/v2"
@@ -115,4 +116,5 @@ func setupRoutes(app *fiber.App, appConfig *configs.AppConfig) {
 	jawabanroutes.SetupJawabanRoutes(app, database.DB)
 	sectionroutes.SetupSectionRoutes(app, database.DB)
 	ujiantokenroutes.SetupUjianTokenRoutes(app)
+	useragentroutes.SetupUserAgentRoutes(app, database.DB)
 }
