@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"log"
+
 	"backend/internal/helpers"
 	"backend/internal/modules/auth/dto"
 	authservice "backend/internal/modules/auth/service"
 	"backend/internal/modules/auth/validator"
+	loginlogservice "backend/internal/modules/login_log/service"
 	pesertaservice "backend/internal/modules/peserta/service"
 	userservice "backend/internal/modules/user/service"
 
@@ -13,16 +16,18 @@ import (
 )
 
 type AuthController struct {
-	authService    authservice.AuthService
-	userService    userservice.UserService
-	pesertaService pesertaservice.PesertaService
+	authService     authservice.AuthService
+	userService     userservice.UserService
+	pesertaService  pesertaservice.PesertaService
+	loginLogService loginlogservice.LoginLogService
 }
 
-func NewAuthController(authService authservice.AuthService, userService userservice.UserService, pesertaService pesertaservice.PesertaService) *AuthController {
+func NewAuthController(authService authservice.AuthService, userService userservice.UserService, pesertaService pesertaservice.PesertaService, loginLogService loginlogservice.LoginLogService) *AuthController {
 	return &AuthController{
-		authService:    authService,
-		userService:    userService,
-		pesertaService: pesertaService,
+		authService:     authService,
+		userService:     userService,
+		pesertaService:  pesertaService,
+		loginLogService: loginLogService,
 	}
 }
 
@@ -77,6 +82,26 @@ func (c *AuthController) Login(ctx *fiber.Ctx) error {
 	}
 
 	resp, err := c.authService.Login(&req)
+
+	logInput := &loginlogservice.RecordLoginInput{
+		Username:       req.Username,
+		UserAgent:      ctx.Get("User-Agent"),
+		XRequestedWith: ctx.Get("X-Requested-With"),
+		IPAddress:      ctx.IP(),
+	}
+	if err != nil {
+		logInput.Success = false
+		logInput.Keterangan = err.Error()
+	} else {
+		logInput.Success = true
+		logInput.Keterangan = "Login berhasil"
+		logInput.IDUser = resp.ID
+		logInput.Role = resp.Role
+	}
+	if logErr := c.loginLogService.RecordLogin(logInput); logErr != nil {
+		log.Println("gagal mencatat login log:", logErr)
+	}
+
 	if err != nil {
 		return helpers.ErrorResponse(ctx, fiber.StatusUnauthorized, err.Error(), nil)
 	}

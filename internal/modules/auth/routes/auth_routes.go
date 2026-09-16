@@ -5,6 +5,8 @@ import (
 	"backend/internal/modules/auth/controller"
 	authrepo "backend/internal/modules/auth/repository"
 	authsvc "backend/internal/modules/auth/service"
+	loginlogrepo "backend/internal/modules/login_log/repository"
+	loginlogsvc "backend/internal/modules/login_log/service"
 	pesertarepo "backend/internal/modules/peserta/repository"
 	pesertasvc "backend/internal/modules/peserta/service"
 	userrepo "backend/internal/modules/user/repository"
@@ -24,7 +26,10 @@ func SetupAuthRoutes(app *fiber.App, db *gorm.DB) {
 	pesertaRepo := pesertarepo.NewPesertaRepository(db)
 	pesertaSvc := pesertasvc.NewPesertaService(pesertaRepo)
 
-	ctrl := controller.NewAuthController(authSvc, userSvc, pesertaSvc)
+	loginLogRepo := loginlogrepo.NewLoginLogRepository(db)
+	loginLogSvc := loginlogsvc.NewLoginLogService(loginLogRepo)
+
+	ctrl := controller.NewAuthController(authSvc, userSvc, pesertaSvc, loginLogSvc)
 
 	api := app.Group("/api")
 	auth := api.Group("/auth")

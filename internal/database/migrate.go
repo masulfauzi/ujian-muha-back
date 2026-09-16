@@ -7,6 +7,7 @@ import (
 	jawabanmodel     "backend/internal/modules/jawaban/model"
 	jurusanmodel     "backend/internal/modules/jurusan/model"
 	kelasmodel       "backend/internal/modules/kelas/model"
+	loginlogmodel    "backend/internal/modules/login_log/model"
 	mapelmodel       "backend/internal/modules/mapel/model"
 	nilaimodel       "backend/internal/modules/nilai/model"
 	pesertamodel     "backend/internal/modules/peserta/model"
@@ -62,6 +63,7 @@ func RunMigrations(db *gorm.DB) error {
 		&jawabanmodel.Jawaban{},
 		&sectionmodel.Section{},
 		&useragentmodel.UserAgent{},
+		&loginlogmodel.LoginLog{},
 	); err != nil {
 		return err
 	}

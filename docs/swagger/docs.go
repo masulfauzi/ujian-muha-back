@@ -2258,6 +2258,71 @@ const docTemplate = `{
                 }
             }
         },
+        "/login-log": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Berisi username yang dipakai, status berhasil/gagal, user agent, X-Requested-With, dan IP address setiap percobaan login. Baris dicatat otomatis oleh POST /auth/login, tidak ada endpoint untuk menulis manual.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login Log"
+                ],
+                "summary": "List riwayat percobaan login (berhasil maupun gagal)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Halaman",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Jumlah per halaman",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter berdasarkan username (partial match)",
+                        "name": "username",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get all login log successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.LoginLogListResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Gagal mengambil data",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/mapel": {
             "get": {
                 "produces": [
@@ -5994,6 +6059,64 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginLogListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.LoginLogResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "total_page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.LoginLogResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "id_user": {
+                    "type": "string"
+                },
+                "ip_address": {
+                    "type": "string"
+                },
+                "keterangan": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "user_agent": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "x_requested_with": {
                     "type": "string"
                 }
             }

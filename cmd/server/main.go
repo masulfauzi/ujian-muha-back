@@ -20,6 +20,7 @@ import (
 	nilairoutes "backend/internal/modules/nilai/routes"
 	jurusanroutes "backend/internal/modules/jurusan/routes"
 	kelasroutes "backend/internal/modules/kelas/routes"
+	loginlogroutes "backend/internal/modules/login_log/routes"
 	mapelroutes "backend/internal/modules/mapel/routes"
 	pesertaroutes "backend/internal/modules/peserta/routes"
 	sectionroutes "backend/internal/modules/section/routes"
@@ -117,4 +118,5 @@ func setupRoutes(app *fiber.App, appConfig *configs.AppConfig) {
 	sectionroutes.SetupSectionRoutes(app, database.DB)
 	ujiantokenroutes.SetupUjianTokenRoutes(app)
 	useragentroutes.SetupUserAgentRoutes(app, database.DB)
+	loginlogroutes.SetupLoginLogRoutes(app, database.DB)
 }

@@ -572,6 +572,44 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.LoginLogListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.LoginLogResponse'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  dto.LoginLogResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      id_user:
+        type: string
+      ip_address:
+        type: string
+      keterangan:
+        type: string
+      role:
+        type: string
+      success:
+        type: boolean
+      user_agent:
+        type: string
+      username:
+        type: string
+      x_requested_with:
+        type: string
+    type: object
   dto.LoginRequest:
     properties:
       password:
@@ -2418,6 +2456,47 @@ paths:
       summary: Restore kelas yang sudah dihapus
       tags:
       - Kelas
+  /login-log:
+    get:
+      description: Berisi username yang dipakai, status berhasil/gagal, user agent,
+        X-Requested-With, dan IP address setiap percobaan login. Baris dicatat otomatis
+        oleh POST /auth/login, tidak ada endpoint untuk menulis manual.
+      parameters:
+      - default: 1
+        description: Halaman
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Jumlah per halaman
+        in: query
+        name: page_size
+        type: integer
+      - description: Filter berdasarkan username (partial match)
+        in: query
+        name: username
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get all login log successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.LoginLogListResponse'
+              type: object
+        "500":
+          description: Gagal mengambil data
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: List riwayat percobaan login (berhasil maupun gagal)
+      tags:
+      - Login Log
   /mapel:
     get:
       parameters:
