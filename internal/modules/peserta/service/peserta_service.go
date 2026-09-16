@@ -40,6 +40,7 @@ type PesertaService interface {
 	UpdatePeserta(id string, req *dto.UpdatePesertaRequest) (*dto.PesertaResponse, error)
 	DeletePeserta(id string) error
 	RestorePeserta(id string) error
+	DeleteAllPeserta(ctx context.Context) (int64, error)
 	GenerateKartuUjianPDF(idKelas string) ([]byte, error)
 	ImportPesertaFromExcel(ctx context.Context, req *dto.ImportPesertaRequest) (*dto.ImportPesertaResponse, error)
 	GenerateImportTemplate() ([]byte, error)
@@ -171,6 +172,12 @@ func (s *pesertaService) DeletePeserta(id string) error {
 
 func (s *pesertaService) RestorePeserta(id string) error {
 	return s.repo.Restore(id)
+}
+
+// DeleteAllPeserta menghapus PERMANEN seluruh peserta di seluruh sistem (bukan
+// soft-delete, tidak bisa di-restore). Mengembalikan jumlah baris yang terhapus.
+func (s *pesertaService) DeleteAllPeserta(ctx context.Context) (int64, error) {
+	return s.repo.DeleteAll(ctx)
 }
 
 // GenerateKartuUjianPDF membuat PDF kartu peserta ujian untuk satu kelas, ditata sebagai

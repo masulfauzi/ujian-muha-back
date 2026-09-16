@@ -3367,6 +3367,44 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Menghapus semua baris di tabel peserta secara permanen (bukan soft-delete, tidak bisa di-restore). Wajib menyertakan query param confirm=true sebagai pengaman agar tidak terpicu tidak sengaja. Tidak menghapus record nilai/jawaban terkait — record itu jadi yatim (orphan) mereferensikan id peserta yang sudah tidak ada.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Peserta"
+                ],
+                "summary": "Hapus PERMANEN seluruh peserta di seluruh sistem",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wajib diisi 'true' untuk konfirmasi penghapusan",
+                        "name": "confirm",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete all peserta successfully",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Konfirmasi tidak ada atau gagal menghapus",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
             }
         },
         "/peserta/import": {

@@ -40,6 +40,7 @@ type PesertaRepository interface {
 	Update(peserta *model.Peserta) error
 	Delete(id string) error
 	Restore(id string) error
+	DeleteAll(ctx context.Context) (int64, error)
 	BulkCreatePeserta(ctx context.Context, pesertaList []model.Peserta) error
 	GetKelasByNamaList(ctx context.Context, lowerNamaList []string) ([]KelasLookup, error)
 }
@@ -135,6 +136,18 @@ func (r *pesertaRepository) Delete(id string) error {
 
 func (r *pesertaRepository) Restore(id string) error {
 	return r.db.Table("peserta").Where("id = ?", id).Update("deleted_at", nil).Error
+}
+
+// DeleteAll menghapus PERMANEN seluruh baris di tabel peserta (bukan soft-delete).
+// Tidak menyentuh tabel nilai/jawaban yang mungkin masih mereferensikan id peserta
+// yang dihapus (tidak ada foreign key constraint di skema saat ini, jadi baris itu
+// tidak akan gagal dihapus, tapi record nilai/jawaban terkait jadi yatim/orphan).
+func (r *pesertaRepository) DeleteAll(ctx context.Context) (int64, error) {
+	result := r.db.WithContext(ctx).
+		Session(&gorm.Session{AllowGlobalUpdate: true}).
+		Unscoped().
+		Delete(&model.Peserta{})
+	return result.RowsAffected, result.Error
 }
 
 func (r *pesertaRepository) BulkCreatePeserta(ctx context.Context, pesertaList []model.Peserta) error {

@@ -144,6 +144,35 @@ func (c *PesertaController) DeletePeserta(ctx *fiber.Ctx) error {
 	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Delete peserta successfully", nil)
 }
 
+// DeleteAllPeserta godoc
+// @Summary Hapus PERMANEN seluruh peserta di seluruh sistem
+// @Description Menghapus semua baris di tabel peserta secara permanen (bukan soft-delete, tidak bisa di-restore). Wajib menyertakan query param confirm=true sebagai pengaman agar tidak terpicu tidak sengaja. Tidak menghapus record nilai/jawaban terkait — record itu jadi yatim (orphan) mereferensikan id peserta yang sudah tidak ada.
+// @Tags Peserta
+// @Produce json
+// @Security BearerAuth
+// @Param confirm query string true "Wajib diisi 'true' untuk konfirmasi penghapusan"
+// @Success 200 {object} helpers.Response "Delete all peserta successfully"
+// @Failure 400 {object} helpers.Response "Konfirmasi tidak ada atau gagal menghapus"
+// @Router /peserta [delete]
+func (c *PesertaController) DeleteAllPeserta(ctx *fiber.Ctx) error {
+	if ctx.Query("confirm") != "true" {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "Konfirmasi diperlukan", map[string]string{
+			"error": "Tambahkan query param confirm=true untuk menghapus SEMUA peserta secara permanen",
+		})
+	}
+
+	count, err := c.service.DeleteAllPeserta(ctx.Context())
+	if err != nil {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "Gagal menghapus semua peserta", map[string]string{
+			"error": err.Error(),
+		})
+	}
+
+	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Delete all peserta successfully", map[string]int64{
+		"deleted_count": count,
+	})
+}
+
 // RestorePeserta godoc
 // @Summary Restore peserta yang sudah dihapus
 // @Tags Peserta
