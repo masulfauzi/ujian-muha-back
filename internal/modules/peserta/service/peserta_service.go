@@ -193,12 +193,18 @@ func (s *pesertaService) GenerateKartuUjianPDF(idKelas string) ([]byte, error) {
 func buildKartuUjianPDF(pesertaList []repository.PesertaWithKelas) ([]byte, error) {
 	pdf := fpdf.New("P", "mm", "A4", "")
 	pdf.SetMargins(10, 10, 10)
+	// Paginasi kartu dikontrol manual lewat grid (lihat perPage & i%perPage di bawah),
+	// bukan lewat fpdf. Auto page break bawaan fpdf.New() (trigger di tinggi_halaman-20mm)
+	// harus dimatikan, karena kalau tidak, baris kartu terakhir yang mepet ke trigger itu
+	// bisa "terpotong" — border kartu tergambar di satu halaman tapi teksnya otomatis
+	// terdorong fpdf ke halaman berikutnya.
+	pdf.SetAutoPageBreak(false, 0)
 
 	const (
 		cols, rows       = 2, 5
 		cardW, cardH     = 90.0, 50.0
 		marginX, marginY = 10.0, 10.0
-		gapX, gapY       = 10.0, 5.0
+		gapX, gapY       = 10.0, 3.0
 		logoSize         = 9.0
 	)
 	perPage := cols * rows
