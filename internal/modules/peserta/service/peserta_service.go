@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"backend/internal/assets"
 	"backend/internal/constants"
 	"backend/internal/modules/peserta/dto"
 	"backend/internal/modules/peserta/model"
@@ -174,8 +175,9 @@ func (s *pesertaService) RestorePeserta(id string) error {
 
 // GenerateKartuUjianPDF membuat PDF kartu peserta ujian untuk satu kelas, ditata sebagai
 // grid kartu (2 kolom x 5 baris per halaman A4) dengan garis putus-putus di tiap kartu
-// sebagai panduan gunting. Kartu bersifat global (tidak terikat jadwal/ujian tertentu) dan
-// menampilkan nama, username, password, dan kelas.
+// sebagai panduan gunting. Kartu bersifat global (tidak terikat jadwal/ujian tertentu),
+// menampilkan logo (lihat internal/assets/logo.png) di pojok kiri atas tiap kartu, serta
+// nama, username, password, dan kelas peserta.
 func (s *pesertaService) GenerateKartuUjianPDF(idKelas string) ([]byte, error) {
 	pesertaList, total, err := s.repo.GetAll(1, 99999, idKelas)
 	if err != nil {
@@ -197,8 +199,12 @@ func buildKartuUjianPDF(pesertaList []repository.PesertaWithKelas) ([]byte, erro
 		cardW, cardH     = 90.0, 50.0
 		marginX, marginY = 10.0, 10.0
 		gapX, gapY       = 10.0, 5.0
+		logoSize         = 9.0
 	)
 	perPage := cols * rows
+
+	logoOpt := fpdf.ImageOptions{ImageType: "PNG"}
+	pdf.RegisterImageOptionsReader("kartu-logo", logoOpt, bytes.NewReader(assets.Logo))
 
 	for i, p := range pesertaList {
 		if i%perPage == 0 {
@@ -214,6 +220,8 @@ func buildKartuUjianPDF(pesertaList []repository.PesertaWithKelas) ([]byte, erro
 		pdf.SetDashPattern([]float64{2, 2}, 0)
 		pdf.Rect(x, y, cardW, cardH, "D")
 		pdf.SetDashPattern([]float64{}, 0)
+
+		pdf.ImageOptions("kartu-logo", x+3, y+2, logoSize, logoSize, false, logoOpt, 0, "")
 
 		pdf.SetXY(x, y+5)
 		pdf.SetFont("Helvetica", "B", 11)
