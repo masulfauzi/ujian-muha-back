@@ -65,6 +65,15 @@ func main() {
 
 	app := fiber.New(fiber.Config{
 		AppName: appConfig.Name,
+		// Supaya ctx.IP()/ctx.IPs() (dipakai login_log & middleware lain) mencatat
+		// IP client asli, bukan IP load balancer/reverse proxy di depannya. Header
+		// X-Forwarded-For hanya dipercaya kalau koneksi TCP langsungnya datang dari
+		// salah satu TrustedProxies (isi via env TRUSTED_PROXIES) — kalau kosong,
+		// perilakunya sama seperti tanpa konfigurasi ini (aman secara default).
+		EnableTrustedProxyCheck: true,
+		TrustedProxies:          appConfig.TrustedProxies,
+		ProxyHeader:             fiber.HeaderXForwardedFor,
+		EnableIPValidation:      true,
 	})
 
 	app.Use(middleware.CORS())
