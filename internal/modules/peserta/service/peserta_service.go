@@ -36,7 +36,7 @@ func pesertaWithKelasToResponse(p *repository.PesertaWithKelas) *dto.PesertaResp
 type PesertaService interface {
 	CreatePeserta(req *dto.CreatePesertaRequest) (*dto.PesertaResponse, error)
 	GetPesertaByID(id string) (*dto.PesertaResponse, error)
-	GetAllPeserta(page, pageSize int, idKelas string) (*dto.PesertaListResponse, error)
+	GetAllPeserta(page, pageSize int, idKelas, search string) (*dto.PesertaListResponse, error)
 	UpdatePeserta(id string, req *dto.UpdatePesertaRequest) (*dto.PesertaResponse, error)
 	DeletePeserta(id string) error
 	RestorePeserta(id string) error
@@ -90,7 +90,7 @@ func (s *pesertaService) GetPesertaByID(id string) (*dto.PesertaResponse, error)
 	return pesertaWithKelasToResponse(peserta), nil
 }
 
-func (s *pesertaService) GetAllPeserta(page, pageSize int, idKelas string) (*dto.PesertaListResponse, error) {
+func (s *pesertaService) GetAllPeserta(page, pageSize int, idKelas, search string) (*dto.PesertaListResponse, error) {
 	if page <= 0 {
 		page = 1
 	}
@@ -98,7 +98,7 @@ func (s *pesertaService) GetAllPeserta(page, pageSize int, idKelas string) (*dto
 		pageSize = 10
 	}
 
-	pesertaList, total, err := s.repo.GetAll(page, pageSize, idKelas)
+	pesertaList, total, err := s.repo.GetAll(page, pageSize, idKelas, search)
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func (s *pesertaService) DeleteAllPeserta(ctx context.Context) (int64, error) {
 // menampilkan logo (lihat internal/assets/logo.png) di pojok kiri atas tiap kartu, serta
 // nama, username, password, dan kelas peserta.
 func (s *pesertaService) GenerateKartuUjianPDF(idKelas string) ([]byte, error) {
-	pesertaList, total, err := s.repo.GetAll(1, 99999, idKelas)
+	pesertaList, total, err := s.repo.GetAll(1, 99999, idKelas, "")
 	if err != nil {
 		return nil, err
 	}

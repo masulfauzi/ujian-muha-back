@@ -3466,6 +3466,12 @@ const docTemplate = `{
                         "description": "Filter berdasarkan ID kelas (uuid)",
                         "name": "id_kelas",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Cari berdasarkan nama atau username (partial match)",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {

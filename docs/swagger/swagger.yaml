@@ -3296,6 +3296,10 @@ paths:
         in: query
         name: id_kelas
         type: string
+      - description: Cari berdasarkan nama atau username (partial match)
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:

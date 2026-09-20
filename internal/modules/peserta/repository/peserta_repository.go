@@ -34,7 +34,7 @@ func (PesertaWithKelas) TableName() string {
 type PesertaRepository interface {
 	Create(peserta *model.Peserta) error
 	GetByID(id string) (*PesertaWithKelas, error)
-	GetAll(page, pageSize int, idKelas string) ([]PesertaWithKelas, int64, error)
+	GetAll(page, pageSize int, idKelas, search string) ([]PesertaWithKelas, int64, error)
 	GetRawByID(id string) (*model.Peserta, error)
 	GetByUsername(username string) (*model.Peserta, error)
 	Update(peserta *model.Peserta) error
@@ -70,7 +70,7 @@ func (r *pesertaRepository) GetByID(id string) (*PesertaWithKelas, error) {
 	return &peserta, nil
 }
 
-func (r *pesertaRepository) GetAll(page, pageSize int, idKelas string) ([]PesertaWithKelas, int64, error) {
+func (r *pesertaRepository) GetAll(page, pageSize int, idKelas, search string) ([]PesertaWithKelas, int64, error) {
 	var pesertaList []PesertaWithKelas
 	var total int64
 
@@ -90,6 +90,9 @@ func (r *pesertaRepository) GetAll(page, pageSize int, idKelas string) ([]Pesert
 	if idKelas != "" {
 		countQuery = countQuery.Where("peserta.id_kelas = ?", idKelas)
 	}
+	if search != "" {
+		countQuery = countQuery.Where("peserta.nama ILIKE ? OR peserta.username ILIKE ?", "%"+search+"%", "%"+search+"%")
+	}
 
 	if err := countQuery.Count(&total).Error; err != nil {
 		return nil, 0, err
@@ -102,6 +105,9 @@ func (r *pesertaRepository) GetAll(page, pageSize int, idKelas string) ([]Pesert
 
 	if idKelas != "" {
 		query = query.Where("peserta.id_kelas = ?", idKelas)
+	}
+	if search != "" {
+		query = query.Where("peserta.nama ILIKE ? OR peserta.username ILIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 
 	err := query.Offset(offset).Limit(pageSize).Find(&pesertaList).Error

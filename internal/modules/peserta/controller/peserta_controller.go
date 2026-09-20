@@ -52,6 +52,7 @@ func (c *PesertaController) CreatePeserta(ctx *fiber.Ctx) error {
 // @Param page query int false "Halaman" default(1)
 // @Param page_size query int false "Jumlah per halaman" default(10)
 // @Param id_kelas query string false "Filter berdasarkan ID kelas (uuid)"
+// @Param search query string false "Cari berdasarkan nama atau username (partial match)"
 // @Success 200 {object} helpers.Response{data=dto.PesertaListResponse} "Get all peserta successfully"
 // @Failure 500 {object} helpers.Response "Gagal mengambil data"
 // @Router /peserta [get]
@@ -59,6 +60,7 @@ func (c *PesertaController) GetAllPeserta(ctx *fiber.Ctx) error {
 	page := ctx.Query("page", "1")
 	pageSize := ctx.Query("page_size", "10")
 	idKelas := ctx.Query("id_kelas", "")
+	search := ctx.Query("search", "")
 
 	pageNum, err := strconv.Atoi(page)
 	if err != nil || pageNum <= 0 {
@@ -70,7 +72,7 @@ func (c *PesertaController) GetAllPeserta(ctx *fiber.Ctx) error {
 		pageSizeNum = 10
 	}
 
-	resp, err := c.service.GetAllPeserta(pageNum, pageSizeNum, idKelas)
+	resp, err := c.service.GetAllPeserta(pageNum, pageSizeNum, idKelas, search)
 	if err != nil {
 		return helpers.ErrorResponse(ctx, fiber.StatusInternalServerError, err.Error(), nil)
 	}
