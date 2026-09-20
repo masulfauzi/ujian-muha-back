@@ -6487,6 +6487,9 @@ const docTemplate = `{
                 "nama_kelas": {
                     "type": "string"
                 },
+                "password": {
+                    "type": "string"
+                },
                 "updated_at": {
                     "type": "string"
                 },

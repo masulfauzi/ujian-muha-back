@@ -28,6 +28,7 @@ func pesertaWithKelasToResponse(p *repository.PesertaWithKelas) *dto.PesertaResp
 		IDKelas:   p.IDKelas,
 		NamaKelas: p.NamaKelas,
 		Username:  p.Username,
+		Password:  p.Password,
 		CreatedAt: p.CreatedAt,
 		UpdatedAt: p.UpdatedAt,
 	}

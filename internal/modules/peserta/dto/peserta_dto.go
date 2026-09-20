@@ -25,6 +25,7 @@ type PesertaResponse struct {
 	IDKelas   string `json:"id_kelas"`
 	NamaKelas string `json:"nama_kelas"`
 	Username  string `json:"username"`
+	Password  string `json:"password"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
 }
