@@ -650,6 +650,54 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.MonitoringPesertaResponse:
+    properties:
+      aktivitas_terakhir:
+        type: string
+      id_kelas:
+        type: string
+      id_nilai:
+        type: string
+      id_peserta:
+        type: string
+      nama_kelas:
+        type: string
+      nama_peserta:
+        type: string
+      nilai:
+        type: number
+      status:
+        description: belum_mulai | sedang_mengerjakan | selesai
+        type: string
+      username:
+        type: string
+      wkt_mulai:
+        type: string
+      wkt_selesai:
+        type: string
+    type: object
+  dto.MonitoringResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.MonitoringPesertaResponse'
+        type: array
+      nama_ujian:
+        type: string
+      summary:
+        $ref: '#/definitions/dto.MonitoringSummary'
+    type: object
+  dto.MonitoringSummary:
+    properties:
+      belum_mulai:
+        type: integer
+      sedang_mengerjakan:
+        type: integer
+      selesai:
+        type: integer
+      total:
+        type: integer
+    type: object
   dto.MulaiUjianRequest:
     properties:
       token:
@@ -2935,6 +2983,39 @@ paths:
       summary: Cek status section aktif (read-only, untuk polling countdown)
       tags:
       - Nilai
+  /nilai/{id}/selesaikan-paksa:
+    post:
+      description: Dipakai dari dashboard monitoring untuk menyelesaikan ujian peserta
+        yang macet/lupa submit sendiri. Nilai dihitung otomatis dari jawaban yang
+        sudah sempat diisi peserta (mekanisme sama seperti saat peserta submit sendiri
+        lewat PUT /nilai/{id}). Ditolak jika sesi ini sudah pernah diselesaikan sebelumnya.
+      parameters:
+      - description: ID nilai (uuid) — didapat dari response GET /nilai/monitoring/{id_jadwal}
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Selesaikan ujian successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.NilaiResponse'
+              type: object
+        "400":
+          description: Sesi tidak ditemukan atau sudah selesai sebelumnya
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Paksa selesaikan ujian peserta (admin)
+      tags:
+      - Nilai
   /nilai/analisis/{id_jadwal}:
     get:
       description: 'Menghasilkan ZIP berisi satu .xlsx per kelas: baris = peserta,
@@ -3027,6 +3108,45 @@ paths:
           schema:
             $ref: '#/definitions/helpers.Response'
       summary: List nilai semua peserta untuk satu jadwal
+      tags:
+      - Nilai
+  /nilai/monitoring/{id_jadwal}:
+    get:
+      description: 'Berbeda dengan GET /nilai/jadwal/{id_jadwal} (yang hanya baca
+        dari tabel nilai), endpoint ini menampilkan SEMUA peserta yang terdaftar pada
+        jadwal ini (lewat kelas yang di-assign ke jadwal), termasuk yang belum pernah
+        mulai ujian sama sekali. Status per peserta: belum_mulai, sedang_mengerjakan,
+        atau selesai.'
+      parameters:
+      - description: ID jadwal (uuid)
+        in: path
+        name: id_jadwal
+        required: true
+        type: string
+      - description: Filter ke satu kelas saja (uuid); kosongkan untuk semua kelas
+          yang terdaftar di jadwal ini
+        in: query
+        name: id_kelas
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get monitoring successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.MonitoringResponse'
+              type: object
+        "400":
+          description: Jadwal tidak ditemukan
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Monitoring status pengerjaan ujian semua peserta pada satu jadwal
       tags:
       - Nilai
   /nilai/mulai-ujian/{id_jadwal}:

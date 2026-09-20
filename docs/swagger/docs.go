@@ -2873,6 +2873,64 @@ const docTemplate = `{
                 }
             }
         },
+        "/nilai/monitoring/{id_jadwal}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Berbeda dengan GET /nilai/jadwal/{id_jadwal} (yang hanya baca dari tabel nilai), endpoint ini menampilkan SEMUA peserta yang terdaftar pada jadwal ini (lewat kelas yang di-assign ke jadwal), termasuk yang belum pernah mulai ujian sama sekali. Status per peserta: belum_mulai, sedang_mengerjakan, atau selesai.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Nilai"
+                ],
+                "summary": "Monitoring status pengerjaan ujian semua peserta pada satu jadwal",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID jadwal (uuid)",
+                        "name": "id_jadwal",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter ke satu kelas saja (uuid); kosongkan untuk semua kelas yang terdaftar di jadwal ini",
+                        "name": "id_kelas",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get monitoring successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.MonitoringResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Jadwal tidak ditemukan",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/nilai/mulai-ujian/{id_jadwal}": {
             "post": {
                 "security": [
@@ -3320,6 +3378,58 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Token tidak valid atau bukan pemilik sesi ini",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/nilai/{id}/selesaikan-paksa": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Dipakai dari dashboard monitoring untuk menyelesaikan ujian peserta yang macet/lupa submit sendiri. Nilai dihitung otomatis dari jawaban yang sudah sempat diisi peserta (mekanisme sama seperti saat peserta submit sendiri lewat PUT /nilai/{id}). Ditolak jika sesi ini sudah pernah diselesaikan sebelumnya.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Nilai"
+                ],
+                "summary": "Paksa selesaikan ujian peserta (admin)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID nilai (uuid) — didapat dari response GET /nilai/monitoring/{id_jadwal}",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Selesaikan ujian successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.NilaiResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Sesi tidak ditemukan atau sudah selesai sebelumnya",
                         "schema": {
                             "$ref": "#/definitions/helpers.Response"
                         }
@@ -6179,6 +6289,79 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.MonitoringPesertaResponse": {
+            "type": "object",
+            "properties": {
+                "aktivitas_terakhir": {
+                    "type": "string"
+                },
+                "id_kelas": {
+                    "type": "string"
+                },
+                "id_nilai": {
+                    "type": "string"
+                },
+                "id_peserta": {
+                    "type": "string"
+                },
+                "nama_kelas": {
+                    "type": "string"
+                },
+                "nama_peserta": {
+                    "type": "string"
+                },
+                "nilai": {
+                    "type": "number"
+                },
+                "status": {
+                    "description": "belum_mulai | sedang_mengerjakan | selesai",
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "wkt_mulai": {
+                    "type": "string"
+                },
+                "wkt_selesai": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.MonitoringResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.MonitoringPesertaResponse"
+                    }
+                },
+                "nama_ujian": {
+                    "type": "string"
+                },
+                "summary": {
+                    "$ref": "#/definitions/dto.MonitoringSummary"
+                }
+            }
+        },
+        "dto.MonitoringSummary": {
+            "type": "object",
+            "properties": {
+                "belum_mulai": {
+                    "type": "integer"
+                },
+                "sedang_mengerjakan": {
+                    "type": "integer"
+                },
+                "selesai": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },

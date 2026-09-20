@@ -31,6 +31,23 @@ type NilaiExportRow struct {
 	WktSelesai  *string `gorm:"column:wkt_selesai"`
 }
 
+// MonitoringRow adalah satu baris hasil peserta LEFT JOIN nilai untuk satu jadwal
+// (lintas semua kelas yang terdaftar di jadwal itu, atau satu kelas saja jika
+// difilter). IDNilai/WktMulai/dll bernilai nil jika peserta belum pernah mulai
+// ujian ini sama sekali — status akhirnya ditentukan di service layer.
+type MonitoringRow struct {
+	IDPeserta         string  `gorm:"column:id_peserta"`
+	NamaPeserta       string  `gorm:"column:nama_peserta"`
+	Username          string  `gorm:"column:username"`
+	IDKelas           string  `gorm:"column:id_kelas"`
+	NamaKelas         string  `gorm:"column:nama_kelas"`
+	IDNilai           *string `gorm:"column:id_nilai"`
+	Nilai             float64 `gorm:"column:nilai"`
+	WktMulai          *string `gorm:"column:wkt_mulai"`
+	AktivitasTerakhir *string `gorm:"column:aktivitas_terakhir"`
+	WktSelesai        *string `gorm:"column:wkt_selesai"`
+}
+
 type NilaiRepository interface {
 	Create(nilai *model.Nilai) error
 	GetByID(id string) (*model.Nilai, error)
@@ -39,6 +56,7 @@ type NilaiRepository interface {
 	GetByPesertaID(idPeserta string, page, pageSize int) ([]NilaiWithDetail, int64, error)
 	GetByJadwalID(idJadwal string, page, pageSize int) ([]NilaiWithDetail, int64, error)
 	GetByJadwalAndKelas(idJadwal, idKelas string) ([]NilaiExportRow, error)
+	GetMonitoringByJadwal(idJadwal, idKelas string) ([]MonitoringRow, error)
 	CheckDuplicate(idPeserta, idJadwal string) (bool, error)
 	GetByPesertaAndJadwal(idPeserta, idJadwal string) (*model.Nilai, error)
 	HitungNilai(idNilai string) (float64, error)
@@ -179,6 +197,42 @@ func (r *nilaiRepository) GetByJadwalAndKelas(idJadwal, idKelas string) ([]Nilai
 		Joins("LEFT JOIN nilai ON peserta.id = nilai.id_peserta AND nilai.id_jadwal = ? AND nilai.deleted_at IS NULL", idJadwal).
 		Where("peserta.id_kelas = ? AND peserta.deleted_at IS NULL", idKelas).
 		Order("peserta.nama ASC").
+		Scan(&results).Error
+	return results, err
+}
+
+// GetMonitoringByJadwal mengambil semua peserta yang terdaftar pada jadwal ini
+// (lewat jadwal_kelas -> kelas -> peserta) LEFT JOIN nilai, sehingga peserta
+// yang belum pernah mulai ujian sekalipun tetap ikut muncul (dengan id_nilai
+// dkk bernilai nil). idKelas kosong berarti semua kelas yang terdaftar di
+// jadwal ini digabung jadi satu list.
+func (r *nilaiRepository) GetMonitoringByJadwal(idJadwal, idKelas string) ([]MonitoringRow, error) {
+	var results []MonitoringRow
+	query := r.db.
+		Table("peserta").
+		Select(`
+			peserta.id AS id_peserta,
+			peserta.nama AS nama_peserta,
+			peserta.username,
+			kelas.id AS id_kelas,
+			kelas.nama_kelas,
+			nilai.id AS id_nilai,
+			COALESCE(nilai.nilai, 0) AS nilai,
+			TO_CHAR(nilai.wkt_mulai AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS wkt_mulai,
+			TO_CHAR(nilai.aktivitas_terakhir AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS aktivitas_terakhir,
+			TO_CHAR(nilai.wkt_selesai AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS wkt_selesai
+		`).
+		Joins("INNER JOIN kelas ON peserta.id_kelas = kelas.id").
+		Joins("INNER JOIN jadwal_kelas ON jadwal_kelas.id_kelas = kelas.id AND jadwal_kelas.id_jadwal = ?", idJadwal).
+		Joins("LEFT JOIN nilai ON nilai.id_peserta = peserta.id AND nilai.id_jadwal = ? AND nilai.deleted_at IS NULL", idJadwal).
+		Where("peserta.deleted_at IS NULL")
+
+	if idKelas != "" {
+		query = query.Where("kelas.id = ?", idKelas)
+	}
+
+	err := query.
+		Order("kelas.nama_kelas ASC, peserta.nama ASC").
 		Scan(&results).Error
 	return results, err
 }

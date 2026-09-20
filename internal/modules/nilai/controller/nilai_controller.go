@@ -168,6 +168,29 @@ func (c *NilaiController) GetNilaiByJadwal(ctx *fiber.Ctx) error {
 	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Get nilai by jadwal successfully", resp)
 }
 
+// GetMonitoring godoc
+// @Summary Monitoring status pengerjaan ujian semua peserta pada satu jadwal
+// @Description Berbeda dengan GET /nilai/jadwal/{id_jadwal} (yang hanya baca dari tabel nilai), endpoint ini menampilkan SEMUA peserta yang terdaftar pada jadwal ini (lewat kelas yang di-assign ke jadwal), termasuk yang belum pernah mulai ujian sama sekali. Status per peserta: belum_mulai, sedang_mengerjakan, atau selesai.
+// @Tags Nilai
+// @Produce json
+// @Security BearerAuth
+// @Param id_jadwal path string true "ID jadwal (uuid)"
+// @Param id_kelas query string false "Filter ke satu kelas saja (uuid); kosongkan untuk semua kelas yang terdaftar di jadwal ini"
+// @Success 200 {object} helpers.Response{data=dto.MonitoringResponse} "Get monitoring successfully"
+// @Failure 400 {object} helpers.Response "Jadwal tidak ditemukan"
+// @Router /nilai/monitoring/{id_jadwal} [get]
+func (c *NilaiController) GetMonitoring(ctx *fiber.Ctx) error {
+	idJadwal := ctx.Params("id_jadwal")
+	idKelas := ctx.Query("id_kelas", "")
+
+	resp, err := c.service.GetMonitoringByJadwal(idJadwal, idKelas)
+	if err != nil {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, err.Error(), nil)
+	}
+
+	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Get monitoring successfully", resp)
+}
+
 // UpdateNilai godoc
 // @Summary Update data nilai / selesaikan ujian
 // @Description Mengisi wkt_selesai akan otomatis memicu penghitungan ulang nilai akhir berdasarkan jawaban yang sudah masuk.
@@ -194,6 +217,27 @@ func (c *NilaiController) UpdateNilai(ctx *fiber.Ctx) error {
 	}
 
 	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Update nilai successfully", resp)
+}
+
+// ForceSelesaikanUjian godoc
+// @Summary Paksa selesaikan ujian peserta (admin)
+// @Description Dipakai dari dashboard monitoring untuk menyelesaikan ujian peserta yang macet/lupa submit sendiri. Nilai dihitung otomatis dari jawaban yang sudah sempat diisi peserta (mekanisme sama seperti saat peserta submit sendiri lewat PUT /nilai/{id}). Ditolak jika sesi ini sudah pernah diselesaikan sebelumnya.
+// @Tags Nilai
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "ID nilai (uuid) — didapat dari response GET /nilai/monitoring/{id_jadwal}"
+// @Success 200 {object} helpers.Response{data=dto.NilaiResponse} "Selesaikan ujian successfully"
+// @Failure 400 {object} helpers.Response "Sesi tidak ditemukan atau sudah selesai sebelumnya"
+// @Router /nilai/{id}/selesaikan-paksa [post]
+func (c *NilaiController) ForceSelesaikanUjian(ctx *fiber.Ctx) error {
+	id := ctx.Params("id")
+
+	resp, err := c.service.ForceSelesaikanUjian(id)
+	if err != nil {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, err.Error(), nil)
+	}
+
+	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Selesaikan ujian successfully", resp)
 }
 
 // DeleteNilai godoc

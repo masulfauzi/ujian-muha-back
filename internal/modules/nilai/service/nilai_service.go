@@ -61,6 +61,8 @@ type NilaiService interface {
 	MulaiUjian(idPeserta, idJadwal, token string) (*dto.NilaiResponse, bool, error)
 	ExportNilaiByJadwal(idJadwal string) (*ExportResult, error)
 	AnalisisSoalByJadwal(idJadwal string) (*ExportResult, error)
+	GetMonitoringByJadwal(idJadwal, idKelas string) (*dto.MonitoringResponse, error)
+	ForceSelesaikanUjian(id string) (*dto.NilaiResponse, error)
 	AdvanceSection(idNilai, idPeserta string) (*dto.SectionProgressResponse, error)
 	GetSectionStatus(idNilai, idPeserta string) (*dto.SectionProgressResponse, error)
 }
@@ -257,6 +259,44 @@ func (s *nilaiService) UpdateNilai(id string, req *dto.UpdateNilaiRequest) (*dto
 			existing.Nilai = nilai
 		}
 	}
+
+	if err := s.repo.Update(existing); err != nil {
+		return nil, err
+	}
+
+	updated, err := s.repo.GetByIDWithDetail(id)
+	if err != nil {
+		return nil, err
+	}
+	return detailToResponse(updated), nil
+}
+
+// ForceSelesaikanUjian dipanggil admin untuk memaksa selesaikan sesi ujian peserta
+// (mis. peserta lupa submit atau koneksinya terputus). Nilai dihitung ulang dari
+// jawaban yang sudah sempat diisi lewat repo.HitungNilai — mekanisme yang sama
+// persis dipakai saat peserta submit sendiri via UpdateNilai di atas.
+func (s *nilaiService) ForceSelesaikanUjian(id string) (*dto.NilaiResponse, error) {
+	existing, err := s.repo.GetByID(id)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New(constants.ErrNotFound)
+		}
+		return nil, err
+	}
+
+	if existing.WktSelesai != nil {
+		return nil, errors.New("ujian peserta ini sudah selesai")
+	}
+
+	now := time.Now().In(jakartaLoc)
+	existing.WktSelesai = &now
+	existing.AktivitasTerakhir = &now
+
+	nilai, err := s.repo.HitungNilai(id)
+	if err != nil {
+		return nil, err
+	}
+	existing.Nilai = nilai
 
 	if err := s.repo.Update(existing); err != nil {
 		return nil, err
@@ -696,6 +736,63 @@ func (s *nilaiService) ExportNilaiByJadwal(idJadwal string) (*ExportResult, erro
 	return &ExportResult{
 		ZipBytes:  zipBuf.Bytes(),
 		NamaUjian: namaUjian,
+	}, nil
+}
+
+// GetMonitoringByJadwal mengembalikan status pengerjaan semua peserta yang terdaftar
+// pada jadwal ini (termasuk yang belum pernah mulai ujian sama sekali — beda dengan
+// GetNilaiByJadwal yang hanya baca dari tabel nilai). idKelas kosong berarti semua
+// kelas yang terdaftar di jadwal ini digabung jadi satu list.
+func (s *nilaiService) GetMonitoringByJadwal(idJadwal, idKelas string) (*dto.MonitoringResponse, error) {
+	var namaUjian string
+	if err := s.db.Table("jadwal").
+		Select("nama_ujian").
+		Where("id = ? AND deleted_at IS NULL", idJadwal).
+		Scan(&namaUjian).Error; err != nil || namaUjian == "" {
+		return nil, errors.New("jadwal tidak ditemukan")
+	}
+
+	rows, err := s.repo.GetMonitoringByJadwal(idJadwal, idKelas)
+	if err != nil {
+		return nil, err
+	}
+
+	summary := dto.MonitoringSummary{}
+	data := make([]dto.MonitoringPesertaResponse, 0, len(rows))
+
+	for _, r := range rows {
+		status := "belum_mulai"
+		switch {
+		case r.WktSelesai != nil:
+			status = "selesai"
+			summary.Selesai++
+		case r.WktMulai != nil:
+			status = "sedang_mengerjakan"
+			summary.SedangMengerjakan++
+		default:
+			summary.BelumMulai++
+		}
+		summary.Total++
+
+		data = append(data, dto.MonitoringPesertaResponse{
+			IDPeserta:         r.IDPeserta,
+			NamaPeserta:       r.NamaPeserta,
+			Username:          r.Username,
+			IDKelas:           r.IDKelas,
+			NamaKelas:         r.NamaKelas,
+			IDNilai:           r.IDNilai,
+			Status:            status,
+			Nilai:             r.Nilai,
+			WktMulai:          r.WktMulai,
+			AktivitasTerakhir: r.AktivitasTerakhir,
+			WktSelesai:        r.WktSelesai,
+		})
+	}
+
+	return &dto.MonitoringResponse{
+		NamaUjian: namaUjian,
+		Summary:   summary,
+		Data:      data,
 	}, nil
 }
 
