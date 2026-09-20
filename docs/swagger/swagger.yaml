@@ -3283,6 +3283,8 @@ paths:
       tags:
       - Peserta
     get:
+      description: Response menyertakan password peserta (plain text) — wajib JWT
+        karena data ini sensitif.
       parameters:
       - default: 1
         description: Halaman
@@ -3314,10 +3316,16 @@ paths:
                 data:
                   $ref: '#/definitions/dto.PesertaListResponse'
               type: object
+        "401":
+          description: Token JWT tidak valid
+          schema:
+            $ref: '#/definitions/helpers.Response'
         "500":
           description: Gagal mengambil data
           schema:
             $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
       summary: List peserta
       tags:
       - Peserta
@@ -3377,6 +3385,8 @@ paths:
       tags:
       - Peserta
     get:
+      description: Response menyertakan password peserta (plain text) — wajib JWT
+        karena data ini sensitif.
       parameters:
       - description: ID peserta (uuid)
         in: path
@@ -3395,10 +3405,16 @@ paths:
                 data:
                   $ref: '#/definitions/dto.PesertaResponse'
               type: object
+        "401":
+          description: Token JWT tidak valid
+          schema:
+            $ref: '#/definitions/helpers.Response'
         "404":
           description: Peserta tidak ditemukan
           schema:
             $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
       summary: Detail peserta
       tags:
       - Peserta

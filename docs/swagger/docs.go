@@ -3439,6 +3439,12 @@ const docTemplate = `{
         },
         "/peserta": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Response menyertakan password peserta (plain text) — wajib JWT karena data ini sensitif.",
                 "produces": [
                     "application/json"
                 ],
@@ -3491,6 +3497,12 @@ const docTemplate = `{
                                     }
                                 }
                             ]
+                        }
+                    },
+                    "401": {
+                        "description": "Token JWT tidak valid",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "500": {
@@ -3717,6 +3729,12 @@ const docTemplate = `{
         },
         "/peserta/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Response menyertakan password peserta (plain text) — wajib JWT karena data ini sensitif.",
                 "produces": [
                     "application/json"
                 ],
@@ -3750,6 +3768,12 @@ const docTemplate = `{
                                     }
                                 }
                             ]
+                        }
+                    },
+                    "401": {
+                        "description": "Token JWT tidak valid",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
                         }
                     },
                     "404": {
