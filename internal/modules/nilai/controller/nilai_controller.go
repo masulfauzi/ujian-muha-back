@@ -240,6 +240,34 @@ func (c *NilaiController) ForceSelesaikanUjian(ctx *fiber.Ctx) error {
 	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Selesaikan ujian successfully", resp)
 }
 
+// ForceSelesaikanSemua godoc
+// @Summary Paksa selesaikan SEMUA peserta yang sedang mengerjakan pada satu jadwal
+// @Description Versi "satu klik" dari POST /nilai/{id}/selesaikan-paksa — memproses semua peserta berstatus sedang_mengerjakan pada jadwal ini sekaligus (lihat GET /nilai/monitoring/{id_jadwal}). Peserta belum_mulai dan yang sudah selesai tidak ikut ter-proses. Wajib menyertakan query param confirm=true sebagai pengaman karena ini mengunci nilai akhir banyak peserta sekaligus.
+// @Tags Nilai
+// @Produce json
+// @Security BearerAuth
+// @Param id_jadwal path string true "ID jadwal (uuid)"
+// @Param confirm query string true "Wajib diisi 'true' untuk konfirmasi"
+// @Success 200 {object} helpers.Response{data=dto.BulkSelesaikanResponse} "Selesaikan semua ujian successfully"
+// @Failure 400 {object} helpers.Response "Konfirmasi tidak ada atau jadwal tidak ditemukan"
+// @Router /nilai/monitoring/{id_jadwal}/selesaikan-semua [post]
+func (c *NilaiController) ForceSelesaikanSemua(ctx *fiber.Ctx) error {
+	if ctx.Query("confirm") != "true" {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, "Konfirmasi diperlukan", map[string]string{
+			"error": "Tambahkan query param confirm=true untuk menyelesaikan SEMUA peserta yang sedang mengerjakan",
+		})
+	}
+
+	idJadwal := ctx.Params("id_jadwal")
+
+	resp, err := c.service.ForceSelesaikanSemuaByJadwal(idJadwal)
+	if err != nil {
+		return helpers.ErrorResponse(ctx, fiber.StatusBadRequest, err.Error(), nil)
+	}
+
+	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Selesaikan semua ujian successfully", resp)
+}
+
 // DeleteNilai godoc
 // @Summary Hapus data nilai (soft delete)
 // @Tags Nilai

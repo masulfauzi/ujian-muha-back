@@ -63,6 +63,7 @@ type NilaiService interface {
 	AnalisisSoalByJadwal(idJadwal string) (*ExportResult, error)
 	GetMonitoringByJadwal(idJadwal, idKelas string) (*dto.MonitoringResponse, error)
 	ForceSelesaikanUjian(id string) (*dto.NilaiResponse, error)
+	ForceSelesaikanSemuaByJadwal(idJadwal string) (*dto.BulkSelesaikanResponse, error)
 	AdvanceSection(idNilai, idPeserta string) (*dto.SectionProgressResponse, error)
 	GetSectionStatus(idNilai, idPeserta string) (*dto.SectionProgressResponse, error)
 }
@@ -272,10 +273,17 @@ func (s *nilaiService) UpdateNilai(id string, req *dto.UpdateNilaiRequest) (*dto
 }
 
 // ForceSelesaikanUjian dipanggil admin untuk memaksa selesaikan sesi ujian peserta
-// (mis. peserta lupa submit atau koneksinya terputus). Nilai dihitung ulang dari
-// jawaban yang sudah sempat diisi lewat repo.HitungNilai — mekanisme yang sama
-// persis dipakai saat peserta submit sendiri via UpdateNilai di atas.
+// (mis. peserta lupa submit atau koneksinya terputus).
 func (s *nilaiService) ForceSelesaikanUjian(id string) (*dto.NilaiResponse, error) {
+	return s.forceSelesaikanOne(id)
+}
+
+// forceSelesaikanOne berisi logika inti "paksa selesaikan" satu sesi nilai — dipakai
+// baik oleh ForceSelesaikanUjian (satu peserta) maupun ForceSelesaikanSemuaByJadwal
+// (semua peserta sekaligus). Nilai dihitung ulang dari jawaban yang sudah sempat
+// diisi lewat repo.HitungNilai — mekanisme yang sama persis dipakai saat peserta
+// submit sendiri via UpdateNilai di atas.
+func (s *nilaiService) forceSelesaikanOne(id string) (*dto.NilaiResponse, error) {
 	existing, err := s.repo.GetByID(id)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -307,6 +315,46 @@ func (s *nilaiService) ForceSelesaikanUjian(id string) (*dto.NilaiResponse, erro
 		return nil, err
 	}
 	return detailToResponse(updated), nil
+}
+
+// ForceSelesaikanSemuaByJadwal memaksa selesaikan SEMUA sesi nilai yang masih
+// berjalan (sedang_mengerjakan) pada satu jadwal sekaligus — versi "satu klik" dari
+// ForceSelesaikanUjian untuk dashboard monitoring. Peserta belum_mulai (tidak punya
+// baris nilai) dan yang sudah selesai otomatis tidak ikut ter-proses. Satu sesi yang
+// gagal tidak menggagalkan sesi lain — dicatat di Errors, proses lanjut ke sesi berikutnya.
+func (s *nilaiService) ForceSelesaikanSemuaByJadwal(idJadwal string) (*dto.BulkSelesaikanResponse, error) {
+	var namaUjian string
+	if err := s.db.Table("jadwal").
+		Select("nama_ujian").
+		Where("id = ? AND deleted_at IS NULL", idJadwal).
+		Scan(&namaUjian).Error; err != nil || namaUjian == "" {
+		return nil, errors.New("jadwal tidak ditemukan")
+	}
+
+	ids, err := s.repo.GetActiveNilaiIDsByJadwal(idJadwal)
+	if err != nil {
+		return nil, err
+	}
+
+	var errorDetails []dto.BulkSelesaikanErrorDetail
+	berhasil := 0
+	for _, id := range ids {
+		if _, err := s.forceSelesaikanOne(id); err != nil {
+			errorDetails = append(errorDetails, dto.BulkSelesaikanErrorDetail{
+				IDNilai: id,
+				Error:   err.Error(),
+			})
+			continue
+		}
+		berhasil++
+	}
+
+	return &dto.BulkSelesaikanResponse{
+		TotalDiproses: len(ids),
+		TotalBerhasil: berhasil,
+		TotalGagal:    len(errorDetails),
+		Errors:        errorDetails,
+	}, nil
 }
 
 func (s *nilaiService) DeleteNilai(id string) error {

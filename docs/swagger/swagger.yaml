@@ -47,6 +47,26 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.BulkSelesaikanErrorDetail:
+    properties:
+      error:
+        type: string
+      id_nilai:
+        type: string
+    type: object
+  dto.BulkSelesaikanResponse:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/dto.BulkSelesaikanErrorDetail'
+        type: array
+      total_berhasil:
+        type: integer
+      total_diproses:
+        type: integer
+      total_gagal:
+        type: integer
+    type: object
   dto.CreateBankSoalRequest:
     properties:
       deskripsi:
@@ -3151,6 +3171,45 @@ paths:
       summary: Monitoring status pengerjaan ujian semua peserta pada satu jadwal
       tags:
       - Nilai
+  /nilai/monitoring/{id_jadwal}/selesaikan-semua:
+    post:
+      description: Versi "satu klik" dari POST /nilai/{id}/selesaikan-paksa — memproses
+        semua peserta berstatus sedang_mengerjakan pada jadwal ini sekaligus (lihat
+        GET /nilai/monitoring/{id_jadwal}). Peserta belum_mulai dan yang sudah selesai
+        tidak ikut ter-proses. Wajib menyertakan query param confirm=true sebagai
+        pengaman karena ini mengunci nilai akhir banyak peserta sekaligus.
+      parameters:
+      - description: ID jadwal (uuid)
+        in: path
+        name: id_jadwal
+        required: true
+        type: string
+      - description: Wajib diisi 'true' untuk konfirmasi
+        in: query
+        name: confirm
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Selesaikan semua ujian successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BulkSelesaikanResponse'
+              type: object
+        "400":
+          description: Konfirmasi tidak ada atau jadwal tidak ditemukan
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Paksa selesaikan SEMUA peserta yang sedang mengerjakan pada satu jadwal
+      tags:
+      - Nilai
   /nilai/mulai-ujian/{id_jadwal}:
     post:
       consumes:
@@ -3679,8 +3738,10 @@ paths:
         section secara berurutan (sequential) — total jml_soal dari semua section
         harus sama dengan jumlah soal pada bank soal jadwal ini. Memanggil endpoint
         ini akan MENGGANTI seluruh definisi section lama untuk jadwal tersebut (soft-delete
-        lalu buat baru); lakukan ini sebelum ujian mulai dikerjakan peserta, karena
-        sesi yang sedang berjalan tidak otomatis disesuaikan.
+        lalu buat baru). Peserta yang sedang mengerjakan (belum selesai) dan sebelumnya
+        sudah punya section aktif akan OTOMATIS dimigrasikan ke section pertama (urutan
+        1) yang baru, dengan timer durasi minimal direset dari sekarang — peserta
+        yang belum pernah mulai section sama sekali tidak disentuh.
       parameters:
       - description: ID jadwal (uuid)
         in: path

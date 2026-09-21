@@ -80,6 +80,21 @@ type MonitoringResponse struct {
 	Data      []MonitoringPesertaResponse `json:"data"`
 }
 
+// BulkSelesaikanErrorDetail adalah detail kegagalan satu sesi nilai saat proses
+// "selesaikan semua" (dilaporkan tapi tidak menggagalkan sesi lain yang lolos).
+type BulkSelesaikanErrorDetail struct {
+	IDNilai string `json:"id_nilai"`
+	Error   string `json:"error"`
+}
+
+// BulkSelesaikanResponse adalah response endpoint POST /nilai/monitoring/{id_jadwal}/selesaikan-semua.
+type BulkSelesaikanResponse struct {
+	TotalDiproses int                         `json:"total_diproses"`
+	TotalBerhasil int                         `json:"total_berhasil"`
+	TotalGagal    int                         `json:"total_gagal"`
+	Errors        []BulkSelesaikanErrorDetail `json:"errors"`
+}
+
 // SectionProgressResponse dikembalikan oleh endpoint next-section & section-status.
 type SectionProgressResponse struct {
 	IDNilai            string `json:"id_nilai"`

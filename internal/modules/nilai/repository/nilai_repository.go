@@ -57,6 +57,7 @@ type NilaiRepository interface {
 	GetByJadwalID(idJadwal string, page, pageSize int) ([]NilaiWithDetail, int64, error)
 	GetByJadwalAndKelas(idJadwal, idKelas string) ([]NilaiExportRow, error)
 	GetMonitoringByJadwal(idJadwal, idKelas string) ([]MonitoringRow, error)
+	GetActiveNilaiIDsByJadwal(idJadwal string) ([]string, error)
 	CheckDuplicate(idPeserta, idJadwal string) (bool, error)
 	GetByPesertaAndJadwal(idPeserta, idJadwal string) (*model.Nilai, error)
 	HitungNilai(idNilai string) (float64, error)
@@ -191,8 +192,8 @@ func (r *nilaiRepository) GetByJadwalAndKelas(idJadwal, idKelas string) ([]Nilai
 			peserta.nama AS nama_peserta,
 			peserta.username,
 			COALESCE(nilai.nilai, 0) AS nilai,
-			TO_CHAR(nilai.wkt_mulai AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS wkt_mulai,
-			TO_CHAR(nilai.wkt_selesai AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS wkt_selesai
+			TO_CHAR(nilai.wkt_mulai, 'YYYY-MM-DD HH24:MI:SS') AS wkt_mulai,
+			TO_CHAR(nilai.wkt_selesai, 'YYYY-MM-DD HH24:MI:SS') AS wkt_selesai
 		`).
 		Joins("LEFT JOIN nilai ON peserta.id = nilai.id_peserta AND nilai.id_jadwal = ? AND nilai.deleted_at IS NULL", idJadwal).
 		Where("peserta.id_kelas = ? AND peserta.deleted_at IS NULL", idKelas).
@@ -218,9 +219,9 @@ func (r *nilaiRepository) GetMonitoringByJadwal(idJadwal, idKelas string) ([]Mon
 			kelas.nama_kelas,
 			nilai.id AS id_nilai,
 			COALESCE(nilai.nilai, 0) AS nilai,
-			TO_CHAR(nilai.wkt_mulai AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS wkt_mulai,
-			TO_CHAR(nilai.aktivitas_terakhir AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS aktivitas_terakhir,
-			TO_CHAR(nilai.wkt_selesai AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD HH24:MI:SS') AS wkt_selesai
+			TO_CHAR(nilai.wkt_mulai, 'YYYY-MM-DD HH24:MI:SS') AS wkt_mulai,
+			TO_CHAR(nilai.aktivitas_terakhir, 'YYYY-MM-DD HH24:MI:SS') AS aktivitas_terakhir,
+			TO_CHAR(nilai.wkt_selesai, 'YYYY-MM-DD HH24:MI:SS') AS wkt_selesai
 		`).
 		Joins("INNER JOIN kelas ON peserta.id_kelas = kelas.id").
 		Joins("INNER JOIN jadwal_kelas ON jadwal_kelas.id_kelas = kelas.id AND jadwal_kelas.id_jadwal = ?", idJadwal).
@@ -235,6 +236,16 @@ func (r *nilaiRepository) GetMonitoringByJadwal(idJadwal, idKelas string) ([]Mon
 		Order("kelas.nama_kelas ASC, peserta.nama ASC").
 		Scan(&results).Error
 	return results, err
+}
+
+// GetActiveNilaiIDsByJadwal mengembalikan id semua sesi nilai pada jadwal ini yang
+// masih berjalan (wkt_selesai belum terisi) — dipakai fitur "selesaikan semua".
+func (r *nilaiRepository) GetActiveNilaiIDsByJadwal(idJadwal string) ([]string, error) {
+	var ids []string
+	err := r.db.Model(&model.Nilai{}).
+		Where("id_jadwal = ? AND wkt_selesai IS NULL AND deleted_at IS NULL", idJadwal).
+		Pluck("id", &ids).Error
+	return ids, err
 }
 
 func (r *nilaiRepository) CheckDuplicate(idPeserta, idJadwal string) (bool, error) {
