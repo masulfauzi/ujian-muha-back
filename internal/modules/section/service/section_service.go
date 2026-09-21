@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"time"
 
 	"backend/internal/constants"
 	"backend/internal/modules/section/dto"
@@ -10,6 +11,18 @@ import (
 
 	"gorm.io/gorm"
 )
+
+// jakartaLoc dipakai saat menulis wkt_mulai_section (kolom "timestamp" tanpa
+// zona di Postgres, yang di seluruh codebase ini isinya sengaja disimpan
+// sebagai wall-clock WIB apa adanya — lihat nilai_service.go untuk konvensi
+// yang sama).
+var jakartaLoc, _ = time.LoadLocation("Asia/Jakarta")
+
+func init() {
+	if jakartaLoc == nil {
+		jakartaLoc = time.FixedZone("WIB", 7*60*60)
+	}
+}
 
 type SectionService interface {
 	DefineSections(idJadwal string, req *dto.DefineSectionRequest) ([]dto.SectionResponse, error)
@@ -74,7 +87,25 @@ func (s *sectionService) DefineSections(idJadwal string, req *dto.DefineSectionR
 		if err := s.repo.SoftDeleteByJadwalIDWithTx(tx, idJadwal); err != nil {
 			return err
 		}
-		return s.repo.CreateManyWithTx(tx, sections)
+		if err := s.repo.CreateManyWithTx(tx, sections); err != nil {
+			return err
+		}
+
+		// Section lama baru saja di-soft-delete di atas, jadi peserta yang sedang
+		// mengerjakan (belum wkt_selesai) dan sebelumnya sudah punya section aktif
+		// sekarang menggantung ke section yang sudah terhapus. Migrasikan mereka ke
+		// section pertama (urutan 1) yang baru supaya tidak macet — timer durasi
+		// minimal-nya juga direset dari sekarang untuk section baru itu. Peserta yang
+		// belum pernah punya section aktif (belum mulai, atau jadwal ini sebelumnya
+		// tidak pakai section) sengaja tidak disentuh.
+		firstSectionID := sections[0].ID // urutan=1, lihat konstruksi slice sections di atas
+		now := time.Now().In(jakartaLoc)
+		return tx.Table("nilai").
+			Where("id_jadwal = ? AND wkt_selesai IS NULL AND id_section_aktif IS NOT NULL", idJadwal).
+			Updates(map[string]interface{}{
+				"id_section_aktif":  firstSectionID,
+				"wkt_mulai_section": now,
+			}).Error
 	})
 	if err != nil {
 		return nil, err

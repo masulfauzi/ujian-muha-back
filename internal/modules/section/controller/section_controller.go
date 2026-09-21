@@ -18,7 +18,7 @@ func NewSectionController(service service.SectionService) *SectionController {
 
 // DefineSections godoc
 // @Summary Definisikan/ubah pembagian section untuk satu jadwal
-// @Description Membagi soal-soal satu jadwal ujian ke dalam beberapa section berurutan, tiap section punya jumlah soal & durasi minimal sendiri sebelum peserta bisa lanjut ke section berikutnya. Server otomatis menghitung range no_urut tiap section secara berurutan (sequential) — total jml_soal dari semua section harus sama dengan jumlah soal pada bank soal jadwal ini. Memanggil endpoint ini akan MENGGANTI seluruh definisi section lama untuk jadwal tersebut (soft-delete lalu buat baru); lakukan ini sebelum ujian mulai dikerjakan peserta, karena sesi yang sedang berjalan tidak otomatis disesuaikan.
+// @Description Membagi soal-soal satu jadwal ujian ke dalam beberapa section berurutan, tiap section punya jumlah soal & durasi minimal sendiri sebelum peserta bisa lanjut ke section berikutnya. Server otomatis menghitung range no_urut tiap section secara berurutan (sequential) — total jml_soal dari semua section harus sama dengan jumlah soal pada bank soal jadwal ini. Memanggil endpoint ini akan MENGGANTI seluruh definisi section lama untuk jadwal tersebut (soft-delete lalu buat baru). Peserta yang sedang mengerjakan (belum selesai) dan sebelumnya sudah punya section aktif akan OTOMATIS dimigrasikan ke section pertama (urutan 1) yang baru, dengan timer durasi minimal direset dari sekarang — peserta yang belum pernah mulai section sama sekali tidak disentuh.
 // @Tags Section
 // @Accept json
 // @Produce json
