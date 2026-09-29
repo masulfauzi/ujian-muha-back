@@ -145,6 +145,28 @@ func (c *JawabanController) GetJawabanByNilaiSection(ctx *fiber.Ctx) error {
 	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Get jawaban by nilai dan section successfully", resp)
 }
 
+// GetRekapJawaban godoc
+// @Summary Rekap jawaban akhir satu sesi ujian peserta (admin)
+// @Description Untuk admin melihat jawaban akhir peserta pada satu ujian: header peserta & ujian, ringkasan benar/salah/kosong, dan jawaban per soal terurut no_soal (sama dengan nomor di analisis butir soal). Opsi, jawaban, dan kunci ditampilkan sesuai urutan yang dilihat peserta (konsisten walau acak_opsi aktif). Daftar id_nilai milik seorang peserta bisa diambil dari GET /nilai/peserta/{id_peserta}.
+// @Tags Jawaban
+// @Produce json
+// @Security BearerAuth
+// @Param id_nilai path string true "ID nilai/sesi ujian (uuid)"
+// @Success 200 {object} helpers.Response{data=dto.RekapJawabanResponse} "Get rekap jawaban successfully"
+// @Failure 401 {object} helpers.Response "Token JWT tidak valid"
+// @Failure 404 {object} helpers.Response "Sesi ujian tidak ditemukan"
+// @Router /jawaban/rekap/{id_nilai} [get]
+func (c *JawabanController) GetRekapJawaban(ctx *fiber.Ctx) error {
+	idNilai := ctx.Params("id_nilai")
+
+	resp, err := c.service.GetRekapJawaban(idNilai)
+	if err != nil {
+		return helpers.ErrorResponse(ctx, fiber.StatusNotFound, err.Error(), nil)
+	}
+
+	return helpers.SuccessResponse(ctx, fiber.StatusOK, "Get rekap jawaban successfully", resp)
+}
+
 // GetJawabanByPeserta godoc
 // @Summary List seluruh jawaban satu peserta (lintas sesi)
 // @Tags Jawaban

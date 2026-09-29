@@ -26,6 +26,7 @@ func SetupJawabanRoutes(app *fiber.App, db *gorm.DB) {
 	jawaban.Get("/nilai/:id_nilai", ctrl.GetJawabanByNilai)
 	jawaban.Get("/nilai/:id_nilai/section/:id_section", ctrl.GetJawabanByNilaiSection)
 	jawaban.Get("/peserta/:id_peserta", ctrl.GetJawabanByPeserta)
+	jawaban.Get("/rekap/:id_nilai", middleware.JWTAuth(), ctrl.GetRekapJawaban)
 
 	jawaban.Post("/", middleware.JWTAuth(), ctrl.CreateJawaban)
 	jawaban.Get("/", ctrl.GetAllJawaban)

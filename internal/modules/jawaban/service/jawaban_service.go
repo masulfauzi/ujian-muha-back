@@ -1,11 +1,9 @@
 package service
 
 import (
-	"crypto/md5"
-	"encoding/binary"
 	"errors"
 	"math"
-	"math/rand"
+	"sort"
 	"strings"
 
 	"backend/internal/constants"
@@ -14,6 +12,7 @@ import (
 	"backend/internal/modules/jawaban/repository"
 	nilairepo "backend/internal/modules/nilai/repository"
 	sectionrepo "backend/internal/modules/section/repository"
+	"backend/internal/utils"
 
 	"gorm.io/gorm"
 )
@@ -28,6 +27,7 @@ type JawabanService interface {
 	GetAllJawaban(page, pageSize int, idNilai, idPeserta, idSoal string) (*dto.JawabanListResponse, error)
 	GetJawabanByNilai(idNilai string) ([]dto.JawabanResponse, error)
 	GetJawabanByNilaiSection(idNilai, idSection string) ([]dto.JawabanResponse, error)
+	GetRekapJawaban(idNilai string) (*dto.RekapJawabanResponse, error)
 	GetJawabanByPeserta(idPeserta string, page, pageSize int) (*dto.JawabanListResponse, error)
 	UpdateJawaban(id string, req *dto.UpdateJawabanRequest) (*dto.JawabanResponse, error)
 	DeleteJawaban(id string) error
@@ -54,33 +54,8 @@ func normalizeJawaban(j string) (string, error) {
 	}
 }
 
-// generateOpsiOrder menghasilkan urutan acak yang sama dengan soal service.
-// Wajib identik dengan soalService.generateSeed + rand.Shuffle.
-func generateOpsiOrder(pesertaID, soalID string) []string {
-	hash := md5.Sum([]byte(pesertaID + "|" + soalID))
-	seed := int64(binary.BigEndian.Uint64(hash[:8]))
-	rng := rand.New(rand.NewSource(seed))
-
-	order := []string{"A", "B", "C", "D", "E"}
-	rng.Shuffle(len(order), func(i, j int) {
-		order[i], order[j] = order[j], order[i]
-	})
-	return order
-}
-
-// reverseMapJawaban mengonversi posisi acak yang dipilih peserta
-// ke posisi asli sebelum diacak, agar bisa dibandingkan dengan kunci di DB.
-func reverseMapJawaban(submittedJawaban, pesertaID, soalID string) string {
-	order := generateOpsiOrder(pesertaID, soalID)
-	idx := int(submittedJawaban[0] - 'A') // "B" → 1
-	if idx < 0 || idx >= len(order) {
-		return submittedJawaban
-	}
-	return order[idx] // posisi asli
-}
-
 func randomizeOpsi(detail *repository.JawabanWithDetail) (opsiA, opsiB, opsiC, opsiD, opsiE, gambarA, gambarB, gambarC, gambarD, gambarE, kunci string) {
-	opsiOrder := generateOpsiOrder(detail.IDPeserta, detail.IDSoal)
+	opsiOrder := utils.OpsiOrder(detail.IDPeserta, detail.IDSoal)
 
 	opsiMap := map[string]string{
 		"A": detail.OpsiA, "B": detail.OpsiB, "C": detail.OpsiC,
@@ -137,7 +112,7 @@ func (s *jawabanService) CreateJawaban(req *dto.CreateJawabanRequest) (*dto.Jawa
 
 	evaluatedJawaban := jawaban
 	if acakOpsi == 1 {
-		evaluatedJawaban = reverseMapJawaban(jawaban, req.IDPeserta, req.IDSoal)
+		evaluatedJawaban = utils.JawabanAsli(jawaban, req.IDPeserta, req.IDSoal)
 	}
 	isBenarInt := 0
 	if strings.EqualFold(evaluatedJawaban, strings.TrimSpace(kunci)) {
@@ -210,6 +185,58 @@ func (s *jawabanService) GetJawabanByNilai(idNilai string) ([]dto.JawabanRespons
 		return nil, err
 	}
 	return resp.Data, nil
+}
+
+// GetRekapJawaban merangkum jawaban akhir satu sesi ujian untuk admin: header peserta/ujian,
+// ringkasan benar/salah/kosong, dan daftar jawaban terurut no_soal (bukan no_urut) supaya
+// nomor soalnya sama dengan analisis butir soal walau acak_soal aktif.
+func (s *jawabanService) GetRekapJawaban(idNilai string) (*dto.RekapJawabanResponse, error) {
+	nilai, err := s.nilaiRepo.GetByIDWithDetail(idNilai)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New(constants.ErrNotFound)
+		}
+		return nil, err
+	}
+
+	jawabanList, err := s.GetJawabanByNilai(idNilai)
+	if err != nil {
+		return nil, err
+	}
+	sort.SliceStable(jawabanList, func(i, j int) bool {
+		return jawabanList[i].NoSoal < jawabanList[j].NoSoal
+	})
+
+	summary := dto.RekapJawabanSummary{TotalSoal: len(jawabanList)}
+	for _, j := range jawabanList {
+		switch {
+		case j.Jawaban == nil:
+			summary.Kosong++
+		case j.IsBenar != nil && *j.IsBenar == 1:
+			summary.Benar++
+		default:
+			summary.Salah++
+		}
+	}
+
+	status := "sedang_mengerjakan"
+	if nilai.WktSelesai != nil {
+		status = "selesai"
+	}
+
+	return &dto.RekapJawabanResponse{
+		IDNilai:     nilai.ID,
+		IDPeserta:   nilai.IDPeserta,
+		NamaPeserta: nilai.NamaPeserta,
+		IDJadwal:    nilai.IDJadwal,
+		NamaUjian:   nilai.NamaUjian,
+		Nilai:       nilai.Nilai,
+		WktMulai:    nilai.WktMulai,
+		WktSelesai:  nilai.WktSelesai,
+		Status:      status,
+		Summary:     summary,
+		Jawaban:     jawabanList,
+	}, nil
 }
 
 // GetJawabanByNilaiSection mengambil soal satu sesi ujian yang berada dalam satu section.
@@ -294,7 +321,7 @@ func (s *jawabanService) UpdateJawaban(id string, req *dto.UpdateJawabanRequest)
 
 	evaluatedJawaban := jawaban
 	if acakOpsi == 1 {
-		evaluatedJawaban = reverseMapJawaban(jawaban, existing.IDPeserta, existing.IDSoal)
+		evaluatedJawaban = utils.JawabanAsli(jawaban, existing.IDPeserta, existing.IDSoal)
 	}
 	isBenarInt := 0
 	if strings.EqualFold(evaluatedJawaban, strings.TrimSpace(kunci)) {

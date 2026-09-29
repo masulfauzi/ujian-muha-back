@@ -818,6 +818,45 @@ definitions:
     - password
     - username
     type: object
+  dto.RekapJawabanResponse:
+    properties:
+      id_jadwal:
+        type: string
+      id_nilai:
+        type: string
+      id_peserta:
+        type: string
+      jawaban:
+        items:
+          $ref: '#/definitions/dto.JawabanResponse'
+        type: array
+      nama_peserta:
+        type: string
+      nama_ujian:
+        type: string
+      nilai:
+        type: number
+      status:
+        description: sedang_mengerjakan | selesai
+        type: string
+      summary:
+        $ref: '#/definitions/dto.RekapJawabanSummary'
+      wkt_mulai:
+        type: string
+      wkt_selesai:
+        type: string
+    type: object
+  dto.RekapJawabanSummary:
+    properties:
+      benar:
+        type: integer
+      kosong:
+        type: integer
+      salah:
+        type: integer
+      total_soal:
+        type: integer
+    type: object
   dto.SectionItem:
     properties:
       durasi_menit_minimal:
@@ -2170,6 +2209,44 @@ paths:
           schema:
             $ref: '#/definitions/helpers.Response'
       summary: List seluruh jawaban satu peserta (lintas sesi)
+      tags:
+      - Jawaban
+  /jawaban/rekap/{id_nilai}:
+    get:
+      description: 'Untuk admin melihat jawaban akhir peserta pada satu ujian: header
+        peserta & ujian, ringkasan benar/salah/kosong, dan jawaban per soal terurut
+        no_soal (sama dengan nomor di analisis butir soal). Opsi, jawaban, dan kunci
+        ditampilkan sesuai urutan yang dilihat peserta (konsisten walau acak_opsi
+        aktif). Daftar id_nilai milik seorang peserta bisa diambil dari GET /nilai/peserta/{id_peserta}.'
+      parameters:
+      - description: ID nilai/sesi ujian (uuid)
+        in: path
+        name: id_nilai
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get rekap jawaban successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.RekapJawabanResponse'
+              type: object
+        "401":
+          description: Token JWT tidak valid
+          schema:
+            $ref: '#/definitions/helpers.Response'
+        "404":
+          description: Sesi ujian tidak ditemukan
+          schema:
+            $ref: '#/definitions/helpers.Response'
+      security:
+      - BearerAuth: []
+      summary: Rekap jawaban akhir satu sesi ujian peserta (admin)
       tags:
       - Jawaban
   /jurusan:

@@ -1482,6 +1482,64 @@ const docTemplate = `{
                 }
             }
         },
+        "/jawaban/rekap/{id_nilai}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Untuk admin melihat jawaban akhir peserta pada satu ujian: header peserta \u0026 ujian, ringkasan benar/salah/kosong, dan jawaban per soal terurut no_soal (sama dengan nomor di analisis butir soal). Opsi, jawaban, dan kunci ditampilkan sesuai urutan yang dilihat peserta (konsisten walau acak_opsi aktif). Daftar id_nilai milik seorang peserta bisa diambil dari GET /nilai/peserta/{id_peserta}.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jawaban"
+                ],
+                "summary": "Rekap jawaban akhir satu sesi ujian peserta (admin)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID nilai/sesi ujian (uuid)",
+                        "name": "id_nilai",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get rekap jawaban successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helpers.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.RekapJawabanResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Token JWT tidak valid",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Sesi ujian tidak ditemukan",
+                        "schema": {
+                            "$ref": "#/definitions/helpers.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/jawaban/{id}": {
             "get": {
                 "produces": [
@@ -6633,6 +6691,65 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.RekapJawabanResponse": {
+            "type": "object",
+            "properties": {
+                "id_jadwal": {
+                    "type": "string"
+                },
+                "id_nilai": {
+                    "type": "string"
+                },
+                "id_peserta": {
+                    "type": "string"
+                },
+                "jawaban": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.JawabanResponse"
+                    }
+                },
+                "nama_peserta": {
+                    "type": "string"
+                },
+                "nama_ujian": {
+                    "type": "string"
+                },
+                "nilai": {
+                    "type": "number"
+                },
+                "status": {
+                    "description": "sedang_mengerjakan | selesai",
+                    "type": "string"
+                },
+                "summary": {
+                    "$ref": "#/definitions/dto.RekapJawabanSummary"
+                },
+                "wkt_mulai": {
+                    "type": "string"
+                },
+                "wkt_selesai": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RekapJawabanSummary": {
+            "type": "object",
+            "properties": {
+                "benar": {
+                    "type": "integer"
+                },
+                "kosong": {
+                    "type": "integer"
+                },
+                "salah": {
+                    "type": "integer"
+                },
+                "total_soal": {
+                    "type": "integer"
                 }
             }
         },

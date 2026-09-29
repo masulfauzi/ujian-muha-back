@@ -850,6 +850,7 @@ type analisisJawabanRow struct {
 	IDPeserta   string   `gorm:"column:id_peserta"`
 	NamaPeserta string   `gorm:"column:nama_peserta"`
 	NoSoal      *int     `gorm:"column:no_soal"`
+	IDSoal      *string  `gorm:"column:id_soal"`
 	Jawaban     *string  `gorm:"column:jawaban"`
 	IsBenar     *int     `gorm:"column:is_benar"`
 	NilaiAkhir  *float64 `gorm:"column:nilai_akhir"`
@@ -864,10 +865,11 @@ func (s *nilaiService) AnalisisSoalByJadwal(idJadwal string) (*ExportResult, err
 	type jadwalMeta struct {
 		NamaUjian  string `gorm:"column:nama_ujian"`
 		IDBankSoal string `gorm:"column:id_bank_soal"`
+		AcakOpsi   int    `gorm:"column:acak_opsi"`
 	}
 	var meta jadwalMeta
 	if err := s.db.Table("jadwal").
-		Select("nama_ujian, id_bank_soal").
+		Select("nama_ujian, id_bank_soal, acak_opsi::int AS acak_opsi").
 		Where("id = ? AND deleted_at IS NULL", idJadwal).
 		Scan(&meta).Error; err != nil || meta.NamaUjian == "" {
 		return nil, errors.New("jadwal tidak ditemukan")
@@ -923,6 +925,7 @@ func (s *nilaiService) AnalisisSoalByJadwal(idJadwal string) (*ExportResult, err
 				peserta.id AS id_peserta,
 				peserta.nama AS nama_peserta,
 				soal.no_soal,
+				jawaban.id_soal,
 				jawaban.jawaban,
 				jawaban.is_benar,
 				nilai.nilai AS nilai_akhir
@@ -936,7 +939,7 @@ func (s *nilaiService) AnalisisSoalByJadwal(idJadwal string) (*ExportResult, err
 			return nil, fmt.Errorf("gagal ambil data jawaban kelas %s: %w", kelas.NamaKelas, err)
 		}
 
-		xlsxFile, err := buildAnalisisSoalWorkbook(rows, noSoalList)
+		xlsxFile, err := buildAnalisisSoalWorkbook(rows, noSoalList, meta.AcakOpsi == 1)
 		if err != nil {
 			return nil, fmt.Errorf("gagal membuat sheet analisis kelas %s: %w", kelas.NamaKelas, err)
 		}
@@ -987,7 +990,11 @@ type analisisPesertaAgg struct {
 // (kolom paling kanan, dari tabel nilai — kosong jika peserta belum pernah mulai ujian)
 // per peserta, dan baris "Jumlah Benar per Soal" di paling bawah untuk analisis tingkat
 // kesulitan soal.
-func buildAnalisisSoalWorkbook(rows []analisisJawabanRow, noSoalList []int) (*excelize.File, error) {
+//
+// Jika acakOpsi aktif, jawaban.jawaban tersimpan sebagai huruf versi acakan di layar peserta;
+// huruf itu dikembalikan ke huruf opsi asli di bank soal supaya satu kolom soal bisa
+// dibandingkan antar peserta dan cocok dengan kunci.
+func buildAnalisisSoalWorkbook(rows []analisisJawabanRow, noSoalList []int, acakOpsi bool) (*excelize.File, error) {
 	order := make([]string, 0)
 	agg := make(map[string]*analisisPesertaAgg)
 
@@ -1000,7 +1007,12 @@ func buildAnalisisSoalWorkbook(rows []analisisJawabanRow, noSoalList []int) (*ex
 		}
 		if r.NoSoal != nil {
 			a.Started = true
-			a.Answers[*r.NoSoal] = analisisAnswer{Jawaban: r.Jawaban, IsBenar: r.IsBenar}
+			jawaban := r.Jawaban
+			if acakOpsi && jawaban != nil && r.IDSoal != nil {
+				asli := utils.JawabanAsli(strings.ToUpper(*jawaban), r.IDPeserta, *r.IDSoal)
+				jawaban = &asli
+			}
+			a.Answers[*r.NoSoal] = analisisAnswer{Jawaban: jawaban, IsBenar: r.IsBenar}
 		}
 		if r.NilaiAkhir != nil {
 			a.NilaiAkhir = r.NilaiAkhir

@@ -38,6 +38,29 @@ type JawabanResponse struct {
 	UpdatedAt   string `json:"updated_at"`
 }
 
+type RekapJawabanSummary struct {
+	TotalSoal int `json:"total_soal"`
+	Benar     int `json:"benar"`
+	Salah     int `json:"salah"`
+	Kosong    int `json:"kosong"`
+}
+
+// RekapJawabanResponse adalah rekap jawaban akhir satu sesi ujian peserta untuk admin,
+// dikembalikan endpoint GET /jawaban/rekap/{id_nilai}.
+type RekapJawabanResponse struct {
+	IDNilai     string              `json:"id_nilai"`
+	IDPeserta   string              `json:"id_peserta"`
+	NamaPeserta string              `json:"nama_peserta"`
+	IDJadwal    string              `json:"id_jadwal"`
+	NamaUjian   string              `json:"nama_ujian"`
+	Nilai       float64             `json:"nilai"`
+	WktMulai    *string             `json:"wkt_mulai"`
+	WktSelesai  *string             `json:"wkt_selesai"`
+	Status      string              `json:"status"` // sedang_mengerjakan | selesai
+	Summary     RekapJawabanSummary `json:"summary"`
+	Jawaban     []JawabanResponse   `json:"jawaban"`
+}
+
 type JawabanListResponse struct {
 	Data      []JawabanResponse `json:"data"`
 	Total     int64             `json:"total"`
